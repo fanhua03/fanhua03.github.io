@@ -2,7 +2,7 @@
   "site": {
     "name": "开源项目可视化拆解",
     "tagline": "热门开源项目拆成能点的图",
-    "domain": "https://opensource-visualized.example"
+    "domain": "https://fanhua03.github.io/teardown"
   },
   "projects": [
     {
@@ -12,10 +12,16 @@
       "tagline": "你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。",
       "repo": "jqlang/jq",
       "revision": "5c001b18d7237cce1fdba63608732163f978dd23",
-      "langs": ["C"],
+      "langs": [
+        "C"
+      ],
       "loc": 28460,
       "date": "2026-11-04",
-      "tags": ["解释器", "字节码", "C"],
+      "tags": [
+        "解释器",
+        "字节码",
+        "C"
+      ],
       "thumb": "assets/thumbs/jq.png",
       "diagram": "assets/diagrams/jq.html",
       "insights": [
@@ -24,13 +30,44 @@
         "最长的文件不是 VM：jv_dtoa.c 有 4276 行，只为让 1e1000 打印出来还是 1e1000。"
       ],
       "sources": [
-        { "path": "src/execute.c", "line": 870, "end_line": 890, "label": "FORK 把栈存档" },
-        { "path": "src/execute.c", "line": 340, "end_line": 357, "label": "jq_next 主循环" },
-        { "path": "src/linker.c", "line": 442, "label": "load_program：先绑定" },
-        { "path": "src/compile.c", "line": 1219, "label": "block → 字节码" },
-        { "path": "src/bytecode.h", "line": 72, "label": "struct bytecode" },
-        { "path": "src/jv.c", "line": 55, "end_line": 76, "label": "手写引用计数" },
-        { "path": "src/builtin.c", "line": 2039, "label": "C 原语表" }
+        {
+          "path": "src/execute.c",
+          "line": 870,
+          "end_line": 890,
+          "label": "FORK 把栈存档"
+        },
+        {
+          "path": "src/execute.c",
+          "line": 340,
+          "end_line": 357,
+          "label": "jq_next 主循环"
+        },
+        {
+          "path": "src/linker.c",
+          "line": 442,
+          "label": "load_program：先绑定"
+        },
+        {
+          "path": "src/compile.c",
+          "line": 1219,
+          "label": "block → 字节码"
+        },
+        {
+          "path": "src/bytecode.h",
+          "line": 72,
+          "label": "struct bytecode"
+        },
+        {
+          "path": "src/jv.c",
+          "line": 55,
+          "end_line": 76,
+          "label": "手写引用计数"
+        },
+        {
+          "path": "src/builtin.c",
+          "line": 2039,
+          "label": "C 原语表"
+        }
       ]
     },
     {
@@ -40,10 +77,16 @@
       "tagline": "写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。",
       "repo": "deepseek-ai/3FS",
       "revision": "22fca04564c7cc230fd8b9523b8b92864e1dad47",
-      "langs": ["C++"],
+      "langs": [
+        "C++"
+      ],
       "loc": 122058,
       "date": "2026-11-04",
-      "tags": ["分布式", "存储", "C++"],
+      "tags": [
+        "分布式",
+        "存储",
+        "C++"
+      ],
       "thumb": "assets/thumbs/3fs.png",
       "diagram": "assets/diagrams/3fs.html",
       "insights": [
@@ -52,41 +95,216 @@
         "FUSE 队列一把自旋锁只能跑 40 万次 4KiB 读/秒，所以它在守护进程里塞了个共享内存 + RDMA 的原生客户端。"
       ],
       "sources": [
-        { "path": "src/client/storage/StorageClientImpl.cc", "line": 1805, "end_line": 1812, "label": "写请求固定 HeadTarget" },
-        { "path": "src/storage/service/ReliableForwarding.h", "line": 42, "label": "head 往下转发" },
-        { "path": "src/storage/store/ChunkReplica.h", "line": 29, "end_line": 30, "label": "commit 版本号" },
-        { "path": "src/meta/service/MetaOperator.h", "line": 47, "label": "元数据操作" },
-        { "path": "src/fdb/FDBTransaction.h", "line": 14, "label": "FoundationDB 事务" },
-        { "path": "src/lib/api/hf3fs_usrbio.h", "line": 71, "label": "iovcreate 注册内存" },
-        { "path": "src/lib/api/UsrbIo.cc", "line": 616, "end_line": 683, "label": "prep / submit / wait" },
-        { "path": "src/mgmtd/MgmtdServer.h", "line": 14, "label": "集群管理器" },
-        { "path": "docs/design_notes.md", "line": 11, "label": "CRAQ 写链读任意" },
-        { "path": "docs/design_notes.md", "line": 63, "label": "无状态元数据" }
+        {
+          "path": "src/client/storage/StorageClientImpl.cc",
+          "line": 1805,
+          "end_line": 1812,
+          "label": "写请求固定 HeadTarget"
+        },
+        {
+          "path": "src/storage/service/ReliableForwarding.h",
+          "line": 42,
+          "label": "head 往下转发"
+        },
+        {
+          "path": "src/storage/store/ChunkReplica.h",
+          "line": 29,
+          "end_line": 30,
+          "label": "commit 版本号"
+        },
+        {
+          "path": "src/meta/service/MetaOperator.h",
+          "line": 47,
+          "label": "元数据操作"
+        },
+        {
+          "path": "src/fdb/FDBTransaction.h",
+          "line": 14,
+          "label": "FoundationDB 事务"
+        },
+        {
+          "path": "src/lib/api/hf3fs_usrbio.h",
+          "line": 71,
+          "label": "iovcreate 注册内存"
+        },
+        {
+          "path": "src/lib/api/UsrbIo.cc",
+          "line": 616,
+          "end_line": 683,
+          "label": "prep / submit / wait"
+        },
+        {
+          "path": "src/mgmtd/MgmtdServer.h",
+          "line": 14,
+          "label": "集群管理器"
+        },
+        {
+          "path": "docs/design_notes.md",
+          "line": 11,
+          "label": "CRAQ 写链读任意"
+        },
+        {
+          "path": "docs/design_notes.md",
+          "line": 63,
+          "label": "无状态元数据"
+        }
       ]
     }
   ],
   "roadmap": [
-    ["React", "facebook/react", 251901, "JS", "Fiber 把渲染切成能中断的小块，调度器怎么抢回主线程"],
-    ["Go", "golang/go", 139561, "Go", "一个 goroutine 阻塞时，GMP 调度器在干什么"],
-    ["Kubernetes", "kubernetes/kubernetes", 128643, "Go", "kubectl apply 到容器起来，中间过了几道 informer"],
-    ["Node.js", "nodejs/node", 123218, "JS", "libuv 事件循环的六个阶段，顺序错一步就是 bug"],
-    ["Rust", "rust-lang/rust", 121030, "Rust", "借用检查在 MIR 层怎么做，NLL 为什么能放行"],
-    ["Deno", "denoland/deno", 108802, "Rust", "V8 isolate + Rust op 层，权限系统卡在哪一层"],
-    ["PyTorch", "pytorch/pytorch", 105114, "Py", "autograd 的图什么时候建、什么时候释放"],
-    ["Redis", "redis/redis", 77170, "C", "单线程事件循环凭什么撑十万 QPS"],
-    ["Moby", "moby/moby", 72241, "Go", "镜像分层与 overlayfs，容器到底共享了什么"],
-    ["Prometheus", "prometheus/prometheus", 66931, "Go", "TSDB 的 head block 与倒排索引"],
-    ["MinIO", "minio/minio", 61281, "Go", "纠删码怎么把 4 块盘当 8 块用"],
-    ["Vue", "vuejs/core", 54827, "TS", "响应式从 Proxy 到 effect 依赖收集"],
-    ["etcd", "etcd-io/etcd", 52442, "Go", "Raft 日志复制与 WAL 落盘的先后顺序"],
-    ["ClickHouse", "ClickHouse/ClickHouse", 50736, "C++", "列存 + 向量化执行，为什么快一个数量级"],
-    ["gRPC", "grpc/grpc", 45415, "C++", "HTTP/2 多路复用与 C++ 异步栈"],
-    ["LLVM", "llvm/llvm-project", 41315, "C++", "从 IR 到机器码，pass 管理器怎么排顺序"],
-    ["TiDB", "pingcap/tidb", 40707, "Go", "TiKV 的 Percolator 事务，两阶段提交怎么跨 region"],
-    ["LevelDB", "google/leveldb", 39519, "C++", "LSM 树、MemTable 与 compaction 的取舍"],
-    ["Kafka", "apache/kafka", 34122, "Java", "分区副本 ISR，leader 挂了谁接班"],
-    ["NGINX", "nginx/nginx", 32043, "C", "epoll + 多进程，一个连接只在一个 worker 里"],
-    ["Envoy", "envoyproxy/envoy", 29175, "C++", "L7 代理的连接池与线程模型"],
-    ["Flink", "apache/flink", 26443, "Java", "checkpoint barrier 怎么在流里对齐"]
+    [
+      "React",
+      "facebook/react",
+      251901,
+      "JS",
+      "Fiber 把渲染切成能中断的小块，调度器怎么抢回主线程"
+    ],
+    [
+      "Go",
+      "golang/go",
+      139561,
+      "Go",
+      "一个 goroutine 阻塞时，GMP 调度器在干什么"
+    ],
+    [
+      "Kubernetes",
+      "kubernetes/kubernetes",
+      128643,
+      "Go",
+      "kubectl apply 到容器起来，中间过了几道 informer"
+    ],
+    [
+      "Node.js",
+      "nodejs/node",
+      123218,
+      "JS",
+      "libuv 事件循环的六个阶段，顺序错一步就是 bug"
+    ],
+    [
+      "Rust",
+      "rust-lang/rust",
+      121030,
+      "Rust",
+      "借用检查在 MIR 层怎么做，NLL 为什么能放行"
+    ],
+    [
+      "Deno",
+      "denoland/deno",
+      108802,
+      "Rust",
+      "V8 isolate + Rust op 层，权限系统卡在哪一层"
+    ],
+    [
+      "PyTorch",
+      "pytorch/pytorch",
+      105114,
+      "Py",
+      "autograd 的图什么时候建、什么时候释放"
+    ],
+    [
+      "Redis",
+      "redis/redis",
+      77170,
+      "C",
+      "单线程事件循环凭什么撑十万 QPS"
+    ],
+    [
+      "Moby",
+      "moby/moby",
+      72241,
+      "Go",
+      "镜像分层与 overlayfs，容器到底共享了什么"
+    ],
+    [
+      "Prometheus",
+      "prometheus/prometheus",
+      66931,
+      "Go",
+      "TSDB 的 head block 与倒排索引"
+    ],
+    [
+      "MinIO",
+      "minio/minio",
+      61281,
+      "Go",
+      "纠删码怎么把 4 块盘当 8 块用"
+    ],
+    [
+      "Vue",
+      "vuejs/core",
+      54827,
+      "TS",
+      "响应式从 Proxy 到 effect 依赖收集"
+    ],
+    [
+      "etcd",
+      "etcd-io/etcd",
+      52442,
+      "Go",
+      "Raft 日志复制与 WAL 落盘的先后顺序"
+    ],
+    [
+      "ClickHouse",
+      "ClickHouse/ClickHouse",
+      50736,
+      "C++",
+      "列存 + 向量化执行，为什么快一个数量级"
+    ],
+    [
+      "gRPC",
+      "grpc/grpc",
+      45415,
+      "C++",
+      "HTTP/2 多路复用与 C++ 异步栈"
+    ],
+    [
+      "LLVM",
+      "llvm/llvm-project",
+      41315,
+      "C++",
+      "从 IR 到机器码，pass 管理器怎么排顺序"
+    ],
+    [
+      "TiDB",
+      "pingcap/tidb",
+      40707,
+      "Go",
+      "TiKV 的 Percolator 事务，两阶段提交怎么跨 region"
+    ],
+    [
+      "LevelDB",
+      "google/leveldb",
+      39519,
+      "C++",
+      "LSM 树、MemTable 与 compaction 的取舍"
+    ],
+    [
+      "Kafka",
+      "apache/kafka",
+      34122,
+      "Java",
+      "分区副本 ISR，leader 挂了谁接班"
+    ],
+    [
+      "NGINX",
+      "nginx/nginx",
+      32043,
+      "C",
+      "epoll + 多进程，一个连接只在一个 worker 里"
+    ],
+    [
+      "Envoy",
+      "envoyproxy/envoy",
+      29175,
+      "C++",
+      "L7 代理的连接池与线程模型"
+    ],
+    [
+      "Flink",
+      "apache/flink",
+      26443,
+      "Java",
+      "checkpoint barrier 怎么在流里对齐"
+    ]
   ]
 }
