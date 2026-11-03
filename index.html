@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS 已拆，22 个项目在排队。搜不到就点单，24 小时上架。" />
+<link rel="canonical" href="https://opensource-visualized.example/index.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS 已拆，22 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="index.html#gallery">已拆</a>
+      <a href="index.html#roadmap">待拆清单</a>
+      <a href="index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap">
+  <header class="hero">
+    <h1>你想看的开源项目，<br /><em>这里基本都有</em>。</h1>
+    <p class="lede">
+      搜一下。搜不到就留个名字，排进下一批——不用自己开窗口问 AI，也不用翻三篇互相打架的博客。<br />
+      图打开就能看：能缩放、能拖拽，每个节点挂着 <code>file:line</code>，想深究再点过去。
+    </p>
+    <div class="search">
+      <input id="q" type="search" placeholder="搜项目名：jq、3FS、Redis、Raft…" autocomplete="off" />
+      <span class="search-hint">搜不到就点单 ↓</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>2</b><span>已拆</span></div>
+      <div class="stat"><b id="s-queue">22</b><span>排队中</span></div>
+      <div class="stat"><b>24h</b><span>点单到上架</span></div>
+      <div class="stat"><b>0 元</b><span>点单免费</span></div>
+    </div>
+  </header>
+
+  <div class="filters" id="filters">
+    <button class="chip on" data-f="all">全部</button>
+    <button class="chip" data-f="解释器">解释器</button>
+    <button class="chip" data-f="字节码">字节码</button>
+    <button class="chip" data-f="C">C</button>
+    <button class="chip" data-f="分布式">分布式</button>
+    <button class="chip" data-f="存储">存储</button>
+    <button class="chip" data-f="C++">C++</button>
+  </div>
+
+  <section class="grid" id="gallery">
+      <a class="card" href="projects/jq.html" data-search="jq jqlang/jq 解释器 字节码 c 你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。">
+        <div class="thumb">
+          <img src="assets/thumbs/jq.png" alt="jq 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">jq</span>
+            <span class="repo">jqlang/jq</span>
+            <span class="tags"><span class="tag">解释器</span><span class="tag">字节码</span><span class="tag">C</span></span>
+          </div>
+          <div class="tagline">你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。</div>
+          <ul class="ins"><li>没有协程也没有 yield：FORK 把 (pc, 栈顶) 拍进回溯栈，BACKTRACK 再从存档接着算——所以 .[] 能一个接一个吐值。</li><li>编译顺序是反的：builtin.jq 里 107 个 def 是 jq 源码，必须先绑进你的程序，再生成字节码。</li><li>最长的文件不是 VM：jv_dtoa.c 有 4276 行，只为让 1e1000 打印出来还是 1e1000。</li></ul>
+          <div class="foot">
+            <span><b>28,460</b> 行</span>
+            <span><b>7</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/3fs.html" data-search="3fs deepseek-ai/3fs 分布式 存储 c++ 写只打链头，读随便挑一台。deepseek 的训练数据就躺在这上面。">
+        <div class="thumb">
+          <img src="assets/thumbs/3fs.png" alt="3FS 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">3FS</span>
+            <span class="repo">deepseek-ai/3FS</span>
+            <span class="tags"><span class="tag">分布式</span><span class="tag">存储</span><span class="tag">C++</span></span>
+          </div>
+          <div class="tagline">写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。</div>
+          <ul class="ins"><li>写只打链头，head 往下 forward，commit 再回传；读可以打链上任意一台——读带宽随副本数线性涨。</li><li>元数据服务完全无状态，inode / dentry 全在 FoundationDB 里，挂了换一台接着干。</li><li>FUSE 队列一把自旋锁只能跑 40 万次 4KiB 读/秒，所以它在守护进程里塞了个共享内存 + RDMA 的原生客户端。</li></ul>
+          <div class="foot">
+            <span><b>122,058</b> 行</span>
+            <span><b>10</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+  </section>
+
+  <section class="roadmap" id="roadmap">
+    <div class="section-title" style="margin-top:56px">
+      <h2>待拆清单</h2>
+      <p>22 个热门项目 · 点任意一行排进队列 · 攒够 3 人就开工</p>
+    </div>
+    <div class="list">
+      <div class="row-i" data-ask="react">
+        <div><div class="rname">React</div><div class="rrepo">facebook/react</div></div>
+        <div class="rhook">Fiber 把渲染切成能中断的小块，调度器怎么抢回主线程</div>
+        <div class="rstars">251.9k ★</div>
+        <div class="rlang">JS</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="go">
+        <div><div class="rname">Go</div><div class="rrepo">golang/go</div></div>
+        <div class="rhook">一个 goroutine 阻塞时，GMP 调度器在干什么</div>
+        <div class="rstars">139.6k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="kubernetes">
+        <div><div class="rname">Kubernetes</div><div class="rrepo">kubernetes/kubernetes</div></div>
+        <div class="rhook">kubectl apply 到容器起来，中间过了几道 informer</div>
+        <div class="rstars">128.6k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="node.js">
+        <div><div class="rname">Node.js</div><div class="rrepo">nodejs/node</div></div>
+        <div class="rhook">libuv 事件循环的六个阶段，顺序错一步就是 bug</div>
+        <div class="rstars">123.2k ★</div>
+        <div class="rlang">JS</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="rust">
+        <div><div class="rname">Rust</div><div class="rrepo">rust-lang/rust</div></div>
+        <div class="rhook">借用检查在 MIR 层怎么做，NLL 为什么能放行</div>
+        <div class="rstars">121.0k ★</div>
+        <div class="rlang">Rust</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="deno">
+        <div><div class="rname">Deno</div><div class="rrepo">denoland/deno</div></div>
+        <div class="rhook">V8 isolate + Rust op 层，权限系统卡在哪一层</div>
+        <div class="rstars">108.8k ★</div>
+        <div class="rlang">Rust</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="pytorch">
+        <div><div class="rname">PyTorch</div><div class="rrepo">pytorch/pytorch</div></div>
+        <div class="rhook">autograd 的图什么时候建、什么时候释放</div>
+        <div class="rstars">105.1k ★</div>
+        <div class="rlang">Py</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="redis">
+        <div><div class="rname">Redis</div><div class="rrepo">redis/redis</div></div>
+        <div class="rhook">单线程事件循环凭什么撑十万 QPS</div>
+        <div class="rstars">77.2k ★</div>
+        <div class="rlang">C</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="moby">
+        <div><div class="rname">Moby</div><div class="rrepo">moby/moby</div></div>
+        <div class="rhook">镜像分层与 overlayfs，容器到底共享了什么</div>
+        <div class="rstars">72.2k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="prometheus">
+        <div><div class="rname">Prometheus</div><div class="rrepo">prometheus/prometheus</div></div>
+        <div class="rhook">TSDB 的 head block 与倒排索引</div>
+        <div class="rstars">66.9k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="minio">
+        <div><div class="rname">MinIO</div><div class="rrepo">minio/minio</div></div>
+        <div class="rhook">纠删码怎么把 4 块盘当 8 块用</div>
+        <div class="rstars">61.3k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="vue">
+        <div><div class="rname">Vue</div><div class="rrepo">vuejs/core</div></div>
+        <div class="rhook">响应式从 Proxy 到 effect 依赖收集</div>
+        <div class="rstars">54.8k ★</div>
+        <div class="rlang">TS</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="etcd">
+        <div><div class="rname">etcd</div><div class="rrepo">etcd-io/etcd</div></div>
+        <div class="rhook">Raft 日志复制与 WAL 落盘的先后顺序</div>
+        <div class="rstars">52.4k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="clickhouse">
+        <div><div class="rname">ClickHouse</div><div class="rrepo">ClickHouse/ClickHouse</div></div>
+        <div class="rhook">列存 + 向量化执行，为什么快一个数量级</div>
+        <div class="rstars">50.7k ★</div>
+        <div class="rlang">C++</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="grpc">
+        <div><div class="rname">gRPC</div><div class="rrepo">grpc/grpc</div></div>
+        <div class="rhook">HTTP/2 多路复用与 C++ 异步栈</div>
+        <div class="rstars">45.4k ★</div>
+        <div class="rlang">C++</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="llvm">
+        <div><div class="rname">LLVM</div><div class="rrepo">llvm/llvm-project</div></div>
+        <div class="rhook">从 IR 到机器码，pass 管理器怎么排顺序</div>
+        <div class="rstars">41.3k ★</div>
+        <div class="rlang">C++</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="tidb">
+        <div><div class="rname">TiDB</div><div class="rrepo">pingcap/tidb</div></div>
+        <div class="rhook">TiKV 的 Percolator 事务，两阶段提交怎么跨 region</div>
+        <div class="rstars">40.7k ★</div>
+        <div class="rlang">Go</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="leveldb">
+        <div><div class="rname">LevelDB</div><div class="rrepo">google/leveldb</div></div>
+        <div class="rhook">LSM 树、MemTable 与 compaction 的取舍</div>
+        <div class="rstars">39.5k ★</div>
+        <div class="rlang">C++</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="kafka">
+        <div><div class="rname">Kafka</div><div class="rrepo">apache/kafka</div></div>
+        <div class="rhook">分区副本 ISR，leader 挂了谁接班</div>
+        <div class="rstars">34.1k ★</div>
+        <div class="rlang">Java</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="nginx">
+        <div><div class="rname">NGINX</div><div class="rrepo">nginx/nginx</div></div>
+        <div class="rhook">epoll + 多进程，一个连接只在一个 worker 里</div>
+        <div class="rstars">32.0k ★</div>
+        <div class="rlang">C</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="envoy">
+        <div><div class="rname">Envoy</div><div class="rrepo">envoyproxy/envoy</div></div>
+        <div class="rhook">L7 代理的连接池与线程模型</div>
+        <div class="rstars">29.2k ★</div>
+        <div class="rlang">C++</div>
+        <div class="rgo">点单 →</div>
+      </div>
+      <div class="row-i" data-ask="flink">
+        <div><div class="rname">Flink</div><div class="rrepo">apache/flink</div></div>
+        <div class="rhook">checkpoint barrier 怎么在流里对齐</div>
+        <div class="rstars">26.4k ★</div>
+        <div class="rlang">Java</div>
+        <div class="rgo">点单 →</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-title" id="how">
+    <h2>怎么用</h2>
+    <p>三步，不用注册，不用装东西</p>
+  </div>
+  <div class="steps">
+    <div class="step"><b>01 · 搜</b><p>先搜项目名。搜不到不代表没有，可能只是还没排到——直接往下点单，不用换站。</p></div>
+    <div class="step"><b>02 · 看</b><p>每个项目一个独立页面，图能缩放、能拖拽，深色模式跟着系统走。每条结论后面挂着 file:line。</p></div>
+    <div class="step"><b>03 · 点单</b><p>留个项目名，同一个项目攒够 3 个人就开工，24 小时上架。免费，也不用注册。</p></div>
+  </div>
+
+  <section class="ask" id="ask">
+    <div>
+      <h3>想看的项目不在这里？</h3>
+      <p>留个项目名就行。同一个项目攒够 3 个人就开工，24 小时上架——不用注册，也不用留联系方式。</p>
+    </div>
+    <form id="ask-form">
+      <input id="ask-input" placeholder="项目名或 GitHub 链接，比如 redis、apache/kafka" autocomplete="off" />
+      <button type="submit">排上 →</button>
+    </form>
+    <div class="ask-status" id="ask-status"></div>
+    <div class="queue" id="queue"></div>
+  </section>
+
+  <section class="cta">
+    <div>
+      <h3>要拆的不是开源项目？</h3>
+      <p>内部系统也能拆。给一份仓库只读权限，48 小时出一张能点的图，外加三条「文档里没写、但代码里跑着」的结论。</p>
+    </div>
+    <a class="cta-btn" href="mailto:you@example.com">聊聊 →</a>
+  </section>
+
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 2 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+<script>
+const cards = [...document.querySelectorAll(".card")];
+const state = { f: "all", q: "" };
+const KEY = "teardown.orders.v1";
+const SEED = [{"name":"react","n":5},{"name":"go","n":3},{"name":"kubernetes","n":2}];
+
+function apply(){
+  let shown = 0;
+  cards.forEach(c => {
+    const okTag = state.f === "all" || (c.dataset.tags || "").includes(state.f) || c.textContent.includes(state.f);
+    const okQ = !state.q || c.dataset.search.includes(state.q.toLowerCase());
+    const on = okTag && okQ;
+    c.style.display = on ? "" : "none";
+    if (on) shown++;
+  });
+  document.getElementById("gallery").style.display = shown ? "" : "none";
+}
+
+document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
+  document.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+  c.classList.add("on");
+  state.f = c.dataset.f;
+  apply();
+});
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim(); apply(); });
+
+function readOrders(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }
+function writeOrders(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }
+function renderQueue(){
+  const map = new Map();
+  SEED.forEach(s => map.set(s.name, { ...s }));
+  readOrders().forEach(o => {
+    if (map.has(o.name)) map.get(o.name).n++;
+    else map.set(o.name, { name: o.name, n: 1 });
+  });
+  const arr = [...map.values()].sort((a, b) => b.n - a.n);
+  document.getElementById("queue").innerHTML = arr.length
+    ? arr.map(x => '<span class="qchip"><b>' + x.name + '</b><i>' + x.n + ' 人</i></span>').join("")
+    : '<span class="qchip qempty">还没有人点单，你是第一个</span>';
+  const sq = document.getElementById("s-queue"); if (sq) sq.textContent = arr.length;
+}
+document.getElementById("ask-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const input = document.getElementById("ask-input");
+  const raw = input.value.trim();
+  if (!raw) return;
+  const name = raw.replace(/^https?:\/\/[^/]+\//i, "").replace(/\.git$/i, "").replace(/\/+$/, "").toLowerCase().slice(0, 40);
+  const orders = readOrders(); orders.push({ name, t: Date.now() }); writeOrders(orders);
+  input.value = ""; renderQueue();
+  const st = document.getElementById("ask-status");
+  st.textContent = "已排上：" + name; st.classList.add("on");
+  setTimeout(() => st.classList.remove("on"), 2600);
+});
+document.querySelectorAll("[data-ask]").forEach(n => n.addEventListener("click", () => {
+  const a = document.getElementById("ask-input");
+  a.value = n.dataset.ask;
+  document.getElementById("ask").scrollIntoView({ behavior: "smooth", block: "center" });
+  a.focus();
+}));
+renderQueue();
+</script>
+</body>
+</html>

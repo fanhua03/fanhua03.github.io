@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3FS 架构图｜写一条链，读任意副本 · 开源项目可视化拆解</title>
+<meta name="description" content="写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
+<link rel="canonical" href="https://opensource-visualized.example/projects/3fs.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="3FS 架构图｜写一条链，读任意副本 · 开源项目可视化拆解" />
+<meta property="og:description" content="写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css" />
+<meta property="og:image" content="https://opensource-visualized.example/assets/thumbs/3fs.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"3FS 架构图｜写一条链，读任意副本","description":"写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"3FS","codeRepository":"https://github.com/deepseek-ai/3FS"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://opensource-visualized.example"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>3FS</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">3FS</span> 架构图｜写一条链，读任意副本</h1>
+    <p class="sub">写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/3FS" target="_blank" rel="noopener">deepseek-ai/3FS</a></span>
+      <span><b>语言</b> C++</span>
+      <span><b>规模</b> 122,058 行</span>
+      <span><b>证据</b> 10 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/3fs.html" title="3FS 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/3fs.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>写只打链头，head 往下 forward，commit 再回传；读可以打链上任意一台——读带宽随副本数线性涨。</li><li>元数据服务完全无状态，inode / dentry 全在 FoundationDB 里，挂了换一台接着干。</li><li>FUSE 队列一把自旋锁只能跑 40 万次 4KiB 读/秒，所以它在守护进程里塞了个共享内存 + RDMA 的原生客户端。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/client/storage/StorageClientImpl.cc#L1805" rel="noopener" target="_blank">src/client/storage/StorageClientImpl.cc:1805–1812</a></code><span>写请求固定 HeadTarget</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/storage/service/ReliableForwarding.h#L42" rel="noopener" target="_blank">src/storage/service/ReliableForwarding.h:42</a></code><span>head 往下转发</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/storage/store/ChunkReplica.h#L29" rel="noopener" target="_blank">src/storage/store/ChunkReplica.h:29–30</a></code><span>commit 版本号</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/meta/service/MetaOperator.h#L47" rel="noopener" target="_blank">src/meta/service/MetaOperator.h:47</a></code><span>元数据操作</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/fdb/FDBTransaction.h#L14" rel="noopener" target="_blank">src/fdb/FDBTransaction.h:14</a></code><span>FoundationDB 事务</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/lib/api/hf3fs_usrbio.h#L71" rel="noopener" target="_blank">src/lib/api/hf3fs_usrbio.h:71</a></code><span>iovcreate 注册内存</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/lib/api/UsrbIo.cc#L616" rel="noopener" target="_blank">src/lib/api/UsrbIo.cc:616–683</a></code><span>prep / submit / wait</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/src/mgmtd/MgmtdServer.h#L14" rel="noopener" target="_blank">src/mgmtd/MgmtdServer.h:14</a></code><span>集群管理器</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/docs/design_notes.md#L11" rel="noopener" target="_blank">docs/design_notes.md:11</a></code><span>CRAQ 写链读任意</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/docs/design_notes.md#L63" rel="noopener" target="_blank">docs/design_notes.md:63</a></code><span>无状态元数据</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="jq.html"><span class="lbl">← 上一个</span>jq</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 2 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>
