@@ -318,7 +318,25 @@ ${pager}
 }
 
 /* ---------- write ---------- */
+const notFound = fill(head({
+  title: `404 · ${DATA.site.name}`,
+  desc: "这个地址没有内容。回首页看看已拆的项目，或者点单。",
+  canonical: `${SITE}/404.html`,
+}), "") + fill(topbar(""), "") + `
+<main class="wrap narrow" style="padding:110px 0 90px;text-align:center">
+  <div style="font-size:72px;font-weight:800;letter-spacing:-4px;line-height:1;background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent">404</div>
+  <p style="color:var(--muted);font-size:15.5px;line-height:1.8;margin:20px auto 30px;max-width:420px">
+    这个地址没有东西。可能是链接少了斜杠，或者这个项目还没拆。
+  </p>
+  <a class="cta-btn" href="{BASE}index.html">回首页看看 →</a>
+  <p style="margin-top:26px"><a href="{BASE}index.html#ask" style="color:var(--dim);font-size:13px">想看的项目不在这里？点单</a></p>
+</main>
+</body>
+</html>
+`;
+
 writeFileSync(join(ROOT, "index.html"), indexHtml);
+writeFileSync(join(ROOT, "404.html"), notFound);
 if (!existsSync(join(ROOT, "projects"))) mkdirSync(join(ROOT, "projects"));
 done.forEach((p, i) => {
   const page = projectPage(p, done[i - 1], done[i + 1]);
