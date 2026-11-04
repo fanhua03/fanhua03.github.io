@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头 · 开源项目可视化拆解</title>
+<meta name="description" content="官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-V3 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepseek-v3.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头 · 开源项目可视化拆解" />
+<meta property="og:description" content="官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-V3 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepseek-v3.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头","description":"官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-V3 inference","codeRepository":"https://github.com/deepseek-ai/DeepSeek-V3"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek-V3 inference</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeek-V3 inference</span> 架构图｜576 个数撑起 128 个头</h1>
+    <p class="sub">官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-V3" target="_blank" rel="noopener">deepseek-ai/DeepSeek-V3</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 1,397 行</span>
+      <span><b>证据</b> 6 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepseek-v3.html" title="DeepSeek-V3 inference 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepseek-v3.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>kv_cache 只存 kv_lora_rank=512，pe_cache 只存 qk_rope_head_dim=64，都是 bf16；128 个头 ×(128 nope+128 v)=32768 维的 K/V 从不落盘，576/32768 ≈ 1.76%。</li><li>「吸收」发生在打分之前：q_nope 先乘 wkv_b 的 K 半把 128 维折进 512 维 latent，于是打分只剩两个 einsum；输出侧再乘 V 半还原 128 维。</li><li>路由是两道闸：256 个专家分 8 组，按组内 top-2 之和选出 4 组（其余置 -inf），再在 128 个候选里 top-8；权重取未加 bias 的 sigmoid 原值，归一化后乘 route_scale=2.5。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/9b4e9788e4a3a731f7567338ed15d3ec549ce03b/inference/model.py#L443" rel="noopener" target="_blank">inference/model.py:443–444</a></code><span>kv_cache / pe_cache 的形状</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/9b4e9788e4a3a731f7567338ed15d3ec549ce03b/inference/model.py#L481" rel="noopener" target="_blank">inference/model.py:481–490</a></code><span>吸收：把 128 维折进 512</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/9b4e9788e4a3a731f7567338ed15d3ec549ce03b/inference/model.py#L494" rel="noopener" target="_blank">inference/model.py:494–496</a></code><span>打分只剩两个 einsum</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/9b4e9788e4a3a731f7567338ed15d3ec549ce03b/inference/model.py#L427" rel="noopener" target="_blank">inference/model.py:427–431</a></code><span>MoE 两道路由</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/9b4e9788e4a3a731f7567338ed15d3ec549ce03b/inference/model.py#L576" rel="noopener" target="_blank">inference/model.py:576–598</a></code><span>Gate 打分与 top-k</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3/blob/9b4e9788e4a3a731f7567338ed15d3ec549ce03b/inference/model.py#L681" rel="noopener" target="_blank">inference/model.py:681–693</a></code><span>专家计算与 all_reduce</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="flashmla.html"><span class="lbl">← 上一个</span>FlashMLA</a>
+    <a href="deepep.html"><span class="lbl">下一个 →</span>DeepEP</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 9 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

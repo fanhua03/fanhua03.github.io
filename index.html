@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=a858b929" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>3</b><span>已拆</span></div>
+      <div class="stat"><b>9</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -56,6 +56,24 @@
     <button class="chip" data-f="C++">C++</button>
     <button class="chip" data-f="数据库">数据库</button>
     <button class="chip" data-f="事件循环">事件循环</button>
+    <button class="chip" data-f="CUDA">CUDA</button>
+    <button class="chip" data-f="MLA">MLA</button>
+    <button class="chip" data-f="kernel">kernel</button>
+    <button class="chip" data-f="KV cache">KV cache</button>
+    <button class="chip" data-f="MoE">MoE</button>
+    <button class="chip" data-f="推理">推理</button>
+    <button class="chip" data-f="MoE 通信">MoE 通信</button>
+    <button class="chip" data-f="NVLink/RDMA">NVLink/RDMA</button>
+    <button class="chip" data-f="JIT 内核">JIT 内核</button>
+    <button class="chip" data-f="FP8 GEMM">FP8 GEMM</button>
+    <button class="chip" data-f="JIT 编译">JIT 编译</button>
+    <button class="chip" data-f="SM100 内核">SM100 内核</button>
+    <button class="chip" data-f="数据框架">数据框架</button>
+    <button class="chip" data-f="DuckDB">DuckDB</button>
+    <button class="chip" data-f="3FS">3FS</button>
+    <button class="chip" data-f="多模态">多模态</button>
+    <button class="chip" data-f="OCR">OCR</button>
+    <button class="chip" data-f="视觉编码器">视觉编码器</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -115,6 +133,126 @@
           <div class="foot">
             <span><b>211,728</b> 行</span>
             <span><b>10</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/flashmla.html" data-search="flashmla deepseek-ai/flashmla cuda mla kernel kv cache deepseek 的 mla 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 kv 的 decode 跑满。">
+        <div class="thumb">
+          <img src="assets/thumbs/flashmla.png" alt="FlashMLA 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">FlashMLA</span>
+            <span class="repo">deepseek-ai/FlashMLA</span>
+            <span class="tags"><span class="tag">CUDA</span><span class="tag">MLA</span><span class="tag">kernel</span><span class="tag">KV cache</span></span>
+          </div>
+          <div class="tagline">DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。</div>
+          <ul class="ins"><li>MMA 的 M 维固定 64 个头、N 维 64 个 top-k token；384 个线程里 128 个算 exp、128 个反量化、1 个发 tcgen05 MMA、1 个搬原始行、1 个算 TMA 坐标。</li><li>分页 KV 的块号和块内偏移在 kernel 里现算，拼成 TMA 坐标后每次 gather4 搬 4 行，64 个 token 用 16 次发完；非法索引填 -1 让 TMA 自己跳过。</li><li>每 token 只占 528 B：512 维全部量化成 fp8 e4m3（连 64 维 RoPE 一起，没有 bf16 尾巴）+ 16 字节 ue8m0 scale（每 32 维一个）；fp4 版是 256 B。</li></ul>
+          <div class="foot">
+            <span><b>19,093</b> 行</span>
+            <span><b>8</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepseek-v3.html" data-search="deepseek-v3 inference deepseek-ai/deepseek-v3 moe mla 推理 官方推理参考实现：一次 forward 里 mla 的吸收与 moe 的两道路由闸怎么接上。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepseek-v3.png" alt="DeepSeek-V3 inference 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-V3 inference</span>
+            <span class="repo">deepseek-ai/DeepSeek-V3</span>
+            <span class="tags"><span class="tag">MoE</span><span class="tag">MLA</span><span class="tag">推理</span></span>
+          </div>
+          <div class="tagline">官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。</div>
+          <ul class="ins"><li>kv_cache 只存 kv_lora_rank=512，pe_cache 只存 qk_rope_head_dim=64，都是 bf16；128 个头 ×(128 nope+128 v)=32768 维的 K/V 从不落盘，576/32768 ≈ 1.76%。</li><li>「吸收」发生在打分之前：q_nope 先乘 wkv_b 的 K 半把 128 维折进 512 维 latent，于是打分只剩两个 einsum；输出侧再乘 V 半还原 128 维。</li><li>路由是两道闸：256 个专家分 8 组，按组内 top-2 之和选出 4 组（其余置 -inf），再在 128 个候选里 top-8；权重取未加 bias 的 sigmoid 原值，归一化后乘 route_scale=2.5。</li></ul>
+          <div class="foot">
+            <span><b>1,397</b> 行</span>
+            <span><b>6</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepep.html" data-search="deepep deepseek-ai/deepep moe 通信 nvlink/rdma jit 内核 deepseek 的专家并行通信库：jit 特化的 dispatch/combine 内核，同机走 nvlink 对称指针，跨机走 rdma put。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepep.png" alt="DeepEP 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepEP</span>
+            <span class="repo">deepseek-ai/DeepEP</span>
+            <span class="tags"><span class="tag">MoE 通信</span><span class="tag">NVLink/RDMA</span><span class="tag">JIT 内核</span></span>
+          </div>
+          <div class="tagline">DeepSeek 的专家并行通信库：JIT 特化的 dispatch/combine 内核，同机走 NVLink 对称指针，跨机走 RDMA put。</div>
+          <ul class="ins"><li>SM 数与 QP 数由带宽模型反推：direct 模式 9 条 QP，hybrid 模式 num_sms×16+1。</li><li>notify warp 用一条 64 位原子把计数与到达数合并 red_add，数据 warp 不参与统计。</li><li>同机取对端对称地址直接 TMA store，跨机才落 send buffer 再 gin.put。</li></ul>
+          <div class="foot">
+            <span><b>17,910</b> 行</span>
+            <span><b>8</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepgemm.html" data-search="deepgemm deepseek-ai/deepgemm fp8 gemm jit 编译 sm100 内核 deepseek 的 fp8/fp4 gemm 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + tma + 持久调度。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepgemm.png" alt="DeepGEMM 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepGEMM</span>
+            <span class="repo">deepseek-ai/DeepGEMM</span>
+            <span class="tags"><span class="tag">FP8 GEMM</span><span class="tag">JIT 编译</span><span class="tag">SM100 内核</span></span>
+          </div>
+          <div class="tagline">DeepSeek 的 FP8/FP4 GEMM 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + TMA + 持久调度。</div>
+          <ul class="ins"><li>30 个模板实参把 block、stage、cluster、线程数、dtype 焊进 cubin，运行时只剩 launch。</li><li>stage 数由 232448 B 共享内存反推（上限 32）；tile 先在 tmem 列数 ≤512 处被筛掉。</li><li>grid 只有 num_sms 个 block，靠 next_block=(++iter)×kNumSMs+blockIdx.x 持久吃 tile。</li></ul>
+          <div class="foot">
+            <span><b>33,867</b> 行</span>
+            <span><b>8</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/smallpond.html" data-search="smallpond deepseek-ai/smallpond 数据框架 duckdb 3fs deepseek 的轻量数据框架：逻辑计划 → 分区任务组 → 3fs 上的文件队列 → 每 task 一个 duckdb 连接，全程无长驻服务。">
+        <div class="thumb">
+          <img src="assets/thumbs/smallpond.png" alt="smallpond 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">smallpond</span>
+            <span class="repo">deepseek-ai/smallpond</span>
+            <span class="tags"><span class="tag">数据框架</span><span class="tag">DuckDB</span><span class="tag">3FS</span></span>
+          </div>
+          <div class="tagline">DeepSeek 的轻量数据框架：逻辑计划 → 分区任务组 → 3FS 上的文件队列 → 每 task 一个 DuckDB 连接，全程无长驻服务。</div>
+          <ul class="ins"><li>Planner 把作业切成 producer/consumer 任务组：producer 数 = min(max, 2×executor×ceil(cpu/cpu_limit))，consumer 只合并同分区，不搬数据。</li><li>没有常驻服务：driver 只有 ray/scheduler/executor 三种模式，队列就是 data_root 下 enqueued/ 里的 zstd+pickle 文件，pop 靠 rename。</li><li>DuckDB 是每个 task 私有的 :memory: 连接：输入建成 read_parquet 视图，输出 COPY ... (FORMAT PARQUET, ZSTD, PER_THREAD_OUTPUT)。</li></ul>
+          <div class="foot">
+            <span><b>15,996</b> 行</span>
+            <span><b>8</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dsocr.html" data-search="deepseek-ocr deepseek-ai/deepseek-ocr 多模态 ocr 视觉编码器 动态切块 → sam+clip 编码并做 16× 下采样 → 273 个视觉槽位 → moe 解码器输出带坐标的 markdown。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsocr.png" alt="DeepSeek-OCR 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-OCR</span>
+            <span class="repo">deepseek-ai/DeepSeek-OCR</span>
+            <span class="tags"><span class="tag">多模态</span><span class="tag">OCR</span><span class="tag">视觉编码器</span></span>
+          </div>
+          <div class="tagline">动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。</div>
+          <ul class="ins"><li>16× 压缩发生在编码器内部：SAM 的 16 像素 patch 把 1024² 变 64×64=4096 个位置，neck 后两次 stride-2 卷积压到 16×16=256 个 token。</li><li>一页的视觉开销固定是 273 个槽位：16×16 网格每行补 1 个 newline、末尾补 1 个 view_separator，即 16×17+1。</li><li>token 数只跟像素档位走、不跟字数走：512→64、640→100、1024→256、1280→400；版面坐标靠 &lt;|ref|&gt;…&lt;|det|&gt;[x1,y1,x2,y2] 从文本里还原。</li></ul>
+          <div class="foot">
+            <span><b>3,198</b> 行</span>
+            <span><b>7</b> 处 file:line</span>
             <span class="go">打开 →</span>
           </div>
         </div>
@@ -310,7 +448,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
-    <div>已拆 3 张 · 纯静态，无后端</div>
+    <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

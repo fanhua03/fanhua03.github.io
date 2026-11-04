@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepEP 架构图｜把 MoE all-to-all 压到微秒级 · 开源项目可视化拆解</title>
+<meta name="description" content="DeepSeek 的专家并行通信库：JIT 特化的 dispatch/combine 内核，同机走 NVLink 对称指针，跨机走 RDMA put。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepEP 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepep.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepEP 架构图｜把 MoE all-to-all 压到微秒级 · 开源项目可视化拆解" />
+<meta property="og:description" content="DeepSeek 的专家并行通信库：JIT 特化的 dispatch/combine 内核，同机走 NVLink 对称指针，跨机走 RDMA put。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepEP 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepep.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepEP 架构图｜把 MoE all-to-all 压到微秒级","description":"DeepSeek 的专家并行通信库：JIT 特化的 dispatch/combine 内核，同机走 NVLink 对称指针，跨机走 RDMA put。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepEP","codeRepository":"https://github.com/deepseek-ai/DeepEP"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepEP</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepEP</span> 架构图｜把 MoE all-to-all 压到微秒级</h1>
+    <p class="sub">DeepSeek 的专家并行通信库：JIT 特化的 dispatch/combine 内核，同机走 NVLink 对称指针，跨机走 RDMA put。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepEP" target="_blank" rel="noopener">deepseek-ai/DeepEP</a></span>
+      <span><b>语言</b> Python / C++ / CUDA</span>
+      <span><b>规模</b> 17,910 行</span>
+      <span><b>证据</b> 8 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepep.html" title="DeepEP 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepep.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>SM 数与 QP 数由带宽模型反推：direct 模式 9 条 QP，hybrid 模式 num_sms×16+1。</li><li>notify warp 用一条 64 位原子把计数与到达数合并 red_add，数据 warp 不参与统计。</li><li>同机取对端对称地址直接 TMA store，跨机才落 send buffer 再 gin.put。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/buffers/ep.py#L562" rel="noopener" target="_blank">deep_ep/buffers/ep.py:562</a></code><span>dispatch 入口</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/buffers/ep.py#L431" rel="noopener" target="_blank">deep_ep/buffers/ep.py:431</a></code><span>SM 数带宽模型</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/buffers/ep.py#L554" rel="noopener" target="_blank">deep_ep/buffers/ep.py:554</a></code><span>QP 数</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/csrc/kernels/ep/dispatch.hpp#L115" rel="noopener" target="_blank">csrc/kernels/ep/dispatch.hpp:115</a></code><span>jit-&gt;compile</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/include/deep_ep/impls/ep/dispatch.cuh#L113" rel="noopener" target="_blank">deep_ep/include/deep_ep/impls/ep/dispatch.cuh:113</a></code><span>64 位合并原子</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/include/deep_ep/impls/ep/dispatch.cuh#L373" rel="noopener" target="_blank">deep_ep/include/deep_ep/impls/ep/dispatch.cuh:373</a></code><span>NVLink TMA store</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/include/deep_ep/comm/handle.cuh#L208" rel="noopener" target="_blank">deep_ep/include/deep_ep/comm/handle.cuh:208</a></code><span>gin.put</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP/blob/f6aa38fe06cd4a0489e7730365d4e0114970a2f3/deep_ep/include/deep_ep/impls/ep/combine.cuh#L29" rel="noopener" target="_blank">deep_ep/include/deep_ep/impls/ep/combine.cuh:29</a></code><span>combine_impl</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepseek-v3.html"><span class="lbl">← 上一个</span>DeepSeek-V3 inference</a>
+    <a href="deepgemm.html"><span class="lbl">下一个 →</span>DeepGEMM</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 9 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

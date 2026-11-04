@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k · 开源项目可视化拆解</title>
+<meta name="description" content="DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/flashmla.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k · 开源项目可视化拆解" />
+<meta property="og:description" content="DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/flashmla.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k","description":"DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"FlashMLA","codeRepository":"https://github.com/deepseek-ai/FlashMLA"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>FlashMLA</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">FlashMLA</span> 架构图｜一个 CTA 吃完 2048 个 top-k</h1>
+    <p class="sub">DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/FlashMLA" target="_blank" rel="noopener">deepseek-ai/FlashMLA</a></span>
+      <span><b>语言</b> CUDA C++ / Python</span>
+      <span><b>规模</b> 19,093 行</span>
+      <span><b>证据</b> 8 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/flashmla.html" title="FlashMLA 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/flashmla.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>MMA 的 M 维固定 64 个头、N 维 64 个 top-k token；384 个线程里 128 个算 exp、128 个反量化、1 个发 tcgen05 MMA、1 个搬原始行、1 个算 TMA 坐标。</li><li>分页 KV 的块号和块内偏移在 kernel 里现算，拼成 TMA 坐标后每次 gather4 搬 4 行，64 个 token 用 16 次发完；非法索引填 -1 让 TMA 自己跳过。</li><li>每 token 只占 528 B：512 维全部量化成 fp8 e4m3（连 64 维 RoPE 一起，没有 bf16 尾巴）+ 16 字节 ue8m0 scale（每 32 维一个）；fp4 版是 256 B。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/flash_mla/flash_mla_interface.py#L55" rel="noopener" target="_blank">flash_mla/flash_mla_interface.py:55–83</a></code><span>Python 入口</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/params.h#L118" rel="noopener" target="_blank">csrc/params.h:118–133</a></code><span>kernel 参数</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/kv_cache_format.h#L5" rel="noopener" target="_blank">csrc/cuda_kernels/kv_cache_format.h:5–19</a></code><span>KV 的 fp8 布局</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/api/sparse_decode.cpp#L63" rel="noopener" target="_blank">csrc/api/sparse_decode.cpp:63–80</a></code><span>dispatch</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/sm100/decode/sparse/head64/config.h#L33" rel="noopener" target="_blank">csrc/cuda_kernels/sm100/decode/sparse/head64/config.h:33–63</a></code><span>warp 分工常量</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh#L470" rel="noopener" target="_blank">csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh:470–502</a></code><span>gather4 搬 KV</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh#L517" rel="noopener" target="_blank">csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh:517–529</a></code><span>MMA</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/smxx/decode/combine/combine.cu#L43" rel="noopener" target="_blank">csrc/cuda_kernels/smxx/decode/combine/combine.cu:43–53</a></code><span>split-KV 汇总</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="redis.html"><span class="lbl">← 上一个</span>Redis</a>
+    <a href="deepseek-v3.html"><span class="lbl">下一个 →</span>DeepSeek-V3 inference</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 9 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

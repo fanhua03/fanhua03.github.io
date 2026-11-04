@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token · 开源项目可视化拆解</title>
+<meta name="description" content="动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/dsocr.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token · 开源项目可视化拆解" />
+<meta property="og:description" content="动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsocr.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token","description":"动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-OCR","codeRepository":"https://github.com/deepseek-ai/DeepSeek-OCR"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek-OCR</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeek-OCR</span> 架构图｜整页文档压成 273 个视觉 token</h1>
+    <p class="sub">动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-OCR" target="_blank" rel="noopener">deepseek-ai/DeepSeek-OCR</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 3,198 行</span>
+      <span><b>证据</b> 7 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/dsocr.html" title="DeepSeek-OCR 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/dsocr.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>16× 压缩发生在编码器内部：SAM 的 16 像素 patch 把 1024² 变 64×64=4096 个位置，neck 后两次 stride-2 卷积压到 16×16=256 个 token。</li><li>一页的视觉开销固定是 273 个槽位：16×16 网格每行补 1 个 newline、末尾补 1 个 view_separator，即 16×17+1。</li><li>token 数只跟像素档位走、不跟字数走：512→64、640→100、1024→256、1280→400；版面坐标靠 &lt;|ref|&gt;…&lt;|det|&gt;[x1,y1,x2,y2] 从文本里还原。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/process/image_process.py#L45" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/process/image_process.py:45–83</a></code><span>dynamic_preprocess 切块</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/sam_vary_sdpa.py#L499" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/sam_vary_sdpa.py:499–515</a></code><span>patch 16 / 图像 1024</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/sam_vary_sdpa.py#L166" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/sam_vary_sdpa.py:166–183</a></code><span>两次 stride-2</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/clip_sdpa.py#L131" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/clip_sdpa.py:131–156</a></code><span>CLIP 吃 SAM 的 patch</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepseek_ocr.py#L415" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepseek_ocr.py:415–438</a></code><span>newline + separator → 273</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepseek_ocr.py#L508" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepseek_ocr.py:508–528</a></code><span>merge_multimodal_embeddings</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR/blob/09eaf526153e7a01ed16c9dea8c96282aaea29c0/DeepSeek-OCR-master/DeepSeek-OCR-vllm/run_dpsk_ocr_pdf.py#L32" rel="noopener" target="_blank">DeepSeek-OCR-master/DeepSeek-OCR-vllm/run_dpsk_ocr_pdf.py:32–44</a></code><span>vLLM 采样参数</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="smallpond.html"><span class="lbl">← 上一个</span>smallpond</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 9 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepGEMM 架构图｜JIT 把 FP8 GEMM 焊成专用内核 · 开源项目可视化拆解</title>
+<meta name="description" content="DeepSeek 的 FP8/FP4 GEMM 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + TMA + 持久调度。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepGEMM 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepgemm.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepGEMM 架构图｜JIT 把 FP8 GEMM 焊成专用内核 · 开源项目可视化拆解" />
+<meta property="og:description" content="DeepSeek 的 FP8/FP4 GEMM 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + TMA + 持久调度。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepGEMM 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepgemm.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepGEMM 架构图｜JIT 把 FP8 GEMM 焊成专用内核","description":"DeepSeek 的 FP8/FP4 GEMM 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + TMA + 持久调度。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepGEMM","codeRepository":"https://github.com/deepseek-ai/DeepGEMM"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepGEMM</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepGEMM</span> 架构图｜JIT 把 FP8 GEMM 焊成专用内核</h1>
+    <p class="sub">DeepSeek 的 FP8/FP4 GEMM 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + TMA + 持久调度。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepGEMM" target="_blank" rel="noopener">deepseek-ai/DeepGEMM</a></span>
+      <span><b>语言</b> Python / C++ / CUDA</span>
+      <span><b>规模</b> 33,867 行</span>
+      <span><b>证据</b> 8 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepgemm.html" title="DeepGEMM 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepgemm.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>30 个模板实参把 block、stage、cluster、线程数、dtype 焊进 cubin，运行时只剩 launch。</li><li>stage 数由 232448 B 共享内存反推（上限 32）；tile 先在 tmem 列数 ≤512 处被筛掉。</li><li>grid 只有 num_sms 个 block，靠 next_block=(++iter)×kNumSMs+blockIdx.x 持久吃 tile。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/csrc/apis/gemm.hpp#L78" rel="noopener" target="_blank">csrc/apis/gemm.hpp:78</a></code><span>fp8_fp4_gemm_nt</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/csrc/jit_kernels/impls/sm100_fp8_fp4_gemm_1d1d.hpp#L40" rel="noopener" target="_blank">csrc/jit_kernels/impls/sm100_fp8_fp4_gemm_1d1d.hpp:40</a></code><span>jit-&gt;compile</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/csrc/jit_kernels/impls/sm100_fp8_fp4_gemm_1d1d.hpp#L151" rel="noopener" target="_blank">csrc/jit_kernels/impls/sm100_fp8_fp4_gemm_1d1d.hpp:151</a></code><span>grid = num_sms</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/csrc/jit_kernels/heuristics/sm100.hpp#L131" rel="noopener" target="_blank">csrc/jit_kernels/heuristics/sm100.hpp:131</a></code><span>tmem 列数上限</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/csrc/jit_kernels/heuristics/sm100.hpp#L244" rel="noopener" target="_blank">csrc/jit_kernels/heuristics/sm100.hpp:244</a></code><span>按 smem 定 stage</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh#L211" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh:211</a></code><span>TMA load warp</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh#L299" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh:299</a></code><span>MMA warp</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/deep_gemm/include/deep_gemm/scheduler/gemm.cuh#L186" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/scheduler/gemm.cuh:186</a></code><span>持久取块</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepep.html"><span class="lbl">← 上一个</span>DeepEP</a>
+    <a href="smallpond.html"><span class="lbl">下一个 →</span>smallpond</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 9 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

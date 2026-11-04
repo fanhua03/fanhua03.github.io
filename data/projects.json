@@ -226,6 +226,427 @@
           "label": "replicationFeedSlaves"
         }
       ]
+    },
+    {
+      "id": "flashmla",
+      "title": "FlashMLA",
+      "headline": "一个 CTA 吃完 2048 个 top-k",
+      "tagline": "DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。",
+      "repo": "deepseek-ai/FlashMLA",
+      "revision": "395cb3afbb331fef7b1b21e9340861b9436b42d8",
+      "langs": [
+        "CUDA C++",
+        "Python"
+      ],
+      "loc": 19093,
+      "date": "2026-11-04",
+      "tags": [
+        "CUDA",
+        "MLA",
+        "kernel",
+        "KV cache"
+      ],
+      "insights": [
+        "MMA 的 M 维固定 64 个头、N 维 64 个 top-k token；384 个线程里 128 个算 exp、128 个反量化、1 个发 tcgen05 MMA、1 个搬原始行、1 个算 TMA 坐标。",
+        "分页 KV 的块号和块内偏移在 kernel 里现算，拼成 TMA 坐标后每次 gather4 搬 4 行，64 个 token 用 16 次发完；非法索引填 -1 让 TMA 自己跳过。",
+        "每 token 只占 528 B：512 维全部量化成 fp8 e4m3（连 64 维 RoPE 一起，没有 bf16 尾巴）+ 16 字节 ue8m0 scale（每 32 维一个）；fp4 版是 256 B。"
+      ],
+      "sources": [
+        {
+          "path": "flash_mla/flash_mla_interface.py",
+          "line": 55,
+          "end_line": 83,
+          "label": "Python 入口"
+        },
+        {
+          "path": "csrc/params.h",
+          "line": 118,
+          "end_line": 133,
+          "label": "kernel 参数"
+        },
+        {
+          "path": "csrc/cuda_kernels/kv_cache_format.h",
+          "line": 5,
+          "end_line": 19,
+          "label": "KV 的 fp8 布局"
+        },
+        {
+          "path": "csrc/api/sparse_decode.cpp",
+          "line": 63,
+          "end_line": 80,
+          "label": "dispatch"
+        },
+        {
+          "path": "csrc/cuda_kernels/sm100/decode/sparse/head64/config.h",
+          "line": 33,
+          "end_line": 63,
+          "label": "warp 分工常量"
+        },
+        {
+          "path": "csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh",
+          "line": 470,
+          "end_line": 502,
+          "label": "gather4 搬 KV"
+        },
+        {
+          "path": "csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh",
+          "line": 517,
+          "end_line": 529,
+          "label": "MMA"
+        },
+        {
+          "path": "csrc/cuda_kernels/smxx/decode/combine/combine.cu",
+          "line": 43,
+          "end_line": 53,
+          "label": "split-KV 汇总"
+        }
+      ],
+      "thumb": "assets/thumbs/flashmla.png",
+      "diagram": "assets/diagrams/flashmla.html"
+    },
+    {
+      "id": "deepseek-v3",
+      "title": "DeepSeek-V3 inference",
+      "headline": "576 个数撑起 128 个头",
+      "tagline": "官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。",
+      "repo": "deepseek-ai/DeepSeek-V3",
+      "revision": "9b4e9788e4a3a731f7567338ed15d3ec549ce03b",
+      "langs": [
+        "Python"
+      ],
+      "loc": 1397,
+      "date": "2026-11-04",
+      "tags": [
+        "MoE",
+        "MLA",
+        "推理"
+      ],
+      "insights": [
+        "kv_cache 只存 kv_lora_rank=512，pe_cache 只存 qk_rope_head_dim=64，都是 bf16；128 个头 ×(128 nope+128 v)=32768 维的 K/V 从不落盘，576/32768 ≈ 1.76%。",
+        "「吸收」发生在打分之前：q_nope 先乘 wkv_b 的 K 半把 128 维折进 512 维 latent，于是打分只剩两个 einsum；输出侧再乘 V 半还原 128 维。",
+        "路由是两道闸：256 个专家分 8 组，按组内 top-2 之和选出 4 组（其余置 -inf），再在 128 个候选里 top-8；权重取未加 bias 的 sigmoid 原值，归一化后乘 route_scale=2.5。"
+      ],
+      "sources": [
+        {
+          "path": "inference/model.py",
+          "line": 443,
+          "end_line": 444,
+          "label": "kv_cache / pe_cache 的形状"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 481,
+          "end_line": 490,
+          "label": "吸收：把 128 维折进 512"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 494,
+          "end_line": 496,
+          "label": "打分只剩两个 einsum"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 427,
+          "end_line": 431,
+          "label": "MoE 两道路由"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 576,
+          "end_line": 598,
+          "label": "Gate 打分与 top-k"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 681,
+          "end_line": 693,
+          "label": "专家计算与 all_reduce"
+        }
+      ],
+      "thumb": "assets/thumbs/deepseek-v3.png",
+      "diagram": "assets/diagrams/deepseek-v3.html"
+    },
+    {
+      "id": "deepep",
+      "title": "DeepEP",
+      "headline": "把 MoE all-to-all 压到微秒级",
+      "tagline": "DeepSeek 的专家并行通信库：JIT 特化的 dispatch/combine 内核，同机走 NVLink 对称指针，跨机走 RDMA put。",
+      "repo": "deepseek-ai/DeepEP",
+      "revision": "f6aa38fe06cd4a0489e7730365d4e0114970a2f3",
+      "langs": [
+        "Python",
+        "C++",
+        "CUDA"
+      ],
+      "loc": 17910,
+      "date": "2026-11-04",
+      "tags": [
+        "MoE 通信",
+        "NVLink/RDMA",
+        "JIT 内核"
+      ],
+      "insights": [
+        "SM 数与 QP 数由带宽模型反推：direct 模式 9 条 QP，hybrid 模式 num_sms×16+1。",
+        "notify warp 用一条 64 位原子把计数与到达数合并 red_add，数据 warp 不参与统计。",
+        "同机取对端对称地址直接 TMA store，跨机才落 send buffer 再 gin.put。"
+      ],
+      "sources": [
+        {
+          "path": "deep_ep/buffers/ep.py",
+          "line": 562,
+          "label": "dispatch 入口"
+        },
+        {
+          "path": "deep_ep/buffers/ep.py",
+          "line": 431,
+          "label": "SM 数带宽模型"
+        },
+        {
+          "path": "deep_ep/buffers/ep.py",
+          "line": 554,
+          "label": "QP 数"
+        },
+        {
+          "path": "csrc/kernels/ep/dispatch.hpp",
+          "line": 115,
+          "label": "jit->compile"
+        },
+        {
+          "path": "deep_ep/include/deep_ep/impls/ep/dispatch.cuh",
+          "line": 113,
+          "label": "64 位合并原子"
+        },
+        {
+          "path": "deep_ep/include/deep_ep/impls/ep/dispatch.cuh",
+          "line": 373,
+          "label": "NVLink TMA store"
+        },
+        {
+          "path": "deep_ep/include/deep_ep/comm/handle.cuh",
+          "line": 208,
+          "label": "gin.put"
+        },
+        {
+          "path": "deep_ep/include/deep_ep/impls/ep/combine.cuh",
+          "line": 29,
+          "label": "combine_impl"
+        }
+      ],
+      "thumb": "assets/thumbs/deepep.png",
+      "diagram": "assets/diagrams/deepep.html"
+    },
+    {
+      "id": "deepgemm",
+      "title": "DeepGEMM",
+      "headline": "JIT 把 FP8 GEMM 焊成专用内核",
+      "tagline": "DeepSeek 的 FP8/FP4 GEMM 库：先按 tile 搜配置，再现场编译一份 cubin，warp 分区 + TMA + 持久调度。",
+      "repo": "deepseek-ai/DeepGEMM",
+      "revision": "5081f8513af57e61696de4f4f04b0e707ffb503e",
+      "langs": [
+        "Python",
+        "C++",
+        "CUDA"
+      ],
+      "loc": 33867,
+      "date": "2026-11-04",
+      "tags": [
+        "FP8 GEMM",
+        "JIT 编译",
+        "SM100 内核"
+      ],
+      "insights": [
+        "30 个模板实参把 block、stage、cluster、线程数、dtype 焊进 cubin，运行时只剩 launch。",
+        "stage 数由 232448 B 共享内存反推（上限 32）；tile 先在 tmem 列数 ≤512 处被筛掉。",
+        "grid 只有 num_sms 个 block，靠 next_block=(++iter)×kNumSMs+blockIdx.x 持久吃 tile。"
+      ],
+      "sources": [
+        {
+          "path": "csrc/apis/gemm.hpp",
+          "line": 78,
+          "label": "fp8_fp4_gemm_nt"
+        },
+        {
+          "path": "csrc/jit_kernels/impls/sm100_fp8_fp4_gemm_1d1d.hpp",
+          "line": 40,
+          "label": "jit->compile"
+        },
+        {
+          "path": "csrc/jit_kernels/impls/sm100_fp8_fp4_gemm_1d1d.hpp",
+          "line": 151,
+          "label": "grid = num_sms"
+        },
+        {
+          "path": "csrc/jit_kernels/heuristics/sm100.hpp",
+          "line": 131,
+          "label": "tmem 列数上限"
+        },
+        {
+          "path": "csrc/jit_kernels/heuristics/sm100.hpp",
+          "line": 244,
+          "label": "按 smem 定 stage"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh",
+          "line": 211,
+          "label": "TMA load warp"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh",
+          "line": 299,
+          "label": "MMA warp"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/scheduler/gemm.cuh",
+          "line": 186,
+          "label": "持久取块"
+        }
+      ],
+      "thumb": "assets/thumbs/deepgemm.png",
+      "diagram": "assets/diagrams/deepgemm.html"
+    },
+    {
+      "id": "smallpond",
+      "title": "smallpond",
+      "headline": "DuckDB 切片，3FS 上跑任务",
+      "tagline": "DeepSeek 的轻量数据框架：逻辑计划 → 分区任务组 → 3FS 上的文件队列 → 每 task 一个 DuckDB 连接，全程无长驻服务。",
+      "repo": "deepseek-ai/smallpond",
+      "revision": "52ecc5e45535c7448f848bcb45b0da00d9484f81",
+      "langs": [
+        "Python"
+      ],
+      "loc": 15996,
+      "date": "2026-11-04",
+      "tags": [
+        "数据框架",
+        "DuckDB",
+        "3FS"
+      ],
+      "insights": [
+        "Planner 把作业切成 producer/consumer 任务组：producer 数 = min(max, 2×executor×ceil(cpu/cpu_limit))，consumer 只合并同分区，不搬数据。",
+        "没有常驻服务：driver 只有 ray/scheduler/executor 三种模式，队列就是 data_root 下 enqueued/ 里的 zstd+pickle 文件，pop 靠 rename。",
+        "DuckDB 是每个 task 私有的 :memory: 连接：输入建成 read_parquet 视图，输出 COPY ... (FORMAT PARQUET, ZSTD, PER_THREAD_OUTPUT)。"
+      ],
+      "sources": [
+        {
+          "path": "smallpond/dataframe.py",
+          "line": 46,
+          "end_line": 58,
+          "label": "read_parquet 建节点"
+        },
+        {
+          "path": "smallpond/logical/planner.py",
+          "line": 144,
+          "end_line": 205,
+          "label": "分区 → 任务组"
+        },
+        {
+          "path": "smallpond/execution/scheduler.py",
+          "line": 1029,
+          "end_line": 1081,
+          "label": "dispatch_tasks"
+        },
+        {
+          "path": "smallpond/execution/workqueue.py",
+          "line": 315,
+          "end_line": 351,
+          "label": "文件队列 pop（rename）"
+        },
+        {
+          "path": "smallpond/execution/executor.py",
+          "line": 149,
+          "end_line": 176,
+          "label": "Executor 轮询"
+        },
+        {
+          "path": "smallpond/execution/task.py",
+          "line": 1102,
+          "end_line": 1138,
+          "label": "DuckDB 连接与视图"
+        },
+        {
+          "path": "smallpond/execution/task.py",
+          "line": 2608,
+          "end_line": 2624,
+          "label": "hash 分区 SQL"
+        },
+        {
+          "path": "README.md",
+          "line": 58,
+          "label": "GraySort 110.5TiB / 30 分 14 秒"
+        }
+      ],
+      "thumb": "assets/thumbs/smallpond.png",
+      "diagram": "assets/diagrams/smallpond.html"
+    },
+    {
+      "id": "dsocr",
+      "title": "DeepSeek-OCR",
+      "headline": "整页文档压成 273 个视觉 token",
+      "tagline": "动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。",
+      "repo": "deepseek-ai/DeepSeek-OCR",
+      "revision": "09eaf526153e7a01ed16c9dea8c96282aaea29c0",
+      "langs": [
+        "Python"
+      ],
+      "loc": 3198,
+      "date": "2026-11-04",
+      "tags": [
+        "多模态",
+        "OCR",
+        "视觉编码器"
+      ],
+      "insights": [
+        "16× 压缩发生在编码器内部：SAM 的 16 像素 patch 把 1024² 变 64×64=4096 个位置，neck 后两次 stride-2 卷积压到 16×16=256 个 token。",
+        "一页的视觉开销固定是 273 个槽位：16×16 网格每行补 1 个 newline、末尾补 1 个 view_separator，即 16×17+1。",
+        "token 数只跟像素档位走、不跟字数走：512→64、640→100、1024→256、1280→400；版面坐标靠 <|ref|>…<|det|>[x1,y1,x2,y2] 从文本里还原。"
+      ],
+      "sources": [
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/process/image_process.py",
+          "line": 45,
+          "end_line": 83,
+          "label": "dynamic_preprocess 切块"
+        },
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/sam_vary_sdpa.py",
+          "line": 499,
+          "end_line": 515,
+          "label": "patch 16 / 图像 1024"
+        },
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/sam_vary_sdpa.py",
+          "line": 166,
+          "end_line": 183,
+          "label": "两次 stride-2"
+        },
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepencoder/clip_sdpa.py",
+          "line": 131,
+          "end_line": 156,
+          "label": "CLIP 吃 SAM 的 patch"
+        },
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepseek_ocr.py",
+          "line": 415,
+          "end_line": 438,
+          "label": "newline + separator → 273"
+        },
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/deepseek_ocr.py",
+          "line": 508,
+          "end_line": 528,
+          "label": "merge_multimodal_embeddings"
+        },
+        {
+          "path": "DeepSeek-OCR-master/DeepSeek-OCR-vllm/run_dpsk_ocr_pdf.py",
+          "line": 32,
+          "end_line": 44,
+          "label": "vLLM 采样参数"
+        }
+      ],
+      "thumb": "assets/thumbs/dsocr.png",
+      "diagram": "assets/diagrams/dsocr.html"
     }
   ],
   "roadmap": [
