@@ -2,6 +2,7 @@
 // 静态站生成器：data/projects.json -> index.html + projects/<id>.html + sitemap.xml
 // 零依赖。跑： node build.mjs
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -28,6 +29,8 @@ const num = n => n.toLocaleString("en-US");
 const k = n => (n / 1000).toFixed(1) + "k";
 
 /* ---------- shared bits ---------- */
+const CSSV = createHash("sha1").update(readFileSync(join(ROOT, "assets/site.css"))).digest("hex").slice(0, 8);
+
 const head = ({ title, desc, canonical, extra = "" }) => `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -41,7 +44,7 @@ const head = ({ title, desc, canonical, extra = "" }) => `<!DOCTYPE html>
 <meta property="og:description" content="${esc(desc)}" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="{BASE}assets/site.css" />
+<link rel="stylesheet" href="{BASE}assets/site.css?v=${CSSV}" />
 ${extra}</head>
 <body>`;
 
