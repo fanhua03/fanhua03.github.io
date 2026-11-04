@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DualPipe 架构图｜用另一方向的计算填掉空等 · 开源项目可视化拆解</title>
+<meta name="description" content="训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DualPipe 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/dualpipe.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DualPipe 架构图｜用另一方向的计算填掉空等 · 开源项目可视化拆解" />
+<meta property="og:description" content="训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DualPipe 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dualpipe.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DualPipe 架构图｜用另一方向的计算填掉空等","description":"训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DualPipe","codeRepository":"https://github.com/deepseek-ai/DualPipe"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DualPipe</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DualPipe</span> 架构图｜用另一方向的计算填掉空等</h1>
+    <p class="sub">训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</p>
+    <p class="plain"><b>人话版</b>训练大模型时，模型被切成很多段放在不同机器上，一段算完就把结果传给下一段。传的时候那台机器只能干等，这段等待就叫「气泡」。DualPipe 让每台机器同时管两段模型、同时跑两个方向的数据：一边在等，另一边正好在算，把空等填掉。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DualPipe" target="_blank" rel="noopener">deepseek-ai/DualPipe</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 1,390 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/dualpipe.html" title="DualPipe 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/dualpipe.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>每台机器同时管两段模型，一段在流水线前头、一段在后头，所以两个方向的数据可以交替走：一边等数据，另一边正好在算。</li><li>收发数据不挡着算：先把要收要发的包全挂上、一起提交，然后立刻去算，算完才统一等结果。</li><li>「反向传播」被拆成两半，算权重的那半先存起来，等有空隙了再补算，于是最后几段机器也不会干等。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/dualpipe/dualpipe.py#L345" rel="noopener" target="_blank">dualpipe/dualpipe.py:345–353</a></code><span>micro-batch 切两半</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/dualpipe/dualpipe.py#L358" rel="noopener" target="_blank">dualpipe/dualpipe.py:358–425</a></code><span>调度表</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/dualpipe/dualpipe.py#L205" rel="noopener" target="_blank">dualpipe/dualpipe.py:205–214</a></code><span>_forward_backward_chunk</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/dualpipe/dualpipe.py#L285" rel="noopener" target="_blank">dualpipe/dualpipe.py:285–292</a></code><span>批量收发、统一 wait</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/dualpipe/comm.py#L25" rel="noopener" target="_blank">dualpipe/comm.py:25–38</a></code><span>irecv / isend</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/dualpipe/utils.py#L8" rel="noopener" target="_blank">dualpipe/utils.py:8–33</a></code><span>WeightGradStore</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/examples/example_dualpipe.py#L55" rel="noopener" target="_blank">examples/example_dualpipe.py:55–83</a></code><span>模块级重叠</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DualPipe/blob/030ce4325f4ebeb437da4ebc6d00a70469dd58ae/README.md#L27" rel="noopener" target="_blank">README.md:27–31</a></code><span>气泡对比表</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepinfer.html"><span class="lbl">← 上一个</span>DeepInfer</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 15 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>13</b><span>已拆</span></div>
+      <div class="stat"><b>15</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -81,6 +81,10 @@
     <button class="chip" data-f="动态切图">动态切图</button>
     <button class="chip" data-f="统一模型">统一模型</button>
     <button class="chip" data-f="图像生成">图像生成</button>
+    <button class="chip" data-f="推理框架">推理框架</button>
+    <button class="chip" data-f="批调度">批调度</button>
+    <button class="chip" data-f="流水线并行">流水线并行</button>
+    <button class="chip" data-f="训练">训练</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -344,6 +348,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/deepinfer.html" data-search="deepinfer deepseek-ai/deepinfer 推理框架 批调度 kv cache 线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepinfer.png" alt="DeepInfer 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepInfer</span>
+            <span class="repo">deepseek-ai/DeepInfer</span>
+            <span class="tags"><span class="tag">推理框架</span><span class="tag">批调度</span><span class="tag">KV cache</span></span>
+          </div>
+          <div class="tagline">线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</div>
+          <ul class="ins"><li>一条请求先排队，再和别人的凑成一批一起算；这批是先「读题」还是接着「续写」，由调度器每隔几步让各台机器投一次票决定。</li><li>为了让显卡不空等，这一步的收尾被故意拖到下一步计算期间去做，发指令时也明确不许停下来等显卡。</li><li>显存被切成固定大小的块来记账，用完还回一条带计数的空闲链；块不够时按「谁已经写得最多」排序，先抢占最老的请求。</li></ul>
+          <div class="foot">
+            <span><b>60,844</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dualpipe.html" data-search="dualpipe deepseek-ai/dualpipe 流水线并行 训练 训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。">
+        <div class="thumb">
+          <img src="assets/thumbs/dualpipe.png" alt="DualPipe 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DualPipe</span>
+            <span class="repo">deepseek-ai/DualPipe</span>
+            <span class="tags"><span class="tag">流水线并行</span><span class="tag">训练</span></span>
+          </div>
+          <div class="tagline">训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</div>
+          <ul class="ins"><li>每台机器同时管两段模型，一段在流水线前头、一段在后头，所以两个方向的数据可以交替走：一边等数据，另一边正好在算。</li><li>收发数据不挡着算：先把要收要发的包全挂上、一起提交，然后立刻去算，算完才统一等结果。</li><li>「反向传播」被拆成两半，算权重的那半先存起来，等有空隙了再补算，于是最后几段机器也不会干等。</li></ul>
+          <div class="foot">
+            <span><b>1,390</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -535,7 +579,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 13 张 · 纯静态，无后端</div>
+    <div>已拆 15 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>
