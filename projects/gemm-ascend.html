@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepGEMM-Ascend 架构图｜同一套 GEMM，换一套台阶 · 开源项目可视化拆解</title>
+<meta name="description" content="同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepGEMM-Ascend 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/gemm-ascend.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepGEMM-Ascend 架构图｜同一套 GEMM，换一套台阶 · 开源项目可视化拆解" />
+<meta property="og:description" content="同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepGEMM-Ascend 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/gemm-ascend.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepGEMM-Ascend 架构图｜同一套 GEMM，换一套台阶","description":"同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepGEMM-Ascend","codeRepository":"https://github.com/deepseek-ai/DeepGEMM-Ascend"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepGEMM-Ascend</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepGEMM-Ascend</span> 架构图｜同一套 GEMM，换一套台阶</h1>
+    <p class="sub">同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。</p>
+    <p class="plain"><b>人话版</b>同样是算矩阵乘法，英伟达的卡和华为的卡，数据要走的台阶不一样。这个项目把原来给英伟达写的那套，改成走华为卡自己的台阶：先搬到哪儿、再搬到哪儿、算完从哪儿倒出来。对使用者来说没变：还是同一个函数名、同一套调用方式。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepGEMM-Ascend" target="_blank" rel="noopener">deepseek-ai/DeepGEMM-Ascend</a></span>
+      <span><b>语言</b> C++ / Python</span>
+      <span><b>规模</b> 19,908 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/gemm-ascend.html" title="DeepGEMM-Ascend 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/gemm-ascend.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>TMA 和 cluster 在昇腾上没有对应物：全仓库搜不到，搬运换成 MTE2/MTE1 两条搬指。</li><li>shared memory 换成 L1、TMEM 换成 L0C，装不下直接在编译期报错。</li><li>连 scale factor 都得改格式：一对 UE8M0 打包成一个 int16，按 MN-major 存。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/README.md#L3" rel="noopener" target="_blank">README.md:3</a></code><span>API 完全兼容</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/README.md#L56" rel="noopener" target="_blank">README.md:56</a></code><span>SF 打包成 int16</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/deep_gemm/include/deep_gemm/ascend/copy.hpp#L122" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/ascend/copy.hpp:122</a></code><span>gm2l1_nd2nz</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/deep_gemm/include/deep_gemm/bf16_gemm.hpp#L66" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/bf16_gemm.hpp:66</a></code><span>L1 容量断言</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/deep_gemm/include/deep_gemm/bf16_gemm.hpp#L69" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/bf16_gemm.hpp:69</a></code><span>L0C 容量断言</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/deep_gemm/include/deep_gemm/ascend/tile_ptr.hpp#L45" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/ascend/tile_ptr.hpp:45</a></code><span>NZ 分形寻址</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/csrc/jit_kernels/heuristics.hpp#L102" rel="noopener" target="_blank">csrc/jit_kernels/heuristics.hpp:102</a></code><span>超 L0C 就淘汰</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepGEMM-Ascend/blob/3a35326271b069b8b5bf1a754435acd6cc91575b/csrc/jit/jit.hpp#L14" rel="noopener" target="_blank">csrc/jit/jit.hpp:14</a></code><span>Runtime&lt;Ascend&gt;</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="prover.html"><span class="lbl">← 上一个</span>DeepSeek-Prover-V1.5</a>
+    <a href="ep-ascend.html"><span class="lbl">下一个 →</span>DeepEP-Ascend</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 28 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

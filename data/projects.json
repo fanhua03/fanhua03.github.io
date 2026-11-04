@@ -1849,6 +1849,144 @@
       ],
       "thumb": "assets/thumbs/prover.png",
       "diagram": "assets/diagrams/prover.html"
+    },
+    {
+      "id": "gemm-ascend",
+      "title": "DeepGEMM-Ascend",
+      "headline": "同一套 GEMM，换一套台阶",
+      "tagline": "同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。",
+      "plain": "同样是算矩阵乘法，英伟达的卡和华为的卡，数据要走的台阶不一样。这个项目把原来给英伟达写的那套，改成走华为卡自己的台阶：先搬到哪儿、再搬到哪儿、算完从哪儿倒出来。对使用者来说没变：还是同一个函数名、同一套调用方式。",
+      "repo": "deepseek-ai/DeepGEMM-Ascend",
+      "revision": "3a35326271b069b8b5bf1a754435acd6cc91575b",
+      "langs": [
+        "C++",
+        "Python"
+      ],
+      "loc": 19908,
+      "date": "2026-11-04",
+      "tags": [
+        "昇腾",
+        "GEMM",
+        "移植"
+      ],
+      "insights": [
+        "TMA 和 cluster 在昇腾上没有对应物：全仓库搜不到，搬运换成 MTE2/MTE1 两条搬指。",
+        "shared memory 换成 L1、TMEM 换成 L0C，装不下直接在编译期报错。",
+        "连 scale factor 都得改格式：一对 UE8M0 打包成一个 int16，按 MN-major 存。"
+      ],
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 3,
+          "label": "API 完全兼容"
+        },
+        {
+          "path": "README.md",
+          "line": 56,
+          "label": "SF 打包成 int16"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/ascend/copy.hpp",
+          "line": 122,
+          "label": "gm2l1_nd2nz"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/bf16_gemm.hpp",
+          "line": 66,
+          "label": "L1 容量断言"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/bf16_gemm.hpp",
+          "line": 69,
+          "label": "L0C 容量断言"
+        },
+        {
+          "path": "deep_gemm/include/deep_gemm/ascend/tile_ptr.hpp",
+          "line": 45,
+          "label": "NZ 分形寻址"
+        },
+        {
+          "path": "csrc/jit_kernels/heuristics.hpp",
+          "line": 102,
+          "label": "超 L0C 就淘汰"
+        },
+        {
+          "path": "csrc/jit/jit.hpp",
+          "line": 14,
+          "label": "Runtime<Ascend>"
+        }
+      ],
+      "thumb": "assets/thumbs/gemm-ascend.png",
+      "diagram": "assets/diagrams/gemm-ascend.html"
+    },
+    {
+      "id": "ep-ascend",
+      "title": "DeepEP-Ascend",
+      "headline": "通信换芯：两条通道全改名",
+      "tagline": "同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。",
+      "plain": "训练时几台机器要互相送数据，英伟达那套用的是自己家的两条通道。换到华为的卡上，通道换了名字、也换了脾气：同机走一条、跨机走另一条，连「对端地址怎么算」都要重写。对调用的程序来说没变，还是同一个函数、同一套参数。",
+      "repo": "deepseek-ai/DeepEP-Ascend",
+      "revision": "4dfccac4fc345519427e1019557301c9e59e9c76",
+      "langs": [
+        "C++",
+        "Python"
+      ],
+      "loc": 11138,
+      "date": "2026-11-04",
+      "tags": [
+        "昇腾",
+        "通信",
+        "HCCL"
+      ],
+      "insights": [
+        "NCCL Gin 换成 HCCL/HCOMM，RDMA 的 QP 换成 Jetty 通道，窗口换成自己申请再注册的对称缓冲。",
+        "没有「同机走不通就退回网卡」：构造时要求每个 peer 都 UBMEM 直连，否则直接断言失败。",
+        "URMA 在 kernel 退出之后还在读源数据，所以要开一个专门的环境变量才安全。"
+      ],
+      "sources": [
+        {
+          "path": "deep_ep/buffers/ep.py",
+          "line": 314,
+          "label": "dispatch 入口"
+        },
+        {
+          "path": "csrc/kernels/comm/hccl.hpp",
+          "line": 30,
+          "label": "HCCLContext"
+        },
+        {
+          "path": "csrc/kernels/comm/hccl.hpp",
+          "line": 44,
+          "label": "Jetty 通道表"
+        },
+        {
+          "path": "csrc/kernels/comm/symmetric.hpp",
+          "line": 11,
+          "label": "SymmetricMemory"
+        },
+        {
+          "path": "csrc/comm/handle.hpp",
+          "line": 63,
+          "label": "UBMEM 强制断言"
+        },
+        {
+          "path": "csrc/buffers/ep.hpp",
+          "line": 284,
+          "label": "URMA 延迟读源"
+        },
+        {
+          "path": "deep_ep/include/deep_ep/impls/ep/dispatch.hpp",
+          "line": 557,
+          "label": "Ascend C dispatch"
+        },
+        {
+          "path": "deep_ep/include/deep_ep/impls/ep/combine.hpp",
+          "line": 164,
+          "label": "combine_impl"
+        }
+      ],
+      "thumb": "assets/thumbs/ep-ascend.png",
+      "diagram": "assets/diagrams/ep-ascend.html"
     }
   ],
   "roadmap": [

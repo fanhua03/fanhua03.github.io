@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepEP-Ascend 架构图｜通信换芯：两条通道全改名 · 开源项目可视化拆解</title>
+<meta name="description" content="同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepEP-Ascend 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/ep-ascend.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepEP-Ascend 架构图｜通信换芯：两条通道全改名 · 开源项目可视化拆解" />
+<meta property="og:description" content="同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepEP-Ascend 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/ep-ascend.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepEP-Ascend 架构图｜通信换芯：两条通道全改名","description":"同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepEP-Ascend","codeRepository":"https://github.com/deepseek-ai/DeepEP-Ascend"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepEP-Ascend</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepEP-Ascend</span> 架构图｜通信换芯：两条通道全改名</h1>
+    <p class="sub">同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。</p>
+    <p class="plain"><b>人话版</b>训练时几台机器要互相送数据，英伟达那套用的是自己家的两条通道。换到华为的卡上，通道换了名字、也换了脾气：同机走一条、跨机走另一条，连「对端地址怎么算」都要重写。对调用的程序来说没变，还是同一个函数、同一套参数。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepEP-Ascend" target="_blank" rel="noopener">deepseek-ai/DeepEP-Ascend</a></span>
+      <span><b>语言</b> C++ / Python</span>
+      <span><b>规模</b> 11,138 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/ep-ascend.html" title="DeepEP-Ascend 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/ep-ascend.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>NCCL Gin 换成 HCCL/HCOMM，RDMA 的 QP 换成 Jetty 通道，窗口换成自己申请再注册的对称缓冲。</li><li>没有「同机走不通就退回网卡」：构造时要求每个 peer 都 UBMEM 直连，否则直接断言失败。</li><li>URMA 在 kernel 退出之后还在读源数据，所以要开一个专门的环境变量才安全。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/deep_ep/buffers/ep.py#L314" rel="noopener" target="_blank">deep_ep/buffers/ep.py:314</a></code><span>dispatch 入口</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/csrc/kernels/comm/hccl.hpp#L30" rel="noopener" target="_blank">csrc/kernels/comm/hccl.hpp:30</a></code><span>HCCLContext</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/csrc/kernels/comm/hccl.hpp#L44" rel="noopener" target="_blank">csrc/kernels/comm/hccl.hpp:44</a></code><span>Jetty 通道表</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/csrc/kernels/comm/symmetric.hpp#L11" rel="noopener" target="_blank">csrc/kernels/comm/symmetric.hpp:11</a></code><span>SymmetricMemory</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/csrc/comm/handle.hpp#L63" rel="noopener" target="_blank">csrc/comm/handle.hpp:63</a></code><span>UBMEM 强制断言</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/csrc/buffers/ep.hpp#L284" rel="noopener" target="_blank">csrc/buffers/ep.hpp:284</a></code><span>URMA 延迟读源</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/deep_ep/include/deep_ep/impls/ep/dispatch.hpp#L557" rel="noopener" target="_blank">deep_ep/include/deep_ep/impls/ep/dispatch.hpp:557</a></code><span>Ascend C dispatch</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepEP-Ascend/blob/4dfccac4fc345519427e1019557301c9e59e9c76/deep_ep/include/deep_ep/impls/ep/combine.hpp#L164" rel="noopener" target="_blank">deep_ep/include/deep_ep/impls/ep/combine.hpp:164</a></code><span>combine_impl</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="gemm-ascend.html"><span class="lbl">← 上一个</span>DeepGEMM-Ascend</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 28 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

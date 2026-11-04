@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>26</b><span>已拆</span></div>
+      <div class="stat"><b>28</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -108,6 +108,11 @@
     <button class="chip" data-f="定理证明">定理证明</button>
     <button class="chip" data-f="Lean 4">Lean 4</button>
     <button class="chip" data-f="树搜索">树搜索</button>
+    <button class="chip" data-f="昇腾">昇腾</button>
+    <button class="chip" data-f="GEMM">GEMM</button>
+    <button class="chip" data-f="移植">移植</button>
+    <button class="chip" data-f="通信">通信</button>
+    <button class="chip" data-f="HCCL">HCCL</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -631,6 +636,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/gemm-ascend.html" data-search="deepgemm-ascend deepseek-ai/deepgemm-ascend 昇腾 gemm 移植 同样的矩阵乘法，昇腾上数据要依次过 gm→l1→l0→l0c：没有 tma、没有 cluster，连 scale 的存法都得改。">
+        <div class="thumb">
+          <img src="assets/thumbs/gemm-ascend.png" alt="DeepGEMM-Ascend 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepGEMM-Ascend</span>
+            <span class="repo">deepseek-ai/DeepGEMM-Ascend</span>
+            <span class="tags"><span class="tag">昇腾</span><span class="tag">GEMM</span><span class="tag">移植</span></span>
+          </div>
+          <div class="tagline">同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。</div>
+          <ul class="ins"><li>TMA 和 cluster 在昇腾上没有对应物：全仓库搜不到，搬运换成 MTE2/MTE1 两条搬指。</li><li>shared memory 换成 L1、TMEM 换成 L0C，装不下直接在编译期报错。</li><li>连 scale factor 都得改格式：一对 UE8M0 打包成一个 int16，按 MN-major 存。</li></ul>
+          <div class="foot">
+            <span><b>19,908</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/ep-ascend.html" data-search="deepep-ascend deepseek-ai/deepep-ascend 昇腾 通信 hccl 同机的对称写换成 ubmem，跨机的 rdma put 换成 urma；连「对端地址怎么算」都得自己重写。">
+        <div class="thumb">
+          <img src="assets/thumbs/ep-ascend.png" alt="DeepEP-Ascend 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepEP-Ascend</span>
+            <span class="repo">deepseek-ai/DeepEP-Ascend</span>
+            <span class="tags"><span class="tag">昇腾</span><span class="tag">通信</span><span class="tag">HCCL</span></span>
+          </div>
+          <div class="tagline">同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。</div>
+          <ul class="ins"><li>NCCL Gin 换成 HCCL/HCOMM，RDMA 的 QP 换成 Jetty 通道，窗口换成自己申请再注册的对称缓冲。</li><li>没有「同机走不通就退回网卡」：构造时要求每个 peer 都 UBMEM 直连，否则直接断言失败。</li><li>URMA 在 kernel 退出之后还在读源数据，所以要开一个专门的环境变量才安全。</li></ul>
+          <div class="foot">
+            <span><b>11,138</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -822,7 +867,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 26 张 · 纯静态，无后端</div>
+    <div>已拆 28 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>
