@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek-Prover-V1.5 架构图｜模型写证明，Lean 判对错 · 开源项目可视化拆解</title>
+<meta name="description" content="模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-Prover-V1.5 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/prover.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeek-Prover-V1.5 架构图｜模型写证明，Lean 判对错 · 开源项目可视化拆解" />
+<meta property="og:description" content="模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-Prover-V1.5 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/prover.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-Prover-V1.5 架构图｜模型写证明，Lean 判对错","description":"模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-Prover-V1.5","codeRepository":"https://github.com/deepseek-ai/DeepSeek-Prover-V1.5"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek-Prover-V1.5</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeek-Prover-V1.5</span> 架构图｜模型写证明，Lean 判对错</h1>
+    <p class="sub">模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。</p>
+    <p class="plain"><b>人话版</b>这是让模型做数学证明的项目。模型每次只写一小步，写完交给一个数学软件检查；检查通过就接着往下写，不通过就换一种写法。它还会记住哪些写法走得通，下次优先试那些。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5" target="_blank" rel="noopener">deepseek-ai/DeepSeek-Prover-V1.5</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 2,517 行</span>
+      <span><b>出处</b> 7 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/prover.html" title="DeepSeek-Prover-V1.5 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/prover.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>模型每次只写一小段证明，交给 Lean 编译器检查；有报错、或者留了 sorry 占位，都算没证完。</li><li>所有尝试会长成一棵树，每步记下当时的目标状态，下一轮按「多试又不太差」的规则挑一条接着写。</li><li>一道题要试很多次：默认 6400 次采样、256 个搜索进程共用一棵树，谁把树撑大了就给谁加分。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/prover/launch.py#L28" rel="noopener" target="_blank">prover/launch.py:28–90</a></code><span>装配流程</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/prover/lean/verifier.py#L25" rel="noopener" target="_blank">prover/lean/verifier.py:25–62</a></code><span>Lean REPL 判定</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/prover/lean/proof.py#L60" rel="noopener" target="_blank">prover/lean/proof.py:60–110</a></code><span>切 tactic</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/prover/algorithms/rmax_tree_search.py#L209" rel="noopener" target="_blank">prover/algorithms/rmax_tree_search.py:209–226</a></code><span>UCB 选节点</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/prover/algorithms/rmax_tree_search.py#L249" rel="noopener" target="_blank">prover/algorithms/rmax_tree_search.py:249–262</a></code><span>RMax 奖励</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/configs/RMaxTS.py#L26" rel="noopener" target="_blank">configs/RMaxTS.py:26–31</a></code><span>256 进程 / 6400 采样</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Prover-V1.5/blob/2c4ba9119eef74d0d611f494261b2c5bae98c69a/prover/workers/data_loader.py#L10" rel="noopener" target="_blank">prover/workers/data_loader.py:10–30</a></code><span>按 split 取样</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="dscoder.html"><span class="lbl">← 上一个</span>DeepSeek-Coder</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 26 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

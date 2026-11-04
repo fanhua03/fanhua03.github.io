@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>24</b><span>已拆</span></div>
+      <div class="stat"><b>26</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -103,6 +103,11 @@
     <button class="chip" data-f="TypeScript">TypeScript</button>
     <button class="chip" data-f="稀疏注意力">稀疏注意力</button>
     <button class="chip" data-f="线性规划">线性规划</button>
+    <button class="chip" data-f="代码模型">代码模型</button>
+    <button class="chip" data-f="评测">评测</button>
+    <button class="chip" data-f="定理证明">定理证明</button>
+    <button class="chip" data-f="Lean 4">Lean 4</button>
+    <button class="chip" data-f="树搜索">树搜索</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -586,6 +591,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/dscoder.html" data-search="deepseek-coder deepseek-ai/deepseek-coder 代码模型 评测 不带模型结构，只带一套考场：每道题写几十份答案，剪干净、补上标准测试、丢进沙箱跑，按 pass@k 记分。">
+        <div class="thumb">
+          <img src="assets/thumbs/dscoder.png" alt="DeepSeek-Coder 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-Coder</span>
+            <span class="repo">deepseek-ai/DeepSeek-Coder</span>
+            <span class="tags"><span class="tag">代码模型</span><span class="tag">评测</span></span>
+          </div>
+          <div class="tagline">不带模型结构，只带一套考场：每道题写几十份答案，剪干净、补上标准测试、丢进沙箱跑，按 pass@k 记分。</div>
+          <ul class="ins"><li>仓库里没有模型本身的代码，权重挂在 Hugging Face 上；这里装的是评测、微调、demo 三块。</li><li>评测时每道题生成 40 份答案，按关键字把多余内容剪掉，再拼上标准测试丢进独立进程跑，10 秒跑不完就判错。</li><li>最后算 pass@k：40 份里抽 k 份，只要有一份通过就算过，衡量的是「多试几次能不能做出来」。</li></ul>
+          <div class="foot">
+            <span><b>5,637</b> 行</span>
+            <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/prover.html" data-search="deepseek-prover-v1.5 deepseek-ai/deepseek-prover-v1.5 定理证明 lean 4 树搜索 模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。">
+        <div class="thumb">
+          <img src="assets/thumbs/prover.png" alt="DeepSeek-Prover-V1.5 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-Prover-V1.5</span>
+            <span class="repo">deepseek-ai/DeepSeek-Prover-V1.5</span>
+            <span class="tags"><span class="tag">定理证明</span><span class="tag">Lean 4</span><span class="tag">树搜索</span></span>
+          </div>
+          <div class="tagline">模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。</div>
+          <ul class="ins"><li>模型每次只写一小段证明，交给 Lean 编译器检查；有报错、或者留了 sorry 占位，都算没证完。</li><li>所有尝试会长成一棵树，每步记下当时的目标状态，下一轮按「多试又不太差」的规则挑一条接着写。</li><li>一道题要试很多次：默认 6400 次采样、256 个搜索进程共用一棵树，谁把树撑大了就给谁加分。</li></ul>
+          <div class="foot">
+            <span><b>2,517</b> 行</span>
+            <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -777,7 +822,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 24 张 · 纯静态，无后端</div>
+    <div>已拆 26 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>
