@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeekMoE 路由 架构图｜专家怎么分，才不挤一个 · 开源项目可视化拆解</title>
+<meta name="description" content="这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-VL2 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepseekmoe-routing.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeekMoE 路由 架构图｜专家怎么分，才不挤一个 · 开源项目可视化拆解" />
+<meta property="og:description" content="这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-VL2 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepseekmoe-routing.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeekMoE 路由 架构图｜专家怎么分，才不挤一个","description":"这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeekMoE 路由","codeRepository":"https://github.com/deepseek-ai/DeepSeek-VL2"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeekMoE 路由</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeekMoE 路由</span> 架构图｜专家怎么分，才不挤一个</h1>
+    <p class="sub">这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。</p>
+    <p class="plain"><b>人话版</b>这段代码躺在 DeepSeek-VL2 的仓库里，是官方 V2 的建模实现——V2 和 DeepSeek-MoE 两个仓库只放了论文和图片，没放代码。它干的事是：把一大坨计算拆成很多个「小专家」，每个词只请其中几个来算，省算力也更懂行。风险是所有词都去找同一个专家，所以训练时要额外扣分：谁被用得太偏，就把分数往回拉。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-VL2" target="_blank" rel="noopener">deepseek-ai/DeepSeek-VL2</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 1,975 行</span>
+      <span><b>出处</b> 7 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepseekmoe-routing.html" title="DeepSeekMoE 路由 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepseekmoe-routing.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>把一个大前馈层拆成很多个窄的，每个词只请几个——能拼出来的组合比单个大层多得多，参数涨了，但每个词只付几个专家的算力。</li><li>训练时多了一项扣分：统计每个专家被选中的比例和它拿到的平均分数，两者相乘再求和；谁被用得太偏这项就大，梯度会把门往平均那边推。这项只在训练时有。</li><li>把词送到专家手里有两套代码：训练时每个词复制 k 份、逐个专家跑；推理时先按专家排序再一次算完，跨卡时用 all_to_all 把词发到有这个专家的机器上。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L393" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:393–417</a></code><span>Gate 打分</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L424" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:424–438</a></code><span>top-k 选择</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L445" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:445–466</a></code><span>分组受限选专家</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L499" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:499–527</a></code><span>aux loss（训练期才有）</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L531" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:531–549</a></code><span>AddAuxiliaryLoss</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L552" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:552–597</a></code><span>专家层</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-VL2/blob/ef9f91e2b6426536b83294c11742c27be66361b1/deepseek_vl2/models/modeling_deepseek.py#L622" rel="noopener" target="_blank">deepseek_vl2/models/modeling_deepseek.py:622–645</a></code><span>EP all_to_all</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="engram.html"><span class="lbl">← 上一个</span>Engram</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 17 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

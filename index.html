@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>15</b><span>已拆</span></div>
+      <div class="stat"><b>17</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -85,6 +85,10 @@
     <button class="chip" data-f="批调度">批调度</button>
     <button class="chip" data-f="流水线并行">流水线并行</button>
     <button class="chip" data-f="训练">训练</button>
+    <button class="chip" data-f="稀疏">稀疏</button>
+    <button class="chip" data-f="查表">查表</button>
+    <button class="chip" data-f="n-gram">n-gram</button>
+    <button class="chip" data-f="路由">路由</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -388,6 +392,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/engram.html" data-search="engram deepseek-ai/engram 稀疏 查表 n-gram 有些事不用算，查一下就行：把词组搭配存成一张巨大的表，用的时候按地址取几行。">
+        <div class="thumb">
+          <img src="assets/thumbs/engram.png" alt="Engram 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">Engram</span>
+            <span class="repo">deepseek-ai/Engram</span>
+            <span class="tags"><span class="tag">稀疏</span><span class="tag">查表</span><span class="tag">n-gram</span></span>
+          </div>
+          <div class="tagline">有些事不用算，查一下就行：把词组搭配存成一张巨大的表，用的时候按地址取几行。</div>
+          <ul class="ins"><li>表是按词组搭配建的：2 个词、3 个词的组合各一套，每套再拆成 8 个头，每个头用自己的质数取模，所以同一个组合会落进 8 个不同的桶。</li><li>地址是算出来的、不是学出来的：先把文本归一化（大小写、全半角、重音都抹平），再用固定乘子做「乘加再异或」取模。同样输入永远同样地址，表才能放主机内存按需搬。</li><li>取出来的向量不直接相加：先跟当前状态做点积当门（4 条并行连接各一个门），乘完再叠一个很短的卷积把相邻记忆抹平，最后加回残差。</li></ul>
+          <div class="foot">
+            <span><b>422</b> 行</span>
+            <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepseekmoe-routing.html" data-search="deepseekmoe 路由 deepseek-ai/deepseek-vl2 moe 路由 负载均衡 这段 moe 建模代码躺在 deepseek-vl2 仓库里（官方 v2 的 modeling_deepseek.py 搬过来的）——因为 v2 / deepseek-moe 两个仓库只放了 readme 和 pdf。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepseekmoe-routing.png" alt="DeepSeekMoE 路由 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeekMoE 路由</span>
+            <span class="repo">deepseek-ai/DeepSeek-VL2</span>
+            <span class="tags"><span class="tag">MoE</span><span class="tag">路由</span><span class="tag">负载均衡</span></span>
+          </div>
+          <div class="tagline">这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。</div>
+          <ul class="ins"><li>把一个大前馈层拆成很多个窄的，每个词只请几个——能拼出来的组合比单个大层多得多，参数涨了，但每个词只付几个专家的算力。</li><li>训练时多了一项扣分：统计每个专家被选中的比例和它拿到的平均分数，两者相乘再求和；谁被用得太偏这项就大，梯度会把门往平均那边推。这项只在训练时有。</li><li>把词送到专家手里有两套代码：训练时每个词复制 k 份、逐个专家跑；推理时先按专家排序再一次算完，跨卡时用 all_to_all 把词发到有这个专家的机器上。</li></ul>
+          <div class="foot">
+            <span><b>1,975</b> 行</span>
+            <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -579,7 +623,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 15 张 · 纯静态，无后端</div>
+    <div>已拆 17 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

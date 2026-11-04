@@ -1077,6 +1077,146 @@
       ],
       "thumb": "assets/thumbs/dualpipe.png",
       "diagram": "assets/diagrams/dualpipe.html"
+    },
+    {
+      "id": "engram",
+      "title": "Engram",
+      "headline": "查表能解决的，别算",
+      "tagline": "有些事不用算，查一下就行：把词组搭配存成一张巨大的表，用的时候按地址取几行。",
+      "plain": "大模型扩容基本靠「多请几个专家来算」，但有些东西其实不用算——比如常见的词组搭配，查一下就够了。Engram 就是这个思路：把 2 个词、3 个词的组合做成一张巨大的查询表，每个词按固定规则算出几个地址，直接去表里取几行向量，再和当前状态融在一起。表很大（十几亿参数），但每个词只取十几行，所以整张表可以放在主机内存里，几乎不拖慢推理。",
+      "repo": "deepseek-ai/Engram",
+      "revision": "fb7f84a21f91223715394a33a1dc24bbfb7f788e",
+      "langs": [
+        "Python"
+      ],
+      "loc": 422,
+      "date": "2026-11-04",
+      "tags": [
+        "稀疏",
+        "查表",
+        "n-gram"
+      ],
+      "insights": [
+        "表是按词组搭配建的：2 个词、3 个词的组合各一套，每套再拆成 8 个头，每个头用自己的质数取模，所以同一个组合会落进 8 个不同的桶。",
+        "地址是算出来的、不是学出来的：先把文本归一化（大小写、全半角、重音都抹平），再用固定乘子做「乘加再异或」取模。同样输入永远同样地址，表才能放主机内存按需搬。",
+        "取出来的向量不直接相加：先跟当前状态做点积当门（4 条并行连接各一个门），乘完再叠一个很短的卷积把相邻记忆抹平，最后加回残差。"
+      ],
+      "sources": [
+        {
+          "path": "engram_demo_v1.py",
+          "line": 41,
+          "end_line": 48,
+          "label": "整体入口"
+        },
+        {
+          "path": "engram_demo_v1.py",
+          "line": 60,
+          "end_line": 110,
+          "label": "文本归一化"
+        },
+        {
+          "path": "engram_demo_v1.py",
+          "line": 214,
+          "end_line": 231,
+          "label": "哈希地址"
+        },
+        {
+          "path": "engram_demo_v1.py",
+          "line": 262,
+          "end_line": 296,
+          "label": "2-gram / 3-gram 表"
+        },
+        {
+          "path": "engram_demo_v1.py",
+          "line": 305,
+          "end_line": 324,
+          "label": "按地址取行"
+        },
+        {
+          "path": "engram_demo_v1.py",
+          "line": 365,
+          "end_line": 378,
+          "label": "门控"
+        },
+        {
+          "path": "engram_demo_v1.py",
+          "line": 389,
+          "end_line": 393,
+          "label": "残差加回"
+        }
+      ],
+      "thumb": "assets/thumbs/engram.png",
+      "diagram": "assets/diagrams/engram.html"
+    },
+    {
+      "id": "deepseekmoe-routing",
+      "title": "DeepSeekMoE 路由",
+      "headline": "专家怎么分，才不挤一个",
+      "tagline": "这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。",
+      "plain": "这段代码躺在 DeepSeek-VL2 的仓库里，是官方 V2 的建模实现——V2 和 DeepSeek-MoE 两个仓库只放了论文和图片，没放代码。它干的事是：把一大坨计算拆成很多个「小专家」，每个词只请其中几个来算，省算力也更懂行。风险是所有词都去找同一个专家，所以训练时要额外扣分：谁被用得太偏，就把分数往回拉。",
+      "repo": "deepseek-ai/DeepSeek-VL2",
+      "revision": "ef9f91e2b6426536b83294c11742c27be66361b1",
+      "langs": [
+        "Python"
+      ],
+      "loc": 1975,
+      "date": "2026-11-04",
+      "tags": [
+        "MoE",
+        "路由",
+        "负载均衡"
+      ],
+      "insights": [
+        "把一个大前馈层拆成很多个窄的，每个词只请几个——能拼出来的组合比单个大层多得多，参数涨了，但每个词只付几个专家的算力。",
+        "训练时多了一项扣分：统计每个专家被选中的比例和它拿到的平均分数，两者相乘再求和；谁被用得太偏这项就大，梯度会把门往平均那边推。这项只在训练时有。",
+        "把词送到专家手里有两套代码：训练时每个词复制 k 份、逐个专家跑；推理时先按专家排序再一次算完，跨卡时用 all_to_all 把词发到有这个专家的机器上。"
+      ],
+      "sources": [
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 393,
+          "end_line": 417,
+          "label": "Gate 打分"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 424,
+          "end_line": 438,
+          "label": "top-k 选择"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 445,
+          "end_line": 466,
+          "label": "分组受限选专家"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 499,
+          "end_line": 527,
+          "label": "aux loss（训练期才有）"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 531,
+          "end_line": 549,
+          "label": "AddAuxiliaryLoss"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 552,
+          "end_line": 597,
+          "label": "专家层"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 622,
+          "end_line": 645,
+          "label": "EP all_to_all"
+        }
+      ],
+      "thumb": "assets/thumbs/deepseekmoe-routing.png",
+      "diagram": "assets/diagrams/deepseekmoe-routing.html"
     }
   ],
   "roadmap": [
