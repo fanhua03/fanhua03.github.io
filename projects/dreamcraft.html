@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DreamCraft3D 架构图｜一句话长出一个 3D 模型 · 开源项目可视化拆解</title>
+<meta name="description" content="一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DreamCraft3D 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/dreamcraft.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DreamCraft3D 架构图｜一句话长出一个 3D 模型 · 开源项目可视化拆解" />
+<meta property="og:description" content="一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DreamCraft3D 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dreamcraft.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DreamCraft3D 架构图｜一句话长出一个 3D 模型","description":"一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DreamCraft3D","codeRepository":"https://github.com/deepseek-ai/DreamCraft3D"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DreamCraft3D</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DreamCraft3D</span> 架构图｜一句话长出一个 3D 模型</h1>
+    <p class="sub">一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。</p>
+    <p class="plain"><b>人话版</b>它能把一句话变成一个有形状、有颜色的 3D 模型。办法是先在 3D 里捏个大概，从各个角度拍成图，让一个会画画的 AI 挑毛病，按意见改；改完再拍、再挑，形状对了再刷颜色。那个 AI 还会拿这些图自己学一遍，越学越懂这个物体。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DreamCraft3D" target="_blank" rel="noopener">deepseek-ai/DreamCraft3D</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 44,915 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/dreamcraft.html" title="DreamCraft3D 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/dreamcraft.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>先在 3D 里捏个大概（256 分辨率的隐式场），再从里面抽出一层皮做成网格，最后只在这层皮上刷颜色（1024 分辨率、几何冻住）。</li><li>判断像不像，是把 3D 从随机角度拍成图，让两个画图模型各猜一次噪声，用两次猜的差去改 3D。</li><li>它还会拿自己刚拍出来的图把其中一个画图模型再教一遍，教完更懂这个物体，下一轮挑毛病更准。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/threestudio/systems/dreamcraft3d.py#L25" rel="noopener" target="_blank">threestudio/systems/dreamcraft3d.py:25–27</a></code><span>coarse/geometry/texture 三段</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/configs/dreamcraft3d-coarse-neus.yaml#L5" rel="noopener" target="_blank">configs/dreamcraft3d-coarse-neus.yaml:5–12</a></code><span>粗阶段 256</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/configs/dreamcraft3d-geometry.yaml#L42" rel="noopener" target="_blank">configs/dreamcraft3d-geometry.yaml:42–49</a></code><span>抽网格</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/configs/dreamcraft3d-texture.yaml#L42" rel="noopener" target="_blank">configs/dreamcraft3d-texture.yaml:42–59</a></code><span>纹理阶段 / 几何冻结</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/threestudio/models/guidance/stable_diffusion_bsd_guidance.py#L704" rel="noopener" target="_blank">threestudio/models/guidance/stable_diffusion_bsd_guidance.py:704–766</a></code><span>两个 UNet 的噪声差</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/threestudio/models/guidance/stable_diffusion_bsd_guidance.py#L896" rel="noopener" target="_blank">threestudio/models/guidance/stable_diffusion_bsd_guidance.py:896–939</a></code><span>train_lora</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/threestudio/models/guidance/stable_zero123_guidance.py#L203" rel="noopener" target="_blank">threestudio/models/guidance/stable_zero123_guidance.py:203–225</a></code><span>视图条件编码</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DreamCraft3D/blob/5829ef116d36c871ce2b9e54a6153dd3856a1561/threestudio/models/renderers/nvdiff_rasterizer.py#L18" rel="noopener" target="_blank">threestudio/models/renderers/nvdiff_rasterizer.py:18–32</a></code><span>可微光栅化</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepspec.html"><span class="lbl">← 上一个</span>DeepSpec</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 21 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

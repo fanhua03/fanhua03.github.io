@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSpec 架构图｜先猜一块，再一次验完 · 开源项目可视化拆解</title>
+<meta name="description" content="让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSpec 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepspec.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSpec 架构图｜先猜一块，再一次验完 · 开源项目可视化拆解" />
+<meta property="og:description" content="让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSpec 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepspec.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSpec 架构图｜先猜一块，再一次验完","description":"让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSpec","codeRepository":"https://github.com/deepseek-ai/DeepSpec"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSpec</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSpec</span> 架构图｜先猜一块，再一次验完</h1>
+    <p class="sub">让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。</p>
+    <p class="plain"><b>人话版</b>它是给大模型提速的：让一个小号的「草稿模型」先猜出后面几个字，再让大模型一次性检查这些猜测对不对。猜对几个就一次收下几个，不用一个字一个字地算。这个仓库主要是在训练那个草稿模型，另外带一套评测代码，用来量到底能快多少。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSpec" target="_blank" rel="noopener">deepseek-ai/DeepSpec</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 11,244 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepspec.html" title="DeepSpec 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepspec.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>草稿模型很小，只有 5 层，靠抄大模型中间几层的「内部笔记」来猜（第 1/9/17/25/33 层）。</li><li>它一次猜 7 个字，猜完先给自己打分，没把握的后半截直接砍掉，再交给大模型一次验完整块。</li><li>验证时逐个比概率，一旦有一个不对，后面的全丢，只收下对的那段再补 1 个新的；每轮收下几个字就是加速倍数。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/config/dspark/dspark_qwen3_4b.py#L10" rel="noopener" target="_blank">config/dspark/dspark_qwen3_4b.py:10–16</a></code><span>block 7 / 5 层</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/eval/dspark/draft_ops.py#L22" rel="noopener" target="_blank">deepspec/eval/dspark/draft_ops.py:22–45</a></code><span>整块一次前向</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/eval/dspark/draft_ops.py#L82" rel="noopener" target="_blank">deepspec/eval/dspark/draft_ops.py:82–93</a></code><span>置信度截断</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/eval/base_evaluator.py#L186" rel="noopener" target="_blank">deepspec/eval/base_evaluator.py:186–229</a></code><span>一次验完整块</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/eval/base_evaluator.py#L240" rel="noopener" target="_blank">deepspec/eval/base_evaluator.py:240–293</a></code><span>拒绝采样 + bonus token</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/eval/base_evaluator.py#L482" rel="noopener" target="_blank">deepspec/eval/base_evaluator.py:482–510</a></code><span>接受率统计</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/modeling/dspark/markov_head.py#L55" rel="noopener" target="_blank">deepspec/modeling/dspark/markov_head.py:55–90</a></code><span>半自回归采样</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/trainer/dspark_trainer.py#L25" rel="noopener" target="_blank">deepspec/trainer/dspark_trainer.py:25–39</a></code><span>训练一步</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="dsrecipe.html"><span class="lbl">← 上一个</span>deepseek-recipe</a>
+    <a href="dreamcraft.html"><span class="lbl">下一个 →</span>DreamCraft3D</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 21 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

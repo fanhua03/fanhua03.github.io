@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>19</b><span>已拆</span></div>
+      <div class="stat"><b>21</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -93,6 +93,11 @@
     <button class="chip" data-f="协议转换">协议转换</button>
     <button class="chip" data-f="Rust">Rust</button>
     <button class="chip" data-f="流式">流式</button>
+    <button class="chip" data-f="投机解码">投机解码</button>
+    <button class="chip" data-f="推理加速">推理加速</button>
+    <button class="chip" data-f="文生 3D">文生 3D</button>
+    <button class="chip" data-f="SDS">SDS</button>
+    <button class="chip" data-f="扩散先验">扩散先验</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -476,6 +481,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/deepspec.html" data-search="deepspec deepseek-ai/deepspec 投机解码 推理加速 训练 让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepspec.png" alt="DeepSpec 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSpec</span>
+            <span class="repo">deepseek-ai/DeepSpec</span>
+            <span class="tags"><span class="tag">投机解码</span><span class="tag">推理加速</span><span class="tag">训练</span></span>
+          </div>
+          <div class="tagline">让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。</div>
+          <ul class="ins"><li>草稿模型很小，只有 5 层，靠抄大模型中间几层的「内部笔记」来猜（第 1/9/17/25/33 层）。</li><li>它一次猜 7 个字，猜完先给自己打分，没把握的后半截直接砍掉，再交给大模型一次验完整块。</li><li>验证时逐个比概率，一旦有一个不对，后面的全丢，只收下对的那段再补 1 个新的；每轮收下几个字就是加速倍数。</li></ul>
+          <div class="foot">
+            <span><b>11,244</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dreamcraft.html" data-search="dreamcraft3d deepseek-ai/dreamcraft3d 文生 3d sds 扩散先验 一句话加一张参考图，先在 3d 里捏出大概形状，再抽成网格、刷上颜色。">
+        <div class="thumb">
+          <img src="assets/thumbs/dreamcraft.png" alt="DreamCraft3D 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DreamCraft3D</span>
+            <span class="repo">deepseek-ai/DreamCraft3D</span>
+            <span class="tags"><span class="tag">文生 3D</span><span class="tag">SDS</span><span class="tag">扩散先验</span></span>
+          </div>
+          <div class="tagline">一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。</div>
+          <ul class="ins"><li>先在 3D 里捏个大概（256 分辨率的隐式场），再从里面抽出一层皮做成网格，最后只在这层皮上刷颜色（1024 分辨率、几何冻住）。</li><li>判断像不像，是把 3D 从随机角度拍成图，让两个画图模型各猜一次噪声，用两次猜的差去改 3D。</li><li>它还会拿自己刚拍出来的图把其中一个画图模型再教一遍，教完更懂这个物体，下一轮挑毛病更准。</li></ul>
+          <div class="foot">
+            <span><b>44,915</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -667,7 +712,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 19 张 · 纯静态，无后端</div>
+    <div>已拆 21 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

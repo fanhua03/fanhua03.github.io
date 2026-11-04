@@ -1354,6 +1354,158 @@
       ],
       "thumb": "assets/thumbs/dsrecipe.png",
       "diagram": "assets/diagrams/dsrecipe.html"
+    },
+    {
+      "id": "deepspec",
+      "title": "DeepSpec",
+      "headline": "先猜一块，再一次验完",
+      "tagline": "让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。",
+      "plain": "它是给大模型提速的：让一个小号的「草稿模型」先猜出后面几个字，再让大模型一次性检查这些猜测对不对。猜对几个就一次收下几个，不用一个字一个字地算。这个仓库主要是在训练那个草稿模型，另外带一套评测代码，用来量到底能快多少。",
+      "repo": "deepseek-ai/DeepSpec",
+      "revision": "005e03b81cec38b7da6399833d609ee89a2587f2",
+      "langs": [
+        "Python"
+      ],
+      "loc": 11244,
+      "date": "2026-11-04",
+      "tags": [
+        "投机解码",
+        "推理加速",
+        "训练"
+      ],
+      "insights": [
+        "草稿模型很小，只有 5 层，靠抄大模型中间几层的「内部笔记」来猜（第 1/9/17/25/33 层）。",
+        "它一次猜 7 个字，猜完先给自己打分，没把握的后半截直接砍掉，再交给大模型一次验完整块。",
+        "验证时逐个比概率，一旦有一个不对，后面的全丢，只收下对的那段再补 1 个新的；每轮收下几个字就是加速倍数。"
+      ],
+      "sources": [
+        {
+          "path": "config/dspark/dspark_qwen3_4b.py",
+          "line": 10,
+          "end_line": 16,
+          "label": "block 7 / 5 层"
+        },
+        {
+          "path": "deepspec/eval/dspark/draft_ops.py",
+          "line": 22,
+          "end_line": 45,
+          "label": "整块一次前向"
+        },
+        {
+          "path": "deepspec/eval/dspark/draft_ops.py",
+          "line": 82,
+          "end_line": 93,
+          "label": "置信度截断"
+        },
+        {
+          "path": "deepspec/eval/base_evaluator.py",
+          "line": 186,
+          "end_line": 229,
+          "label": "一次验完整块"
+        },
+        {
+          "path": "deepspec/eval/base_evaluator.py",
+          "line": 240,
+          "end_line": 293,
+          "label": "拒绝采样 + bonus token"
+        },
+        {
+          "path": "deepspec/eval/base_evaluator.py",
+          "line": 482,
+          "end_line": 510,
+          "label": "接受率统计"
+        },
+        {
+          "path": "deepspec/modeling/dspark/markov_head.py",
+          "line": 55,
+          "end_line": 90,
+          "label": "半自回归采样"
+        },
+        {
+          "path": "deepspec/trainer/dspark_trainer.py",
+          "line": 25,
+          "end_line": 39,
+          "label": "训练一步"
+        }
+      ],
+      "thumb": "assets/thumbs/deepspec.png",
+      "diagram": "assets/diagrams/deepspec.html"
+    },
+    {
+      "id": "dreamcraft",
+      "title": "DreamCraft3D",
+      "headline": "一句话长出一个 3D 模型",
+      "tagline": "一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。",
+      "plain": "它能把一句话变成一个有形状、有颜色的 3D 模型。办法是先在 3D 里捏个大概，从各个角度拍成图，让一个会画画的 AI 挑毛病，按意见改；改完再拍、再挑，形状对了再刷颜色。那个 AI 还会拿这些图自己学一遍，越学越懂这个物体。",
+      "repo": "deepseek-ai/DreamCraft3D",
+      "revision": "5829ef116d36c871ce2b9e54a6153dd3856a1561",
+      "langs": [
+        "Python"
+      ],
+      "loc": 44915,
+      "date": "2026-11-04",
+      "tags": [
+        "文生 3D",
+        "SDS",
+        "扩散先验"
+      ],
+      "insights": [
+        "先在 3D 里捏个大概（256 分辨率的隐式场），再从里面抽出一层皮做成网格，最后只在这层皮上刷颜色（1024 分辨率、几何冻住）。",
+        "判断像不像，是把 3D 从随机角度拍成图，让两个画图模型各猜一次噪声，用两次猜的差去改 3D。",
+        "它还会拿自己刚拍出来的图把其中一个画图模型再教一遍，教完更懂这个物体，下一轮挑毛病更准。"
+      ],
+      "sources": [
+        {
+          "path": "threestudio/systems/dreamcraft3d.py",
+          "line": 25,
+          "end_line": 27,
+          "label": "coarse/geometry/texture 三段"
+        },
+        {
+          "path": "configs/dreamcraft3d-coarse-neus.yaml",
+          "line": 5,
+          "end_line": 12,
+          "label": "粗阶段 256"
+        },
+        {
+          "path": "configs/dreamcraft3d-geometry.yaml",
+          "line": 42,
+          "end_line": 49,
+          "label": "抽网格"
+        },
+        {
+          "path": "configs/dreamcraft3d-texture.yaml",
+          "line": 42,
+          "end_line": 59,
+          "label": "纹理阶段 / 几何冻结"
+        },
+        {
+          "path": "threestudio/models/guidance/stable_diffusion_bsd_guidance.py",
+          "line": 704,
+          "end_line": 766,
+          "label": "两个 UNet 的噪声差"
+        },
+        {
+          "path": "threestudio/models/guidance/stable_diffusion_bsd_guidance.py",
+          "line": 896,
+          "end_line": 939,
+          "label": "train_lora"
+        },
+        {
+          "path": "threestudio/models/guidance/stable_zero123_guidance.py",
+          "line": 203,
+          "end_line": 225,
+          "label": "视图条件编码"
+        },
+        {
+          "path": "threestudio/models/renderers/nvdiff_rasterizer.py",
+          "line": 18,
+          "end_line": 32,
+          "label": "可微光栅化"
+        }
+      ],
+      "thumb": "assets/thumbs/dreamcraft.png",
+      "diagram": "assets/diagrams/dreamcraft.html"
     }
   ],
   "roadmap": [
