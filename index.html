@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS 已拆，22 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS 已拆，22 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=a858b929" />
@@ -39,8 +39,8 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>2</b><span>已拆</span></div>
-      <div class="stat"><b id="s-queue">22</b><span>排队中</span></div>
+      <div class="stat"><b>3</b><span>已拆</span></div>
+      <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
     </div>
@@ -54,6 +54,8 @@
     <button class="chip" data-f="分布式">分布式</button>
     <button class="chip" data-f="存储">存储</button>
     <button class="chip" data-f="C++">C++</button>
+    <button class="chip" data-f="数据库">数据库</button>
+    <button class="chip" data-f="事件循环">事件循环</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -97,12 +99,32 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/redis.html" data-search="redis redis/redis 数据库 事件循环 c 从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。">
+        <div class="thumb">
+          <img src="assets/thumbs/redis.png" alt="Redis 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">Redis</span>
+            <span class="repo">redis/redis</span>
+            <span class="tags"><span class="tag">数据库</span><span class="tag">事件循环</span><span class="tag">C</span></span>
+          </div>
+          <div class="tagline">从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。</div>
+          <ul class="ins"><li>命令执行全程无锁——因为只有一条线程在跑。瓶颈从来不是 CPU：一次网络往返 0.1ms，执行一条 GET 只要几微秒。</li><li>5 个字段的 hash 不是哈希表，是一段连续内存（listpack）；超过阈值才转 dict，转完不回头。</li><li>fsync 从不在主线程：命令先进 aof_buf，beforeSleep 刷进内核，真正落盘交给 bio 线程。</li></ul>
+          <div class="foot">
+            <span><b>211,728</b> 行</span>
+            <span><b>10</b> 处 file:line</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
     <div class="section-title" style="margin-top:56px">
       <h2>待拆清单</h2>
-      <p>22 个热门项目 · 点任意一行排进队列 · 攒够 3 人就开工</p>
+      <p>21 个热门项目 · 点任意一行排进队列 · 攒够 3 人就开工</p>
     </div>
     <div class="list">
       <div class="row-i" data-ask="react">
@@ -152,13 +174,6 @@
         <div class="rhook">autograd 的图什么时候建、什么时候释放</div>
         <div class="rstars">105.1k ★</div>
         <div class="rlang">Py</div>
-        <div class="rgo">点单 →</div>
-      </div>
-      <div class="row-i" data-ask="redis">
-        <div><div class="rname">Redis</div><div class="rrepo">redis/redis</div></div>
-        <div class="rhook">单线程事件循环凭什么撑十万 QPS</div>
-        <div class="rstars">77.2k ★</div>
-        <div class="rlang">C</div>
         <div class="rgo">点单 →</div>
       </div>
       <div class="row-i" data-ask="moby">
@@ -295,7 +310,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
-    <div>已拆 2 张 · 纯静态，无后端</div>
+    <div>已拆 3 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

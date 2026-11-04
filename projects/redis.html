@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Redis 架构图｜一条命令跑完，为什么一个线程就够 · 开源项目可视化拆解</title>
+<meta name="description" content="从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/redis.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="Redis 架构图｜一条命令跑完，为什么一个线程就够 · 开源项目可视化拆解" />
+<meta property="og:description" content="从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/redis.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Redis 架构图｜一条命令跑完，为什么一个线程就够","description":"从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"Redis","codeRepository":"https://github.com/redis/redis"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>Redis</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">Redis</span> 架构图｜一条命令跑完，为什么一个线程就够</h1>
+    <p class="sub">从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/redis/redis" target="_blank" rel="noopener">redis/redis</a></span>
+      <span><b>语言</b> C</span>
+      <span><b>规模</b> 211,728 行</span>
+      <span><b>证据</b> 10 处 file:line</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/redis.html" title="Redis 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/redis.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>命令执行全程无锁——因为只有一条线程在跑。瓶颈从来不是 CPU：一次网络往返 0.1ms，执行一条 GET 只要几微秒。</li><li>5 个字段的 hash 不是哈希表，是一段连续内存（listpack）；超过阈值才转 dict，转完不回头。</li><li>fsync 从不在主线程：命令先进 aof_buf，beforeSleep 刷进内核，真正落盘交给 bio 线程。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/ae.c#L497" rel="noopener" target="_blank">src/ae.c:497</a></code><span>aeMain 主循环</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/server.c#L4672" rel="noopener" target="_blank">src/server.c:4672</a></code><span>processCommand</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/server.c#L4163" rel="noopener" target="_blank">src/server.c:4163</a></code><span>call() 执行命令</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/networking.c#L4004" rel="noopener" target="_blank">src/networking.c:4004</a></code><span>readQueryFromClient</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/db.c#L302" rel="noopener" target="_blank">src/db.c:302</a></code><span>lookupKey + 惰性过期</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/aof.c#L1671" rel="noopener" target="_blank">src/aof.c:1671</a></code><span>feedAppendOnlyFile</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/aof.c#L1409" rel="noopener" target="_blank">src/aof.c:1409</a></code><span>flushAppendOnlyFile</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/bio.c#L127" rel="noopener" target="_blank">src/bio.c:127</a></code><span>bioInit 后台线程</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/rdb.c#L2352" rel="noopener" target="_blank">src/rdb.c:2352</a></code><span>rdbSaveBackground fork</span></li>
+      <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/replication.c#L656" rel="noopener" target="_blank">src/replication.c:656</a></code><span>replicationFeedSlaves</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="3fs.html"><span class="lbl">← 上一个</span>3FS</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>已拆 3 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

@@ -149,6 +149,83 @@
           "label": "无状态元数据"
         }
       ]
+    },
+    {
+      "id": "redis",
+      "title": "Redis",
+      "headline": "一条命令跑完，为什么一个线程就够",
+      "tagline": "从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。",
+      "repo": "redis/redis",
+      "revision": "8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5",
+      "langs": [
+        "C"
+      ],
+      "loc": 211728,
+      "date": "2026-11-04",
+      "tags": [
+        "数据库",
+        "事件循环",
+        "C"
+      ],
+      "thumb": "assets/thumbs/redis.png",
+      "diagram": "assets/diagrams/redis.html",
+      "insights": [
+        "命令执行全程无锁——因为只有一条线程在跑。瓶颈从来不是 CPU：一次网络往返 0.1ms，执行一条 GET 只要几微秒。",
+        "5 个字段的 hash 不是哈希表，是一段连续内存（listpack）；超过阈值才转 dict，转完不回头。",
+        "fsync 从不在主线程：命令先进 aof_buf，beforeSleep 刷进内核，真正落盘交给 bio 线程。"
+      ],
+      "sources": [
+        {
+          "path": "src/ae.c",
+          "line": 497,
+          "label": "aeMain 主循环"
+        },
+        {
+          "path": "src/server.c",
+          "line": 4672,
+          "label": "processCommand"
+        },
+        {
+          "path": "src/server.c",
+          "line": 4163,
+          "label": "call() 执行命令"
+        },
+        {
+          "path": "src/networking.c",
+          "line": 4004,
+          "label": "readQueryFromClient"
+        },
+        {
+          "path": "src/db.c",
+          "line": 302,
+          "label": "lookupKey + 惰性过期"
+        },
+        {
+          "path": "src/aof.c",
+          "line": 1671,
+          "label": "feedAppendOnlyFile"
+        },
+        {
+          "path": "src/aof.c",
+          "line": 1409,
+          "label": "flushAppendOnlyFile"
+        },
+        {
+          "path": "src/bio.c",
+          "line": 127,
+          "label": "bioInit 后台线程"
+        },
+        {
+          "path": "src/rdb.c",
+          "line": 2352,
+          "label": "rdbSaveBackground fork"
+        },
+        {
+          "path": "src/replication.c",
+          "line": 656,
+          "label": "replicationFeedSlaves"
+        }
+      ]
     }
   ],
   "roadmap": [
@@ -200,13 +277,6 @@
       105114,
       "Py",
       "autograd 的图什么时候建、什么时候释放"
-    ],
-    [
-      "Redis",
-      "redis/redis",
-      77170,
-      "C",
-      "单线程事件循环凭什么撑十万 QPS"
     ],
     [
       "Moby",
