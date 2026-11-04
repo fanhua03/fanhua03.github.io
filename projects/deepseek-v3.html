@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头 · 开源项目可视化拆解</title>
-<meta name="description" content="官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-V3 的源码行。" />
+<meta name="description" content="官方推理代码：一个词进来，模型怎么一步步算出下一个词。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-V3 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/deepseek-v3.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头 · 开源项目可视化拆解" />
-<meta property="og:description" content="官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-V3 的源码行。" />
+<meta property="og:description" content="官方推理代码：一个词进来，模型怎么一步步算出下一个词。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-V3 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepseek-v3.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头","description":"官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-V3 inference","codeRepository":"https://github.com/deepseek-ai/DeepSeek-V3"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-V3 inference 架构图｜576 个数撑起 128 个头","description":"官方推理代码：一个词进来，模型怎么一步步算出下一个词。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-V3 inference","codeRepository":"https://github.com/deepseek-ai/DeepSeek-V3"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">DeepSeek-V3 inference</span> 架构图｜576 个数撑起 128 个头</h1>
-    <p class="sub">官方推理参考实现：一次 forward 里 MLA 的吸收与 MoE 的两道路由闸怎么接上。</p>
+    <p class="sub">官方推理代码：一个词进来，模型怎么一步步算出下一个词。</p>
+    <p class="plain"><b>人话版</b>这是 DeepSeek-V3 官方的推理参考代码，就一页 Python。它回答的是：给一段话，模型内部按什么顺序算，才能吐出下一个词。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-V3" target="_blank" rel="noopener">deepseek-ai/DeepSeek-V3</a></span>
       <span><b>语言</b> Python</span>
       <span><b>规模</b> 1,397 行</span>
-      <span><b>证据</b> 6 处 file:line</span>
+      <span><b>出处</b> 6 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>kv_cache 只存 kv_lora_rank=512，pe_cache 只存 qk_rope_head_dim=64，都是 bf16；128 个头 ×(128 nope+128 v)=32768 维的 K/V 从不落盘，576/32768 ≈ 1.76%。</li><li>「吸收」发生在打分之前：q_nope 先乘 wkv_b 的 K 半把 128 维折进 512 维 latent，于是打分只剩两个 einsum；输出侧再乘 V 半还原 128 维。</li><li>路由是两道闸：256 个专家分 8 组，按组内 top-2 之和选出 4 组（其余置 -inf），再在 128 个候选里 top-8；权重取未加 bias 的 sigmoid 原值，归一化后乘 route_scale=2.5。</li></ul>
+  <ul class="ins"><li>128 个头要用的数据其实不用都存：只存 512 个压缩后的数 + 64 个位置数，一共 576 个；老老实实存要 32768 个——只要 1.76%。</li><li>压缩是在算分之前做的：先把提问也折进这 512 维里，于是「打分」变成两个小矩阵相乘；算完再把结果展开回 128 维。</li><li>挑专家分两道筛：256 个专家先按 8 组选出 4 组，再在这 4 组里挑 8 个；权重用原始分值归一化，不额外加偏置。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -72,7 +73,7 @@
     <a href="deepep.html"><span class="lbl">下一个 →</span>DeepEP</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>

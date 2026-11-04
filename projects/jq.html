@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>jq 架构图｜把过滤器编译成一台会倒退的虚拟机 · 开源项目可视化拆解</title>
-<meta name="description" content="你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。 交互式架构图，7 处结论可直接跳到 jqlang/jq 的源码行。" />
+<meta name="description" content="一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。 交互式架构图，7 处结论可直接跳到 jqlang/jq 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/jq.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="jq 架构图｜把过滤器编译成一台会倒退的虚拟机 · 开源项目可视化拆解" />
-<meta property="og:description" content="你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。 交互式架构图，7 处结论可直接跳到 jqlang/jq 的源码行。" />
+<meta property="og:description" content="一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。 交互式架构图，7 处结论可直接跳到 jqlang/jq 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/jq.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"jq 架构图｜把过滤器编译成一台会倒退的虚拟机","description":"你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"jq","codeRepository":"https://github.com/jqlang/jq"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"jq 架构图｜把过滤器编译成一台会倒退的虚拟机","description":"一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"jq","codeRepository":"https://github.com/jqlang/jq"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">jq</span> 架构图｜把过滤器编译成一台会倒退的虚拟机</h1>
-    <p class="sub">你写的过滤器会被编成 42 条指令，跑在一台会倒带的虚拟机上。</p>
+    <p class="sub">一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。</p>
+    <p class="plain"><b>人话版</b>jq 是命令行里处理 JSON 的小工具。奇怪的是你给它一条规则，它可能一次吐出好几个结果——因为它会「存档读档」：算出一个就先记下算到哪了，下次从记下的地方接着算。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/jqlang/jq" target="_blank" rel="noopener">jqlang/jq</a></span>
       <span><b>语言</b> C</span>
       <span><b>规模</b> 28,460 行</span>
-      <span><b>证据</b> 7 处 file:line</span>
+      <span><b>出处</b> 7 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>没有协程也没有 yield：FORK 把 (pc, 栈顶) 拍进回溯栈，BACKTRACK 再从存档接着算——所以 .[] 能一个接一个吐值。</li><li>编译顺序是反的：builtin.jq 里 107 个 def 是 jq 源码，必须先绑进你的程序，再生成字节码。</li><li>最长的文件不是 VM：jv_dtoa.c 有 4276 行，只为让 1e1000 打印出来还是 1e1000。</li></ul>
+  <ul class="ins"><li>一条规则能吐出好几个结果（比如 .[]），靠的是「存档」：算出一个结果就先记住算到哪了，下次从那儿接着算，不用重头来。</li><li>它自带的那批函数（map、select 这些）不是 C 写的，就是用 jq 自己的语言写的源码，编译时和你的程序拼在一起——所以得先「对上名字」再「翻译成机器指令」。</li><li>整个仓库最长的文件不是执行引擎，是一个专门把小数打印得和输入一模一样的库（4276 行）。就为了让 1e1000 原样输出，不要变成 inf。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -73,7 +74,7 @@
     <a href="3fs.html"><span class="lbl">下一个 →</span>3FS</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>

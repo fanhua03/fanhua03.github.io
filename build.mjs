@@ -64,7 +64,7 @@ const topbar = (base, upto = "") => `<div class="topbar">
 </div>`;
 
 const footer = n => `<footer>
-    <div>${esc(DATA.site.name)} · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>${esc(DATA.site.name)} · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 ${n} 张 · 纯静态，无后端</div>
   </footer>`;
 
@@ -90,7 +90,7 @@ const cards = done.map(p => `
           <ul class="ins">${p.insights.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
           <div class="foot">
             <span><b>${num(p.loc)}</b> 行</span>
-            <span><b>${p.sources.length}</b> 处 file:line</span>
+            <span><b>${p.sources.length}</b> 处对得上源码</span>
             <span class="go">打开 →</span>
           </div>
         </div>
@@ -117,8 +117,8 @@ const indexHtml = fill(head({
   <header class="hero">
     <h1>你想看的开源项目，<br /><em>这里基本都有</em>。</h1>
     <p class="lede">
-      搜一下。搜不到就留个名字，排进下一批——不用自己开窗口问 AI，也不用翻三篇互相打架的博客。<br />
-      图打开就能看：能缩放、能拖拽，每个节点挂着 <code>file:line</code>，想深究再点过去。
+      搜一下，点开就能看。图能放大缩小、拖着走；每张图下面都有一句<strong>人话解释</strong>，看不懂术语就只看那句。<br />
+      想深究的，每个方块都标着它在源码的哪一行，点过去就是原文。搜不到？留个名字，我们拆。
     </p>
     <div class="search">
       <input id="q" type="search" placeholder="搜项目名：jq、3FS、Redis、Raft…" autocomplete="off" />
@@ -153,9 +153,9 @@ const indexHtml = fill(head({
     <p>三步，不用注册，不用装东西</p>
   </div>
   <div class="steps">
-    <div class="step"><b>01 · 搜</b><p>先搜项目名。搜不到不代表没有，可能只是还没排到——直接往下点单，不用换站。</p></div>
-    <div class="step"><b>02 · 看</b><p>每个项目一个独立页面，图能缩放、能拖拽，深色模式跟着系统走。每条结论后面挂着 file:line。</p></div>
-    <div class="step"><b>03 · 点单</b><p>留个项目名，同一个项目攒够 3 个人就开工，24 小时上架。免费，也不用注册。</p></div>
+    <div class="step"><b>01 · 搜</b><p>先搜项目名。搜不到不代表没有，可能只是还没排到——往下点单就行，不用换站。</p></div>
+    <div class="step"><b>02 · 看</b><p>一张能放大缩小的图，加一句人话解释。术语看不懂就跳过，只看人话那句也能明白它在干嘛。</p></div>
+    <div class="step"><b>03 · 点单</b><p>留个项目名。同一个项目攒够 3 个人就开工，一天内上架，不要钱也不用注册。</p></div>
   </div>
 
   <section class="ask" id="ask">
@@ -288,11 +288,12 @@ function projectPage(p, prev, next) {
   <header class="proj-head">
     <h1><span class="pn">${esc(p.title)}</span> 架构图｜${esc(p.headline)}</h1>
     <p class="sub">${esc(p.tagline)}</p>
+    ${p.plain ? `<p class="plain"><b>人话版</b>${esc(p.plain)}</p>` : ""}
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/${p.repo}" target="_blank" rel="noopener">${esc(p.repo)}</a></span>
       <span><b>语言</b> ${esc(p.langs.join(" / "))}</span>
       <span><b>规模</b> ${num(p.loc)} 行</span>
-      <span><b>证据</b> ${p.sources.length} 处 file:line</span>
+      <span><b>出处</b> ${p.sources.length} 处能对到源码</span>
       <span><b>更新</b> ${esc(p.date)}</span>
     </div>
   </header>

@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k · 开源项目可视化拆解</title>
-<meta name="description" content="DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
+<meta name="description" content="给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/flashmla.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k · 开源项目可视化拆解" />
-<meta property="og:description" content="DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
+<meta property="og:description" content="给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/flashmla.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k","description":"DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"FlashMLA","codeRepository":"https://github.com/deepseek-ai/FlashMLA"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k","description":"给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"FlashMLA","codeRepository":"https://github.com/deepseek-ai/FlashMLA"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">FlashMLA</span> 架构图｜一个 CTA 吃完 2048 个 top-k</h1>
-    <p class="sub">DeepSeek 的 MLA 注意力算子库：384 个线程、3 个 warpgroup 把分页量化 KV 的 decode 跑满。</p>
+    <p class="sub">给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</p>
+    <p class="plain"><b>人话版</b>FlashMLA 是一段专门给显卡写的计算程序，只干一件事：算注意力。它把一个 GPU 核心的活拆给 384 个线程，各管一段，最后拼起来。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/FlashMLA" target="_blank" rel="noopener">deepseek-ai/FlashMLA</a></span>
       <span><b>语言</b> CUDA C++ / Python</span>
       <span><b>规模</b> 19,093 行</span>
-      <span><b>证据</b> 8 处 file:line</span>
+      <span><b>出处</b> 8 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>MMA 的 M 维固定 64 个头、N 维 64 个 top-k token；384 个线程里 128 个算 exp、128 个反量化、1 个发 tcgen05 MMA、1 个搬原始行、1 个算 TMA 坐标。</li><li>分页 KV 的块号和块内偏移在 kernel 里现算，拼成 TMA 坐标后每次 gather4 搬 4 行，64 个 token 用 16 次发完；非法索引填 -1 让 TMA 自己跳过。</li><li>每 token 只占 528 B：512 维全部量化成 fp8 e4m3（连 64 维 RoPE 一起，没有 bf16 尾巴）+ 16 字节 ue8m0 scale（每 32 维一个）；fp4 版是 256 B。</li></ul>
+  <ul class="ins"><li>一个 GPU 核心里 384 个线程分工：128 个算指数、128 个把压缩过的数据还原、1 个发矩阵指令、1 个搬数据、1 个算地址——像流水线，各干一段。</li><li>数据是压缩着存的，用的时候才现算「第几页第几个」把它捞出来：一次搬 4 行，64 行分 16 次搬完；索引越界就填 -1，让硬件自己跳过。</li><li>压缩得很狠：512 个数字压成 8 位整数，连位置编码一起压，再配 16 字节缩放系数。一个 token 只占 528 字节；更狠的版本只占 256 字节。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -74,7 +75,7 @@
     <a href="deepseek-v3.html"><span class="lbl">下一个 →</span>DeepSeek-V3 inference</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>

@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token · 开源项目可视化拆解</title>
-<meta name="description" content="动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
+<meta name="description" content="把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/dsocr.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token · 开源项目可视化拆解" />
-<meta property="og:description" content="动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
+<meta property="og:description" content="把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsocr.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token","description":"动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-OCR","codeRepository":"https://github.com/deepseek-ai/DeepSeek-OCR"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token","description":"把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-OCR","codeRepository":"https://github.com/deepseek-ai/DeepSeek-OCR"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">DeepSeek-OCR</span> 架构图｜整页文档压成 273 个视觉 token</h1>
-    <p class="sub">动态切块 → SAM+CLIP 编码并做 16× 下采样 → 273 个视觉槽位 → MoE 解码器输出带坐标的 Markdown。</p>
+    <p class="sub">把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。</p>
+    <p class="plain"><b>人话版</b>DeepSeek-OCR 干两件事：先把一整页图压成几百个「视觉小块」，再把这些小块翻成文字，顺便告诉你每行字在页面上的位置。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-OCR" target="_blank" rel="noopener">deepseek-ai/DeepSeek-OCR</a></span>
       <span><b>语言</b> Python</span>
       <span><b>规模</b> 3,198 行</span>
-      <span><b>证据</b> 7 处 file:line</span>
+      <span><b>出处</b> 7 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>16× 压缩发生在编码器内部：SAM 的 16 像素 patch 把 1024² 变 64×64=4096 个位置，neck 后两次 stride-2 卷积压到 16×16=256 个 token。</li><li>一页的视觉开销固定是 273 个槽位：16×16 网格每行补 1 个 newline、末尾补 1 个 view_separator，即 16×17+1。</li><li>token 数只跟像素档位走、不跟字数走：512→64、640→100、1024→256、1280→400；版面坐标靠 &lt;|ref|&gt;…&lt;|det|&gt;[x1,y1,x2,y2] 从文本里还原。</li></ul>
+  <ul class="ins"><li>压缩发生在编码器里：一张 1024×1024 的图先切成 16 像素的小块，再两次减半，最后只剩 16×16=256 个 token。</li><li>一页的「视觉开销」是固定的 273 个：16×16 的格子每行补一个换行、末尾补一个分隔符，正好 16×17+1。</li><li>花多少 token 只看图片多大，不看字有多少：512 像素→64 个，1024→256 个，1280→400 个；位置则靠输出里的坐标标记还原。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -73,7 +74,7 @@
     <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>

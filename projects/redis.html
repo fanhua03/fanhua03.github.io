@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Redis 架构图｜一条命令跑完，为什么一个线程就够 · 开源项目可视化拆解</title>
-<meta name="description" content="从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
+<meta name="description" content="放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/redis.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="Redis 架构图｜一条命令跑完，为什么一个线程就够 · 开源项目可视化拆解" />
-<meta property="og:description" content="从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
+<meta property="og:description" content="放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/redis.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Redis 架构图｜一条命令跑完，为什么一个线程就够","description":"从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"Redis","codeRepository":"https://github.com/redis/redis"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Redis 架构图｜一条命令跑完，为什么一个线程就够","description":"放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"Redis","codeRepository":"https://github.com/redis/redis"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">Redis</span> 架构图｜一条命令跑完，为什么一个线程就够</h1>
-    <p class="sub">从 socket 可读到回包，全程一个线程；三条旁路解释它为什么敢这么干。</p>
+    <p class="sub">放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。</p>
+    <p class="plain"><b>人话版</b>Redis 是把数据放内存里的数据库。它快不是因为它会并行，而是因为它「一个人干活」——一条命令从头到尾只有一个线程处理，不用加锁、也不用等别人。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/redis/redis" target="_blank" rel="noopener">redis/redis</a></span>
       <span><b>语言</b> C</span>
       <span><b>规模</b> 211,728 行</span>
-      <span><b>证据</b> 10 处 file:line</span>
+      <span><b>出处</b> 10 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>命令执行全程无锁——因为只有一条线程在跑。瓶颈从来不是 CPU：一次网络往返 0.1ms，执行一条 GET 只要几微秒。</li><li>5 个字段的 hash 不是哈希表，是一段连续内存（listpack）；超过阈值才转 dict，转完不回头。</li><li>fsync 从不在主线程：命令先进 aof_buf，beforeSleep 刷进内核，真正落盘交给 bio 线程。</li></ul>
+  <ul class="ins"><li>一条命令从头到尾只有一个线程在处理，所以不用加锁、也不会互相等。真正的瓶颈是网络来回那一趟（0.1 毫秒），不是算得慢。</li><li>只存几个字段的小表，它不当哈希表存，而是塞进一段连续内存里——省地方，也更快，因为一次就能读进 CPU 缓存。字段多了才升级成正经哈希表。</li><li>写日志落盘不占主线程：命令先写进内存里的一块缓冲，主线程到点刷给系统，真正落盘交给后台线程。所以开了日志也不会明显变慢。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -76,7 +77,7 @@
     <a href="flashmla.html"><span class="lbl">下一个 →</span>FlashMLA</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>

@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3FS 架构图｜写一条链，读任意副本 · 开源项目可视化拆解</title>
-<meta name="description" content="写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
+<meta name="description" content="DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/3fs.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="3FS 架构图｜写一条链，读任意副本 · 开源项目可视化拆解" />
-<meta property="og:description" content="写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
+<meta property="og:description" content="DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/3fs.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"3FS 架构图｜写一条链，读任意副本","description":"写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"3FS","codeRepository":"https://github.com/deepseek-ai/3FS"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"3FS 架构图｜写一条链，读任意副本","description":"DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"3FS","codeRepository":"https://github.com/deepseek-ai/3FS"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">3FS</span> 架构图｜写一条链，读任意副本</h1>
-    <p class="sub">写只打链头，读随便挑一台。DeepSeek 的训练数据就躺在这上面。</p>
+    <p class="sub">DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</p>
+    <p class="plain"><b>人话版</b>3FS 是 DeepSeek 给训练用的「网盘」。同一份数据存三份排成一条链：写入只找链头，链头往下传；读的时候随便挑一台——所以副本越多，读得越快。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/3FS" target="_blank" rel="noopener">deepseek-ai/3FS</a></span>
       <span><b>语言</b> C++</span>
       <span><b>规模</b> 122,058 行</span>
-      <span><b>证据</b> 10 处 file:line</span>
+      <span><b>出处</b> 10 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>写只打链头，head 往下 forward，commit 再回传；读可以打链上任意一台——读带宽随副本数线性涨。</li><li>元数据服务完全无状态，inode / dentry 全在 FoundationDB 里，挂了换一台接着干。</li><li>FUSE 队列一把自旋锁只能跑 40 万次 4KiB 读/秒，所以它在守护进程里塞了个共享内存 + RDMA 的原生客户端。</li></ul>
+  <ul class="ins"><li>同一份数据存三份，排成一条链。写只找链头，链头一层层往下传；读随便挑一台都行——所以副本越多，读取越快。</li><li>「这个文件在哪、多大」这类目录信息不放在自己身上，全丢给一个外部数据库（FoundationDB）。所以每台元数据服务器都是无状态的，挂了换一台接着干。</li><li>系统自带的挂载方式（FUSE）太慢，每秒四十万次小读就卡住了。于是它在自己进程里开了条快速通道：应用直接往共享内存里写，网卡直接读走，不复制。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -76,7 +77,7 @@
     <a href="redis.html"><span class="lbl">下一个 →</span>Redis</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>

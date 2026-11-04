@@ -4,16 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>smallpond 架构图｜DuckDB 切片，3FS 上跑任务 · 开源项目可视化拆解</title>
-<meta name="description" content="DeepSeek 的轻量数据框架：逻辑计划 → 分区任务组 → 3FS 上的文件队列 → 每 task 一个 DuckDB 连接，全程无长驻服务。 交互式架构图，8 处结论可直接跳到 deepseek-ai/smallpond 的源码行。" />
+<meta name="description" content="海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。 交互式架构图，8 处结论可直接跳到 deepseek-ai/smallpond 的源码行。" />
 <link rel="canonical" href="https://fanhua03.github.io/projects/smallpond.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="smallpond 架构图｜DuckDB 切片，3FS 上跑任务 · 开源项目可视化拆解" />
-<meta property="og:description" content="DeepSeek 的轻量数据框架：逻辑计划 → 分区任务组 → 3FS 上的文件队列 → 每 task 一个 DuckDB 连接，全程无长驻服务。 交互式架构图，8 处结论可直接跳到 deepseek-ai/smallpond 的源码行。" />
+<meta property="og:description" content="海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。 交互式架构图，8 处结论可直接跳到 deepseek-ai/smallpond 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=a858b929" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/smallpond.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"smallpond 架构图｜DuckDB 切片，3FS 上跑任务","description":"DeepSeek 的轻量数据框架：逻辑计划 → 分区任务组 → 3FS 上的文件队列 → 每 task 一个 DuckDB 连接，全程无长驻服务。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"smallpond","codeRepository":"https://github.com/deepseek-ai/smallpond"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"smallpond 架构图｜DuckDB 切片，3FS 上跑任务","description":"海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"smallpond","codeRepository":"https://github.com/deepseek-ai/smallpond"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -36,12 +36,13 @@
 
   <header class="proj-head">
     <h1><span class="pn">smallpond</span> 架构图｜DuckDB 切片，3FS 上跑任务</h1>
-    <p class="sub">DeepSeek 的轻量数据框架：逻辑计划 → 分区任务组 → 3FS 上的文件队列 → 每 task 一个 DuckDB 连接，全程无长驻服务。</p>
+    <p class="sub">海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</p>
+    <p class="plain"><b>人话版</b>smallpond 是处理海量数据的框架。它把一个大作业切成很多小任务，扔到 3FS 上跑；每个小任务开一个 DuckDB 算完就退出，不留状态。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/smallpond" target="_blank" rel="noopener">deepseek-ai/smallpond</a></span>
       <span><b>语言</b> Python</span>
       <span><b>规模</b> 15,996 行</span>
-      <span><b>证据</b> 8 处 file:line</span>
+      <span><b>出处</b> 8 处能对到源码</span>
       <span><b>更新</b> 2026-11-04</span>
     </div>
   </header>
@@ -55,7 +56,7 @@
   </figure>
 
   <h2 class="blk">三个反直觉的地方</h2>
-  <ul class="ins"><li>Planner 把作业切成 producer/consumer 任务组：producer 数 = min(max, 2×executor×ceil(cpu/cpu_limit))，consumer 只合并同分区，不搬数据。</li><li>没有常驻服务：driver 只有 ray/scheduler/executor 三种模式，队列就是 data_root 下 enqueued/ 里的 zstd+pickle 文件，pop 靠 rename。</li><li>DuckDB 是每个 task 私有的 :memory: 连接：输入建成 read_parquet 视图，输出 COPY ... (FORMAT PARQUET, ZSTD, PER_THREAD_OUTPUT)。</li></ul>
+  <ul class="ins"><li>一个大作业被切成「生产任务」和「消费任务」两组：生产任务数按 worker 数和 CPU 数算出来；消费任务只合并不搬数据。</li><li>没有常驻服务：一个调度进程用 mpirun 拉起一堆 worker，任务队列就是 3FS 上的一个目录，取任务靠「改名」——谁改名成功谁拿走。</li><li>每个小任务开一个内存里的 DuckDB：读 Parquet、算完、写回 Parquet，进程就退。所以没有一堆常驻进程要养。</li></ul>
 
   <h2 class="blk">证据 · 每条都能点过去</h2>
   <ol class="ev">
@@ -74,7 +75,7 @@
     <a href="dsocr.html"><span class="lbl">下一个 →</span>DeepSeek-OCR</a>
   </div>
   <footer>
-    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每个节点都能点到 file:line</div>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
     <div>已拆 9 张 · 纯静态，无后端</div>
   </footer>
 </main>
