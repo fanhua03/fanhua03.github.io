@@ -1987,6 +1987,140 @@
       ],
       "thumb": "assets/thumbs/ep-ascend.png",
       "diagram": "assets/diagrams/ep-ascend.html"
+    },
+    {
+      "id": "deepseek-vl",
+      "title": "DeepSeek-VL",
+      "headline": "两个眼睛，一个预算",
+      "tagline": "v1 让两双眼睛同时看同一张图：一双看得细，一双看得懂，再把两边的印象拼起来。",
+      "plain": "这是 DeepSeek 第一代能看图的模型。它给同一张图配了两双眼睛：一双看得清细节，一双看得懂内容，各自把图折成一串数字，再拼起来交给语言模型说话。麻烦在于：不管图多大多小，最后都只占固定的那么多位置——长条图会被压扁、密表格会糊掉，这就是后来 v2 改成动态切图的原因。",
+      "repo": "deepseek-ai/DeepSeek-VL",
+      "revision": "681bffb4519856ad27cc17531aacde31ddf6f1a7",
+      "langs": [
+        "Python"
+      ],
+      "loc": 4391,
+      "date": "2026-11-04",
+      "tags": [
+        "多模态",
+        "视觉编码器",
+        "演进对照"
+      ],
+      "insights": [
+        "两双眼睛分工不同：一双吃 1024 的整图，负责「这儿有什么、在哪儿」；一双吃缩到 384 的小图，负责「这像什么」。",
+        "合的方式很朴素：两路各投一半维度，再在通道上拼起来——两边格子数必须一样，拼得上才不报错。",
+        "麻烦在「固定」两个字：长图先缩到 1024 再补成正方形，横条图补完一大半是底色；每张图固定占那么多位置，跟内容多少无关。"
+      ],
+      "sources": [
+        {
+          "path": "deepseek_vl/models/clip_encoder.py",
+          "line": 126,
+          "end_line": 145,
+          "label": "双塔入口"
+        },
+        {
+          "path": "deepseek_vl/models/clip_encoder.py",
+          "line": 146,
+          "end_line": 157,
+          "label": "只放开后几层卷积"
+        },
+        {
+          "path": "deepseek_vl/models/projector.py",
+          "line": 47,
+          "end_line": 52,
+          "label": "各投一半维度"
+        },
+        {
+          "path": "deepseek_vl/models/projector.py",
+          "line": 77,
+          "end_line": 86,
+          "label": "拼起来"
+        },
+        {
+          "path": "deepseek_vl/models/image_processing_vlm.py",
+          "line": 141,
+          "end_line": 160,
+          "label": "缩到 1024 再补方"
+        },
+        {
+          "path": "deepseek_vl/models/processing_vlm.py",
+          "line": 89,
+          "end_line": 89,
+          "label": "固定占位数量"
+        },
+        {
+          "path": "deepseek_vl/models/modeling_vlm.py",
+          "line": 110,
+          "end_line": 123,
+          "label": "写回占位符"
+        }
+      ],
+      "thumb": "assets/thumbs/deepseek-vl.png",
+      "diagram": "assets/diagrams/deepseek-vl.html"
+    },
+    {
+      "id": "deepseek-ocr-2",
+      "title": "DeepSeek-OCR 2",
+      "headline": "让一串问题去读图",
+      "tagline": "v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。",
+      "plain": "这是 DeepSeek OCR 的第二代。第一代是让视觉模型把整页扫一遍、压成一小撮信息；第二代换了个办法：准备一串「提问」，让它们排好队一个个去读图，后面的提问能看到前面已经读出来的结论。好处是这串信息有多少条是事先定好的，跟图片多大无关，换分辨率只要换一串提问就行。",
+      "repo": "deepseek-ai/DeepSeek-OCR-2",
+      "revision": "2f3699ebbb96fa8af32212e8c170f2cc28730fad",
+      "langs": [
+        "Python"
+      ],
+      "loc": 3031,
+      "date": "2026-11-04",
+      "tags": [
+        "OCR",
+        "视觉编码",
+        "因果流"
+      ],
+      "insights": [
+        "编码器整个换了：先用 SAM 把图变成像素特征图，再让一个 24 层的 Qwen2——本来是语言解码器——去读这些特征。",
+        "关键在顺序：图像特征和固定数量的「提问」拼成一条序列，配一张混合可见性表——图像之间互相都看得见，提问之间只能看见前面的。",
+        "提问的个数刚好等于 SAM 出来的特征个数：1024 的图 256 个特征配 256 个提问，768 的块 144 个配 144 个，一对一拼进同一条序列。"
+      ],
+      "sources": [
+        {
+          "path": "DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepseek_ocr2.py",
+          "line": 291,
+          "end_line": 295,
+          "label": "拼接入口"
+        },
+        {
+          "path": "DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepseek_ocr2.py",
+          "line": 98,
+          "end_line": 109,
+          "label": "配置"
+        },
+        {
+          "path": "DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/qwen2_d2e.py",
+          "line": 135,
+          "end_line": 172,
+          "label": "混合可见性"
+        },
+        {
+          "path": "DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/qwen2_d2e.py",
+          "line": 247,
+          "end_line": 248,
+          "label": "提问数 = 特征数"
+        },
+        {
+          "path": "DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/sam_vary_sdpa.py",
+          "line": 166,
+          "end_line": 183,
+          "label": "两次 stride-2 到 896"
+        },
+        {
+          "path": "DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/process/image_process.py",
+          "line": 45,
+          "end_line": 80,
+          "label": "动态切块"
+        }
+      ],
+      "thumb": "assets/thumbs/deepseek-ocr-2.png",
+      "diagram": "assets/diagrams/deepseek-ocr-2.html"
     }
   ],
   "roadmap": [

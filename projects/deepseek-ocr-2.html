@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek-OCR 2 架构图｜让一串问题去读图 · 开源项目可视化拆解</title>
+<meta name="description" content="v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-OCR-2 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepseek-ocr-2.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeek-OCR 2 架构图｜让一串问题去读图 · 开源项目可视化拆解" />
+<meta property="og:description" content="v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-OCR-2 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepseek-ocr-2.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-OCR 2 架构图｜让一串问题去读图","description":"v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-OCR 2","codeRepository":"https://github.com/deepseek-ai/DeepSeek-OCR-2"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek-OCR 2</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeek-OCR 2</span> 架构图｜让一串问题去读图</h1>
+    <p class="sub">v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。</p>
+    <p class="plain"><b>人话版</b>这是 DeepSeek OCR 的第二代。第一代是让视觉模型把整页扫一遍、压成一小撮信息；第二代换了个办法：准备一串「提问」，让它们排好队一个个去读图，后面的提问能看到前面已经读出来的结论。好处是这串信息有多少条是事先定好的，跟图片多大无关，换分辨率只要换一串提问就行。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-OCR-2" target="_blank" rel="noopener">deepseek-ai/DeepSeek-OCR-2</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 3,031 行</span>
+      <span><b>出处</b> 6 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepseek-ocr-2.html" title="DeepSeek-OCR 2 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepseek-ocr-2.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>编码器整个换了：先用 SAM 把图变成像素特征图，再让一个 24 层的 Qwen2——本来是语言解码器——去读这些特征。</li><li>关键在顺序：图像特征和固定数量的「提问」拼成一条序列，配一张混合可见性表——图像之间互相都看得见，提问之间只能看见前面的。</li><li>提问的个数刚好等于 SAM 出来的特征个数：1024 的图 256 个特征配 256 个提问，768 的块 144 个配 144 个，一对一拼进同一条序列。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/2f3699ebbb96fa8af32212e8c170f2cc28730fad/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepseek_ocr2.py#L291" rel="noopener" target="_blank">DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepseek_ocr2.py:291–295</a></code><span>拼接入口</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/2f3699ebbb96fa8af32212e8c170f2cc28730fad/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepseek_ocr2.py#L98" rel="noopener" target="_blank">DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepseek_ocr2.py:98–109</a></code><span>配置</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/2f3699ebbb96fa8af32212e8c170f2cc28730fad/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/qwen2_d2e.py#L135" rel="noopener" target="_blank">DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/qwen2_d2e.py:135–172</a></code><span>混合可见性</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/2f3699ebbb96fa8af32212e8c170f2cc28730fad/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/qwen2_d2e.py#L247" rel="noopener" target="_blank">DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/qwen2_d2e.py:247–248</a></code><span>提问数 = 特征数</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/2f3699ebbb96fa8af32212e8c170f2cc28730fad/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/sam_vary_sdpa.py#L166" rel="noopener" target="_blank">DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/deepencoderv2/sam_vary_sdpa.py:166–183</a></code><span>两次 stride-2 到 896</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-OCR-2/blob/2f3699ebbb96fa8af32212e8c170f2cc28730fad/DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/process/image_process.py#L45" rel="noopener" target="_blank">DeepSeek-OCR2-master/DeepSeek-OCR2-vllm/process/image_process.py:45–80</a></code><span>动态切块</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepseek-vl.html"><span class="lbl">← 上一个</span>DeepSeek-VL</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 30 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

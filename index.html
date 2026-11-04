@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>28</b><span>已拆</span></div>
+      <div class="stat"><b>30</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -113,6 +113,9 @@
     <button class="chip" data-f="移植">移植</button>
     <button class="chip" data-f="通信">通信</button>
     <button class="chip" data-f="HCCL">HCCL</button>
+    <button class="chip" data-f="演进对照">演进对照</button>
+    <button class="chip" data-f="视觉编码">视觉编码</button>
+    <button class="chip" data-f="因果流">因果流</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -676,6 +679,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/deepseek-vl.html" data-search="deepseek-vl deepseek-ai/deepseek-vl 多模态 视觉编码器 演进对照 v1 让两双眼睛同时看同一张图：一双看得细，一双看得懂，再把两边的印象拼起来。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepseek-vl.png" alt="DeepSeek-VL 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-VL</span>
+            <span class="repo">deepseek-ai/DeepSeek-VL</span>
+            <span class="tags"><span class="tag">多模态</span><span class="tag">视觉编码器</span><span class="tag">演进对照</span></span>
+          </div>
+          <div class="tagline">v1 让两双眼睛同时看同一张图：一双看得细，一双看得懂，再把两边的印象拼起来。</div>
+          <ul class="ins"><li>两双眼睛分工不同：一双吃 1024 的整图，负责「这儿有什么、在哪儿」；一双吃缩到 384 的小图，负责「这像什么」。</li><li>合的方式很朴素：两路各投一半维度，再在通道上拼起来——两边格子数必须一样，拼得上才不报错。</li><li>麻烦在「固定」两个字：长图先缩到 1024 再补成正方形，横条图补完一大半是底色；每张图固定占那么多位置，跟内容多少无关。</li></ul>
+          <div class="foot">
+            <span><b>4,391</b> 行</span>
+            <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepseek-ocr-2.html" data-search="deepseek-ocr 2 deepseek-ai/deepseek-ocr-2 ocr 视觉编码 因果流 v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepseek-ocr-2.png" alt="DeepSeek-OCR 2 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-OCR 2</span>
+            <span class="repo">deepseek-ai/DeepSeek-OCR-2</span>
+            <span class="tags"><span class="tag">OCR</span><span class="tag">视觉编码</span><span class="tag">因果流</span></span>
+          </div>
+          <div class="tagline">v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。</div>
+          <ul class="ins"><li>编码器整个换了：先用 SAM 把图变成像素特征图，再让一个 24 层的 Qwen2——本来是语言解码器——去读这些特征。</li><li>关键在顺序：图像特征和固定数量的「提问」拼成一条序列，配一张混合可见性表——图像之间互相都看得见，提问之间只能看见前面的。</li><li>提问的个数刚好等于 SAM 出来的特征个数：1024 的图 256 个特征配 256 个提问，768 的块 144 个配 144 个，一对一拼进同一条序列。</li></ul>
+          <div class="foot">
+            <span><b>3,031</b> 行</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -867,7 +910,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 28 张 · 纯静态，无后端</div>
+    <div>已拆 30 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>
