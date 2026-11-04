@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2、dsh-superagent、profile-data、DeepSeek-Math、DeepSeekMath-V2 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2、dsh-superagent、profile-data、DeepSeek-Math、DeepSeekMath-V2 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>30</b><span>已拆</span></div>
+      <div class="stat"><b>34</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -116,6 +116,15 @@
     <button class="chip" data-f="演进对照">演进对照</button>
     <button class="chip" data-f="视觉编码">视觉编码</button>
     <button class="chip" data-f="因果流">因果流</button>
+    <button class="chip" data-f="Agent 控制流">Agent 控制流</button>
+    <button class="chip" data-f="多轮">多轮</button>
+    <button class="chip" data-f="性能剖析">性能剖析</button>
+    <button class="chip" data-f="数据">数据</button>
+    <button class="chip" data-f="数学评测">数学评测</button>
+    <button class="chip" data-f="符号计算">符号计算</button>
+    <button class="chip" data-f="数学证明">数学证明</button>
+    <button class="chip" data-f="自验证">自验证</button>
+    <button class="chip" data-f="多轮精修">多轮精修</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -553,7 +562,7 @@
           <div class="tagline">一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</div>
           <ul class="ins"><li>连对话主循环、系统提示、工具表、会话存储都是独立 npm 包，按 cordis.yml 装进同一个容器；「主线」不在代码里，在配置里。</li><li>系统提示不是写死的常量，是每一步重算出来的：先看现在有哪些工具，再把工具说明拼进提示里——工具变了提示就跟着变。</li><li>模型一轮可以吐多个工具调用，一次性交出去并行跑，每个结果都写回会话，下一轮模型看到的是完整历史。</li></ul>
           <div class="foot">
-            <span><b>0</b> 行</span>
+            <span>无源码</span>
             <span><b>8</b> 处对得上源码</span>
             <span class="go">打开 →</span>
           </div>
@@ -714,6 +723,86 @@
           <ul class="ins"><li>编码器整个换了：先用 SAM 把图变成像素特征图，再让一个 24 层的 Qwen2——本来是语言解码器——去读这些特征。</li><li>关键在顺序：图像特征和固定数量的「提问」拼成一条序列，配一张混合可见性表——图像之间互相都看得见，提问之间只能看见前面的。</li><li>提问的个数刚好等于 SAM 出来的特征个数：1024 的图 256 个特征配 256 个提问，768 的块 144 个配 144 个，一对一拼进同一条序列。</li></ul>
           <div class="foot">
             <span><b>3,031</b> 行</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/superagent.html" data-search="dsh-superagent deepseek-ai/dsh-superagent-prototype agent 控制流 多轮 有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。">
+        <div class="thumb">
+          <img src="assets/thumbs/superagent.png" alt="dsh-superagent 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">dsh-superagent</span>
+            <span class="repo">deepseek-ai/dsh-superagent-prototype</span>
+            <span class="tags"><span class="tag">Agent 控制流</span><span class="tag">多轮</span></span>
+          </div>
+          <div class="tagline">有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。</div>
+          <ul class="ins"><li>它不靠一次规划到底，而是每轮交一份报告：progress/ready/blocked/failed/dropped 五选一。</li><li>接活前要逐条对规则：每条启用的规则都要给一条判定，选了 accept 还得起一个英文短目录名。</li><li>后台还有任务就不算收工：turn 结束时留着 shell job 会保持 working，最多再等 30 分钟。</li></ul>
+          <div class="foot">
+            <span><b>25,388</b> 行</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/profiledata.html" data-search="profile-data deepseek-ai/profile-data 性能剖析 数据 没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。">
+        <div class="thumb">
+          <img src="assets/thumbs/profiledata.png" alt="profile-data 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">profile-data</span>
+            <span class="repo">deepseek-ai/profile-data</span>
+            <span class="tags"><span class="tag">性能剖析</span><span class="tag">数据</span></span>
+          </div>
+          <div class="tagline">没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。</div>
+          <ul class="ins"><li>三份记录对应训练、预填充、解码三种跑法，EP/TP/batch 各不同，结论只在对应配置下成立。</li><li>每条事件都有 ts 和 dur，不同的 tid 就是不同的流；chrome://tracing 把它们画在同一条时间轴上。</li><li>重叠可以直接算：combine 持续 6074µs 的区间里，attention 跑了 3863µs、整段落在里面。</li></ul>
+          <div class="foot">
+            <span>无源码</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dsmath.html" data-search="deepseek-math deepseek-ai/deepseek-math 数学评测 符号计算 一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsmath.png" alt="DeepSeek-Math 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-Math</span>
+            <span class="repo">deepseek-ai/DeepSeek-Math</span>
+            <span class="tags"><span class="tag">数学评测</span><span class="tag">符号计算</span></span>
+          </div>
+          <div class="tagline">一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。</div>
+          <ul class="ins"><li>这套东西不训练模型，只负责打分：把题目套进对应数据集的 few-shot 模板，再交给模型写解答。</li><li>答案要从一长段推理里抠出来，先找 oxed{}，再找「the answer is」，实在没有就取最后一个数字。</li><li>判对错不是字符串相等：先按数字比（误差 1e-3），不行再交给符号计算判断两个式子是不是一回事。</li></ul>
+          <div class="foot">
+            <span><b>4,556</b> 行</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dsmathv2.html" data-search="deepseekmath-v2 deepseek-ai/deepseek-math-v2 数学证明 自验证 多轮精修 不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsmathv2.png" alt="DeepSeekMath-V2 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeekMath-V2</span>
+            <span class="repo">deepseek-ai/DeepSeek-Math-V2</span>
+            <span class="tags"><span class="tag">数学证明</span><span class="tag">自验证</span><span class="tag">多轮精修</span></span>
+          </div>
+          <div class="tagline">不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。</div>
+          <ul class="ins"><li>证明写出来后由模型自己按 0 / 0.5 / 1 三档打分，同一份要打 4 次取平均，避免一次打歪。</li><li>打完分还要再验一次「这份评分合不合理」，重点看它指出的错误是不是真的存在。</li><li>一轮结束按平均分排序取前 6 份，再抽样组合成最多 16 组让模型改写；有证明拿到 0.99999 就直接收工。</li></ul>
+          <div class="foot">
+            <span><b>967</b> 行</span>
             <span><b>6</b> 处对得上源码</span>
             <span class="go">打开 →</span>
           </div>
@@ -910,7 +999,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 30 张 · 纯静态，无后端</div>
+    <div>已拆 34 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

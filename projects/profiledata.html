@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>profile-data 架构图｜把「算」和「送」画在同一时间轴 · 开源项目可视化拆解</title>
+<meta name="description" content="没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。 交互式架构图，6 处结论可直接跳到 deepseek-ai/profile-data 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/profiledata.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="profile-data 架构图｜把「算」和「送」画在同一时间轴 · 开源项目可视化拆解" />
+<meta property="og:description" content="没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。 交互式架构图，6 处结论可直接跳到 deepseek-ai/profile-data 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/profiledata.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"profile-data 架构图｜把「算」和「送」画在同一时间轴","description":"没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"profile-data","codeRepository":"https://github.com/deepseek-ai/profile-data"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>profile-data</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">profile-data</span> 架构图｜把「算」和「送」画在同一时间轴</h1>
+    <p class="sub">没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。</p>
+    <p class="plain"><b>人话版</b>训练大模型时，一边算、一边还要给别的机器送数据，这两件事能不能同时干，直接决定快慢。这个仓库没有代码，只有三次运行留下的「行车记录仪」：谁在什么时刻占用了显卡多久。把记录倒进浏览器的追踪页面，就能看见「算」和「送」这两条道有没有真并排跑。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/profile-data" target="_blank" rel="noopener">deepseek-ai/profile-data</a></span>
+      <span><b>语言</b> JSON</span>
+      
+      <span><b>出处</b> 6 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/profiledata.html" title="profile-data 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/profiledata.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>三份记录对应训练、预填充、解码三种跑法，EP/TP/batch 各不同，结论只在对应配置下成立。</li><li>每条事件都有 ts 和 dur，不同的 tid 就是不同的流；chrome://tracing 把它们画在同一条时间轴上。</li><li>重叠可以直接算：combine 持续 6074µs 的区间里，attention 跑了 3863µs、整段落在里面。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/README.md#L3" rel="noopener" target="_blank">README.md:3</a></code><span>Profiler 采集</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/README.md#L11" rel="noopener" target="_blank">README.md:11</a></code><span>train 配置</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/train.json#L97558" rel="noopener" target="_blank">train.json:97558</a></code><span>pid 0 / tid 7 = stream 7</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/train.json#L62793" rel="noopener" target="_blank">train.json:62793</a></code><span>combine（6074µs）</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/train.json#L58925" rel="noopener" target="_blank">train.json:58925</a></code><span>同段 FlashAttention（3863µs）</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/train.json#L17196" rel="noopener" target="_blank">train.json:17196</a></code><span>CPU 侧 dispatch 标注</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="superagent.html"><span class="lbl">← 上一个</span>dsh-superagent</a>
+    <a href="dsmath.html"><span class="lbl">下一个 →</span>DeepSeek-Math</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 34 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

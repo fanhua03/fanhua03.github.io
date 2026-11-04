@@ -2121,6 +2121,247 @@
       ],
       "thumb": "assets/thumbs/deepseek-ocr-2.png",
       "diagram": "assets/diagrams/deepseek-ocr-2.html"
+    },
+    {
+      "id": "superagent",
+      "title": "dsh-superagent",
+      "headline": "接活、干活、交报告",
+      "tagline": "有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。",
+      "plain": "有人在一个代码仓库里喊「帮我改这个」，这个程序会自动判断该不该接；接了就在自己的目录里干活。它不会一口气想完所有步骤，而是干一会儿交一份「进度报告」，报告决定是继续、还是叫人来接手。",
+      "repo": "deepseek-ai/dsh-superagent-prototype",
+      "revision": "8c32a9dc5d72c033816c6a8110b37f40cf94fba4",
+      "langs": [
+        "TypeScript"
+      ],
+      "loc": 25388,
+      "date": "2026-11-04",
+      "tags": [
+        "Agent 控制流",
+        "多轮"
+      ],
+      "insights": [
+        "它不靠一次规划到底，而是每轮交一份报告：progress/ready/blocked/failed/dropped 五选一。",
+        "接活前要逐条对规则：每条启用的规则都要给一条判定，选了 accept 还得起一个英文短目录名。",
+        "后台还有任务就不算收工：turn 结束时留着 shell job 会保持 working，最多再等 30 分钟。"
+      ],
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 9,
+          "label": "监听 GitHub 与飞书"
+        },
+        {
+          "path": "src/app/tools/main.ts",
+          "line": 203,
+          "label": "orchestrator_eval"
+        },
+        {
+          "path": "src/app/assessment.ts",
+          "line": 28,
+          "label": "准入决定 schema"
+        },
+        {
+          "path": "src/app/tools/executor.ts",
+          "line": 78,
+          "label": "报告五种状态"
+        },
+        {
+          "path": "docs/003-execution.md",
+          "line": 19,
+          "label": "person 阶段要人"
+        },
+        {
+          "path": "docs/003-execution.md",
+          "line": 33,
+          "label": "后台未完不算结束"
+        }
+      ],
+      "thumb": "assets/thumbs/superagent.png",
+      "diagram": "assets/diagrams/superagent.html"
+    },
+    {
+      "id": "profiledata",
+      "title": "profile-data",
+      "headline": "把「算」和「送」画在同一时间轴",
+      "tagline": "没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。",
+      "plain": "训练大模型时，一边算、一边还要给别的机器送数据，这两件事能不能同时干，直接决定快慢。这个仓库没有代码，只有三次运行留下的「行车记录仪」：谁在什么时刻占用了显卡多久。把记录倒进浏览器的追踪页面，就能看见「算」和「送」这两条道有没有真并排跑。",
+      "repo": "deepseek-ai/profile-data",
+      "revision": "449602428a1b023acb8a505d4f34fef536535db6",
+      "langs": [
+        "JSON"
+      ],
+      "loc": 0,
+      "date": "2026-11-04",
+      "tags": [
+        "性能剖析",
+        "数据"
+      ],
+      "insights": [
+        "三份记录对应训练、预填充、解码三种跑法，EP/TP/batch 各不同，结论只在对应配置下成立。",
+        "每条事件都有 ts 和 dur，不同的 tid 就是不同的流；chrome://tracing 把它们画在同一条时间轴上。",
+        "重叠可以直接算：combine 持续 6074µs 的区间里，attention 跑了 3863µs、整段落在里面。"
+      ],
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 3,
+          "label": "Profiler 采集"
+        },
+        {
+          "path": "README.md",
+          "line": 11,
+          "label": "train 配置"
+        },
+        {
+          "path": "train.json",
+          "line": 97558,
+          "label": "pid 0 / tid 7 = stream 7"
+        },
+        {
+          "path": "train.json",
+          "line": 62793,
+          "label": "combine（6074µs）"
+        },
+        {
+          "path": "train.json",
+          "line": 58925,
+          "label": "同段 FlashAttention（3863µs）"
+        },
+        {
+          "path": "train.json",
+          "line": 17196,
+          "label": "CPU 侧 dispatch 标注"
+        }
+      ],
+      "thumb": "assets/thumbs/profiledata.png",
+      "diagram": "assets/diagrams/profiledata.html"
+    },
+    {
+      "id": "dsmath",
+      "title": "DeepSeek-Math",
+      "headline": "数学模型的考卷：答案怎么判对错",
+      "tagline": "一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。",
+      "plain": "这套代码不训练模型，专门给数学能力打分。它把题目按固定格式交给模型，让模型写出解题过程，再从这一大段话里找出最终答案。答案对不对，会先按数字比、再按公式比，最后算出一个正确率。",
+      "repo": "deepseek-ai/DeepSeek-Math",
+      "revision": "b8b0f8ce093d80bf8e9a641e44142f06d092c305",
+      "langs": [
+        "Python"
+      ],
+      "loc": 4556,
+      "date": "2026-11-04",
+      "tags": [
+        "数学评测",
+        "符号计算"
+      ],
+      "insights": [
+        "这套东西不训练模型，只负责打分：把题目套进对应数据集的 few-shot 模板，再交给模型写解答。",
+        "答案要从一长段推理里抠出来，先找 \boxed{}，再找「the answer is」，实在没有就取最后一个数字。",
+        "判对错不是字符串相等：先按数字比（误差 1e-3），不行再交给符号计算判断两个式子是不是一回事。"
+      ],
+      "sources": [
+        {
+          "path": "evaluation/infer/run_cot_eval.py",
+          "line": 47,
+          "end_line": 69,
+          "label": "按模板拼 prompt"
+        },
+        {
+          "path": "evaluation/infer/run_cot_eval.py",
+          "line": 73,
+          "end_line": 82,
+          "label": "vLLM 批量生成"
+        },
+        {
+          "path": "evaluation/data_processing/answer_extraction.py",
+          "line": 207,
+          "end_line": 230,
+          "label": "答案逐级兜底"
+        },
+        {
+          "path": "evaluation/eval/eval_script.py",
+          "line": 6,
+          "end_line": 44,
+          "label": "is_correct 判分"
+        },
+        {
+          "path": "evaluation/eval/eval_utils.py",
+          "line": 181,
+          "end_line": 192,
+          "label": "math_equal（sympy）"
+        },
+        {
+          "path": "evaluation/eval/python_executor.py",
+          "line": 26,
+          "end_line": 29,
+          "label": "挡 input / os.system"
+        }
+      ],
+      "thumb": "assets/thumbs/dsmath.png",
+      "diagram": "assets/diagrams/dsmath.html"
+    },
+    {
+      "id": "dsmathv2",
+      "title": "DeepSeekMath-V2",
+      "headline": "证明自己打分，挑好的再改",
+      "tagline": "不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。",
+      "plain": "这是让模型写数学证明的项目。它先让模型写几份证明，再让模型自己给这些证明打分，还专门检查「打分是不是打歪了」。然后挑出得分最高的几份改一改，再重新打分，一轮轮往上加。",
+      "repo": "deepseek-ai/DeepSeek-Math-V2",
+      "revision": "665c840782baf7faae8a8b244ea313f3cfcc346f",
+      "langs": [
+        "Python"
+      ],
+      "loc": 967,
+      "date": "2026-11-04",
+      "tags": [
+        "数学证明",
+        "自验证",
+        "多轮精修"
+      ],
+      "insights": [
+        "证明写出来后由模型自己按 0 / 0.5 / 1 三档打分，同一份要打 4 次取平均，避免一次打歪。",
+        "打完分还要再验一次「这份评分合不合理」，重点看它指出的错误是不是真的存在。",
+        "一轮结束按平均分排序取前 6 份，再抽样组合成最多 16 组让模型改写；有证明拿到 0.99999 就直接收工。"
+      ],
+      "sources": [
+        {
+          "path": "inference/main.py",
+          "line": 398,
+          "end_line": 446,
+          "label": "R=1..max_rounds 主循环"
+        },
+        {
+          "path": "inference/main.py",
+          "line": 480,
+          "end_line": 492,
+          "label": "每份验 n 次"
+        },
+        {
+          "path": "inference/main.py",
+          "line": 118,
+          "end_line": 155,
+          "label": "元验证输入"
+        },
+        {
+          "path": "inference/main.py",
+          "line": 222,
+          "end_line": 229,
+          "label": "满分跳过 + 排序取前 6"
+        },
+        {
+          "path": "inference/math_templates.py",
+          "line": 2,
+          "end_line": 20,
+          "label": "三档评分"
+        },
+        {
+          "path": "inference/math_templates.py",
+          "line": 46,
+          "end_line": 62,
+          "label": "元验证模板"
+        }
+      ],
+      "thumb": "assets/thumbs/dsmathv2.png",
+      "diagram": "assets/diagrams/dsmathv2.html"
     }
   ],
   "roadmap": [

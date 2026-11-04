@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>dsh-superagent 架构图｜接活、干活、交报告 · 开源项目可视化拆解</title>
+<meta name="description" content="有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。 交互式架构图，6 处结论可直接跳到 deepseek-ai/dsh-superagent-prototype 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/superagent.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="dsh-superagent 架构图｜接活、干活、交报告 · 开源项目可视化拆解" />
+<meta property="og:description" content="有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。 交互式架构图，6 处结论可直接跳到 deepseek-ai/dsh-superagent-prototype 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/superagent.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"dsh-superagent 架构图｜接活、干活、交报告","description":"有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"dsh-superagent","codeRepository":"https://github.com/deepseek-ai/dsh-superagent-prototype"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>dsh-superagent</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">dsh-superagent</span> 架构图｜接活、干活、交报告</h1>
+    <p class="sub">有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。</p>
+    <p class="plain"><b>人话版</b>有人在一个代码仓库里喊「帮我改这个」，这个程序会自动判断该不该接；接了就在自己的目录里干活。它不会一口气想完所有步骤，而是干一会儿交一份「进度报告」，报告决定是继续、还是叫人来接手。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/dsh-superagent-prototype" target="_blank" rel="noopener">deepseek-ai/dsh-superagent-prototype</a></span>
+      <span><b>语言</b> TypeScript</span>
+      <span><b>规模</b> 25,388 行</span>
+      <span><b>出处</b> 6 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/superagent.html" title="dsh-superagent 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/superagent.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>它不靠一次规划到底，而是每轮交一份报告：progress/ready/blocked/failed/dropped 五选一。</li><li>接活前要逐条对规则：每条启用的规则都要给一条判定，选了 accept 还得起一个英文短目录名。</li><li>后台还有任务就不算收工：turn 结束时留着 shell job 会保持 working，最多再等 30 分钟。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/README.md#L9" rel="noopener" target="_blank">README.md:9</a></code><span>监听 GitHub 与飞书</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/tools/main.ts#L203" rel="noopener" target="_blank">src/app/tools/main.ts:203</a></code><span>orchestrator_eval</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/assessment.ts#L28" rel="noopener" target="_blank">src/app/assessment.ts:28</a></code><span>准入决定 schema</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/tools/executor.ts#L78" rel="noopener" target="_blank">src/app/tools/executor.ts:78</a></code><span>报告五种状态</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/docs/003-execution.md#L19" rel="noopener" target="_blank">docs/003-execution.md:19</a></code><span>person 阶段要人</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/docs/003-execution.md#L33" rel="noopener" target="_blank">docs/003-execution.md:33</a></code><span>后台未完不算结束</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepseek-ocr-2.html"><span class="lbl">← 上一个</span>DeepSeek-OCR 2</a>
+    <a href="profiledata.html"><span class="lbl">下一个 →</span>profile-data</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 34 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

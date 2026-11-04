@@ -89,7 +89,7 @@ const cards = done.map(p => `
           <div class="tagline">${esc(p.tagline)}</div>
           <ul class="ins">${p.insights.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
           <div class="foot">
-            <span><b>${num(p.loc)}</b> 行</span>
+            ${p.loc ? `<span><b>${num(p.loc)}</b> 行</span>` : `<span>无源码</span>`}
             <span><b>${p.sources.length}</b> 处对得上源码</span>
             <span class="go">打开 →</span>
           </div>
@@ -292,7 +292,7 @@ function projectPage(p, prev, next) {
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/${p.repo}" target="_blank" rel="noopener">${esc(p.repo)}</a></span>
       <span><b>语言</b> ${esc(p.langs.join(" / "))}</span>
-      <span><b>规模</b> ${num(p.loc)} 行</span>
+      ${p.loc ? `<span><b>规模</b> ${num(p.loc)} 行</span>` : ""}
       <span><b>出处</b> ${p.sources.length} 处能对到源码</span>
       <span><b>更新</b> ${esc(p.date)}</span>
     </div>
