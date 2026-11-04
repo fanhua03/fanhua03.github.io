@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>deepseek-recipe 架构图｜三种接口，翻成一种对话 · 开源项目可视化拆解</title>
+<meta name="description" content="把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。 交互式架构图，8 处结论可直接跳到 deepseek-ai/deepseek-recipe 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/dsrecipe.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="deepseek-recipe 架构图｜三种接口，翻成一种对话 · 开源项目可视化拆解" />
+<meta property="og:description" content="把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。 交互式架构图，8 处结论可直接跳到 deepseek-ai/deepseek-recipe 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsrecipe.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"deepseek-recipe 架构图｜三种接口，翻成一种对话","description":"把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"deepseek-recipe","codeRepository":"https://github.com/deepseek-ai/deepseek-recipe"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>deepseek-recipe</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">deepseek-recipe</span> 架构图｜三种接口，翻成一种对话</h1>
+    <p class="sub">把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。</p>
+    <p class="plain"><b>人话版</b>大模型服务有好几种接口格式，OpenAI 一种、Anthropic 一种，长得都不一样。这个库把任何格式的请求先翻成一套统一的对话结构，再变成模型真正吃的 prompt 和 token；模型吐出来的东西，再翻回原来那种格式。它不负责跑模型，也不负责发网络请求，那些由调用它的服务来做。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/deepseek-recipe" target="_blank" rel="noopener">deepseek-ai/deepseek-recipe</a></span>
+      <span><b>语言</b> Rust / Python</span>
+      <span><b>规模</b> 22,340 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/dsrecipe.html" title="deepseek-recipe 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/dsrecipe.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>三种接口进来先翻成一套统一的对话结构，后面就不用再管原来是哪种格式。</li><li>变成 prompt 时顺手记下特殊标记在字符串里的位置，编码时不用再找一遍。</li><li>模型边吐边翻：每来一小段就解析成事件，再包成对应格式推给客户端。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/README.md#L9" rel="noopener" target="_blank">README.md:9</a></code><span>统一转换的承诺</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/deepseek-recipe/src/request/mod.rs#L248" rel="noopener" target="_blank">deepseek-recipe/src/request/mod.rs:248</a></code><span>convert 签名</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/deepseek-recipe/src/protocol/openai/chat_completion/request/convert.rs#L38" rel="noopener" target="_blank">deepseek-recipe/src/protocol/openai/chat_completion/request/convert.rs:38</a></code><span>Chat 的实现</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/deepseek-recipe-core/src/conversation.rs#L11" rel="noopener" target="_blank">deepseek-recipe-core/src/conversation.rs:11</a></code><span>Conversation</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/deepseek-recipe-encoding/src/lib.rs#L34" rel="noopener" target="_blank">deepseek-recipe-encoding/src/lib.rs:34</a></code><span>RenderedPrompt</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/deepseek-recipe-encoding/src/lib.rs#L91" rel="noopener" target="_blank">deepseek-recipe-encoding/src/lib.rs:91</a></code><span>render_conversation</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/deepseek-recipe/src/stream/processor.rs#L19" rel="noopener" target="_blank">deepseek-recipe/src/stream/processor.rs:19</a></code><span>StreamProcessor</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-recipe/blob/935817c66f5d6e64838f419692545f06787e485f/server-rs/src/main.rs#L44" rel="noopener" target="_blank">server-rs/src/main.rs:44</a></code><span>SSE 响应</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepjit.html"><span class="lbl">← 上一个</span>DeepJIT</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 19 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

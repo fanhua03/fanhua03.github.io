@@ -1217,6 +1217,143 @@
       ],
       "thumb": "assets/thumbs/deepseekmoe-routing.png",
       "diagram": "assets/diagrams/deepseekmoe-routing.html"
+    },
+    {
+      "id": "deepjit",
+      "title": "DeepJIT",
+      "headline": "源码进来，机器码出去",
+      "tagline": "同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。",
+      "plain": "显卡上跑的代码，一般要提前编好、跟着安装包一起发出去。这个项目改成「用到的时候再编」：第一次遇到某段代码，现场调编译器编成机器码并存到硬盘；下次遇到一模一样的代码，直接读出来用。好处是换显卡、换编译参数都不用重新打包，代价是第一次要等编译器干活。",
+      "repo": "deepseek-ai/DeepJIT",
+      "revision": "d19237c44ad11b1b22d1939711fbfd65eaf5944f",
+      "langs": [
+        "C++",
+        "Python"
+      ],
+      "loc": 10658,
+      "date": "2026-11-04",
+      "tags": [
+        "JIT 编译",
+        "缓存"
+      ],
+      "insights": [
+        "编过的东西按「源码 + 编译器版本 + 编译选项」算一个指纹，指纹一样就直接拿旧的。",
+        "两级缓存：先看进程内存里的表，再看硬盘上的目录；硬盘上先写 .committed 再改名，别人要么看不见、要么看见完整的。",
+        "第一次要现场调 nvcc，之后同机同选项都不用再编；编完还会检查有没有寄存器溢出。"
+      ],
+      "sources": [
+        {
+          "path": "include/deep_jit/runtime/runtime.hpp",
+          "line": 57,
+          "label": "compile 入口"
+        },
+        {
+          "path": "include/deep_jit/runtime/runtime.hpp",
+          "line": 81,
+          "label": "cache_key 指纹"
+        },
+        {
+          "path": "include/deep_jit/cache/memory.hpp",
+          "line": 15,
+          "label": "内存缓存"
+        },
+        {
+          "path": "include/deep_jit/cache/disk.hpp",
+          "line": 47,
+          "label": "原子发布"
+        },
+        {
+          "path": "include/deep_jit/utils/parser.hpp",
+          "line": 68,
+          "label": "include 也进哈希"
+        },
+        {
+          "path": "include/deep_jit/backend/cuda/backend.hpp",
+          "line": 117,
+          "label": "调 nvcc"
+        },
+        {
+          "path": "include/deep_jit/backend/cuda/kernel.hpp",
+          "line": 50,
+          "label": "Kernel::load"
+        },
+        {
+          "path": "include/deep_jit/backend/cuda/kernel.hpp",
+          "line": 97,
+          "label": "launch"
+        }
+      ],
+      "thumb": "assets/thumbs/deepjit.png",
+      "diagram": "assets/diagrams/deepjit.html"
+    },
+    {
+      "id": "dsrecipe",
+      "title": "deepseek-recipe",
+      "headline": "三种接口，翻成一种对话",
+      "tagline": "把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。",
+      "plain": "大模型服务有好几种接口格式，OpenAI 一种、Anthropic 一种，长得都不一样。这个库把任何格式的请求先翻成一套统一的对话结构，再变成模型真正吃的 prompt 和 token；模型吐出来的东西，再翻回原来那种格式。它不负责跑模型，也不负责发网络请求，那些由调用它的服务来做。",
+      "repo": "deepseek-ai/deepseek-recipe",
+      "revision": "935817c66f5d6e64838f419692545f06787e485f",
+      "langs": [
+        "Rust",
+        "Python"
+      ],
+      "loc": 22340,
+      "date": "2026-11-04",
+      "tags": [
+        "协议转换",
+        "Rust",
+        "流式"
+      ],
+      "insights": [
+        "三种接口进来先翻成一套统一的对话结构，后面就不用再管原来是哪种格式。",
+        "变成 prompt 时顺手记下特殊标记在字符串里的位置，编码时不用再找一遍。",
+        "模型边吐边翻：每来一小段就解析成事件，再包成对应格式推给客户端。"
+      ],
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 9,
+          "label": "统一转换的承诺"
+        },
+        {
+          "path": "deepseek-recipe/src/request/mod.rs",
+          "line": 248,
+          "label": "convert 签名"
+        },
+        {
+          "path": "deepseek-recipe/src/protocol/openai/chat_completion/request/convert.rs",
+          "line": 38,
+          "label": "Chat 的实现"
+        },
+        {
+          "path": "deepseek-recipe-core/src/conversation.rs",
+          "line": 11,
+          "label": "Conversation"
+        },
+        {
+          "path": "deepseek-recipe-encoding/src/lib.rs",
+          "line": 34,
+          "label": "RenderedPrompt"
+        },
+        {
+          "path": "deepseek-recipe-encoding/src/lib.rs",
+          "line": 91,
+          "label": "render_conversation"
+        },
+        {
+          "path": "deepseek-recipe/src/stream/processor.rs",
+          "line": 19,
+          "label": "StreamProcessor"
+        },
+        {
+          "path": "server-rs/src/main.rs",
+          "line": 44,
+          "label": "SSE 响应"
+        }
+      ],
+      "thumb": "assets/thumbs/dsrecipe.png",
+      "diagram": "assets/diagrams/dsrecipe.html"
     }
   ],
   "roadmap": [

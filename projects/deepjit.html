@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepJIT 架构图｜源码进来，机器码出去 · 开源项目可视化拆解</title>
+<meta name="description" content="同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepJIT 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/deepjit.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepJIT 架构图｜源码进来，机器码出去 · 开源项目可视化拆解" />
+<meta property="og:description" content="同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepJIT 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepjit.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepJIT 架构图｜源码进来，机器码出去","description":"同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepJIT","codeRepository":"https://github.com/deepseek-ai/DeepJIT"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepJIT</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepJIT</span> 架构图｜源码进来，机器码出去</h1>
+    <p class="sub">同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。</p>
+    <p class="plain"><b>人话版</b>显卡上跑的代码，一般要提前编好、跟着安装包一起发出去。这个项目改成「用到的时候再编」：第一次遇到某段代码，现场调编译器编成机器码并存到硬盘；下次遇到一模一样的代码，直接读出来用。好处是换显卡、换编译参数都不用重新打包，代价是第一次要等编译器干活。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepJIT" target="_blank" rel="noopener">deepseek-ai/DeepJIT</a></span>
+      <span><b>语言</b> C++ / Python</span>
+      <span><b>规模</b> 10,658 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/deepjit.html" title="DeepJIT 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/deepjit.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>编过的东西按「源码 + 编译器版本 + 编译选项」算一个指纹，指纹一样就直接拿旧的。</li><li>两级缓存：先看进程内存里的表，再看硬盘上的目录；硬盘上先写 .committed 再改名，别人要么看不见、要么看见完整的。</li><li>第一次要现场调 nvcc，之后同机同选项都不用再编；编完还会检查有没有寄存器溢出。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/runtime/runtime.hpp#L57" rel="noopener" target="_blank">include/deep_jit/runtime/runtime.hpp:57</a></code><span>compile 入口</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/runtime/runtime.hpp#L81" rel="noopener" target="_blank">include/deep_jit/runtime/runtime.hpp:81</a></code><span>cache_key 指纹</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/cache/memory.hpp#L15" rel="noopener" target="_blank">include/deep_jit/cache/memory.hpp:15</a></code><span>内存缓存</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/cache/disk.hpp#L47" rel="noopener" target="_blank">include/deep_jit/cache/disk.hpp:47</a></code><span>原子发布</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/utils/parser.hpp#L68" rel="noopener" target="_blank">include/deep_jit/utils/parser.hpp:68</a></code><span>include 也进哈希</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/backend/cuda/backend.hpp#L117" rel="noopener" target="_blank">include/deep_jit/backend/cuda/backend.hpp:117</a></code><span>调 nvcc</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/backend/cuda/kernel.hpp#L50" rel="noopener" target="_blank">include/deep_jit/backend/cuda/kernel.hpp:50</a></code><span>Kernel::load</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepJIT/blob/d19237c44ad11b1b22d1939711fbfd65eaf5944f/include/deep_jit/backend/cuda/kernel.hpp#L97" rel="noopener" target="_blank">include/deep_jit/backend/cuda/kernel.hpp:97</a></code><span>launch</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepseekmoe-routing.html"><span class="lbl">← 上一个</span>DeepSeekMoE 路由</a>
+    <a href="dsrecipe.html"><span class="lbl">下一个 →</span>deepseek-recipe</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 19 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>17</b><span>已拆</span></div>
+      <div class="stat"><b>19</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -89,6 +89,10 @@
     <button class="chip" data-f="查表">查表</button>
     <button class="chip" data-f="n-gram">n-gram</button>
     <button class="chip" data-f="路由">路由</button>
+    <button class="chip" data-f="缓存">缓存</button>
+    <button class="chip" data-f="协议转换">协议转换</button>
+    <button class="chip" data-f="Rust">Rust</button>
+    <button class="chip" data-f="流式">流式</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -432,6 +436,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/deepjit.html" data-search="deepjit deepseek-ai/deepjit jit 编译 缓存 同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepjit.png" alt="DeepJIT 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepJIT</span>
+            <span class="repo">deepseek-ai/DeepJIT</span>
+            <span class="tags"><span class="tag">JIT 编译</span><span class="tag">缓存</span></span>
+          </div>
+          <div class="tagline">同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。</div>
+          <ul class="ins"><li>编过的东西按「源码 + 编译器版本 + 编译选项」算一个指纹，指纹一样就直接拿旧的。</li><li>两级缓存：先看进程内存里的表，再看硬盘上的目录；硬盘上先写 .committed 再改名，别人要么看不见、要么看见完整的。</li><li>第一次要现场调 nvcc，之后同机同选项都不用再编；编完还会检查有没有寄存器溢出。</li></ul>
+          <div class="foot">
+            <span><b>10,658</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dsrecipe.html" data-search="deepseek-recipe deepseek-ai/deepseek-recipe 协议转换 rust 流式 把 openai、anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsrecipe.png" alt="deepseek-recipe 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">deepseek-recipe</span>
+            <span class="repo">deepseek-ai/deepseek-recipe</span>
+            <span class="tags"><span class="tag">协议转换</span><span class="tag">Rust</span><span class="tag">流式</span></span>
+          </div>
+          <div class="tagline">把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。</div>
+          <ul class="ins"><li>三种接口进来先翻成一套统一的对话结构，后面就不用再管原来是哪种格式。</li><li>变成 prompt 时顺手记下特殊标记在字符串里的位置，编码时不用再找一遍。</li><li>模型边吐边翻：每来一小段就解析成事件，再包成对应格式推给客户端。</li></ul>
+          <div class="foot">
+            <span><b>22,340</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -623,7 +667,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 17 张 · 纯静态，无后端</div>
+    <div>已拆 19 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>
