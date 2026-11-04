@@ -2366,11 +2366,39 @@
   ],
   "roadmap": [
     [
+      "Linux",
+      "torvalds/linux",
+      254297,
+      "C",
+      "一个 write() 系统调用到磁盘，中间过了几层"
+    ],
+    [
       "React",
       "facebook/react",
       251901,
       "JS",
       "Fiber 把渲染切成能中断的小块，调度器怎么抢回主线程"
+    ],
+    [
+      "TensorFlow",
+      "tensorflow/tensorflow",
+      201294,
+      "C++",
+      "一张计算图怎么被切给多张卡"
+    ],
+    [
+      "VS Code",
+      "microsoft/vscode",
+      194539,
+      "TS",
+      "编辑器内核和扩展进程为什么隔着一道 IPC"
+    ],
+    [
+      "Next.js",
+      "vercel/next.js",
+      143250,
+      "JS",
+      "一个页面在服务端渲染完，怎么变成可交互的"
     ],
     [
       "Go",
@@ -2401,6 +2429,13 @@
       "借用检查在 MIR 层怎么做，NLL 为什么能放行"
     ],
     [
+      "Supabase",
+      "supabase/supabase",
+      114493,
+      "TS",
+      "开源版 Firebase 把几家数据库缝在一起"
+    ],
+    [
       "Deno",
       "denoland/deno",
       108802,
@@ -2413,6 +2448,55 @@
       105114,
       "Py",
       "autograd 的图什么时候建、什么时候释放"
+    ],
+    [
+      "Bun",
+      "oven-sh/bun",
+      96530,
+      "Rust",
+      "把打包器、运行时、包管理器塞进一个二进制"
+    ],
+    [
+      "Django",
+      "django/django",
+      91496,
+      "Python",
+      "一个请求进 ORM 到出模板，中间有几个钩子"
+    ],
+    [
+      "Gin",
+      "gin-gonic/gin",
+      89474,
+      "Go",
+      "中间件链怎么串，一个 panic 怎么被接住"
+    ],
+    [
+      "Vite",
+      "vitejs/vite",
+      83711,
+      "TS",
+      "开发时不打包，靠浏览器原生 ESM 怎么跑起来"
+    ],
+    [
+      "Spring Boot",
+      "spring-projects/spring-boot",
+      81733,
+      "Java",
+      "一个注解怎么变成一整个容器"
+    ],
+    [
+      "Hoppscotch",
+      "hoppscotch/hoppscotch",
+      80733,
+      "TS",
+      "纯浏览器里发请求，CORS 怎么绕"
+    ],
+    [
+      "Flask",
+      "pallets/flask",
+      74945,
+      "Python",
+      "两百行的核心怎么长成一个框架"
     ],
     [
       "Moby",
@@ -2455,6 +2539,13 @@
       50736,
       "C++",
       "列存 + 向量化执行，为什么快一个数量级"
+    ],
+    [
+      "Terraform",
+      "hashicorp/terraform",
+      50122,
+      "Go",
+      "声明式配置怎么变成一张执行图"
     ],
     [
       "gRPC",
@@ -2511,6 +2602,55 @@
       26443,
       "Java",
       "checkpoint barrier 怎么在流里对齐"
+    ],
+    [
+      "gRPC-Go",
+      "grpc/grpc-go",
+      23103,
+      "Go",
+      "一次 RPC 的流控和重试"
+    ],
+    [
+      "PostgreSQL",
+      "postgres/postgres",
+      22698,
+      "C",
+      "一条 SQL 从解析到执行的几个阶段"
+    ],
+    [
+      "containerd",
+      "containerd/containerd",
+      21456,
+      "Go",
+      "一个容器从镜像到进程起来"
+    ],
+    [
+      "NATS",
+      "nats-io/nats-server",
+      20994,
+      "Go",
+      "消息总线怎么做到百万级连接"
+    ],
+    [
+      "RabbitMQ",
+      "rabbitmq/rabbitmq-server",
+      13953,
+      "Erlang",
+      "AMQP 交换机到队列的路由"
+    ],
+    [
+      "ZooKeeper",
+      "apache/zookeeper",
+      12830,
+      "Java",
+      "ZAB 协议和会话"
+    ],
+    [
+      "SQLite",
+      "sqlite/sqlite",
+      10910,
+      "C",
+      "一个文件里怎么装下 B 树、WAL 和事务"
     ]
   ]
 }
