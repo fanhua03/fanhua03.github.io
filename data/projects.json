@@ -791,6 +791,140 @@
       ],
       "thumb": "assets/thumbs/tilekernels.png",
       "diagram": "assets/diagrams/tilekernels.html"
+    },
+    {
+      "id": "deepseek-vl2",
+      "title": "DeepSeek-VL2",
+      "headline": "把照片折成 210 个词",
+      "tagline": "给已经很会说话的 DeepSeek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。",
+      "plain": "这是个能一边看图一边聊天的模型。你把照片和一个问题一起丢给它，它先把照片切成几块、每块缩成一小堆数字，再把这些数字当成「看图记的笔记」塞进句子里，后面就跟普通聊天模型一样往下接话。它的文字部分直接用了 DeepSeek 原来的模型，所以本质上就是「给一个已经很会说话的模型配了一双眼睛」。",
+      "repo": "deepseek-ai/DeepSeek-VL2",
+      "revision": "ef9f91e2b6426536b83294c11742c27be66361b1",
+      "langs": [
+        "Python"
+      ],
+      "loc": 6333,
+      "date": "2026-11-04",
+      "tags": [
+        "多模态",
+        "MoE",
+        "动态切图"
+      ],
+      "insights": [
+        "照片先切成 384×384 的方块：原图缩一份看全局，再按长宽比切几块放大看细节，切几块由图片自己决定。",
+        "看的模型把每块切成 27×27＝729 个小片，投影层把 2×2 共 4 片合成 1 个，729 变 196，再每行补一个「换行」——这块图就成了 210 个词，跟文字排在同一条句子里。",
+        "它没有另起一个语言模型：说话那半边原封不动用 DeepSeek-V2 的 MoE 解码器，新加的只有一双眼睛、一个翻译层、两个学出来的「标点」向量。"
+      ],
+      "sources": [
+        {
+          "path": "deepseek_vl2/models/processing_deepseek_vl_v2.py",
+          "line": 543,
+          "end_line": 565,
+          "label": "动态切图"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek_vl_v2.py",
+          "line": 34,
+          "end_line": 112,
+          "label": "图像塔"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek_vl_v2.py",
+          "line": 287,
+          "end_line": 301,
+          "label": "投影层"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek_vl_v2.py",
+          "line": 410,
+          "end_line": 454,
+          "label": "写回占位符"
+        },
+        {
+          "path": "deepseek_vl2/models/modeling_deepseek.py",
+          "line": 599,
+          "end_line": 619,
+          "label": "MoE 解码器"
+        },
+        {
+          "path": "deepseek_vl2/models/siglip_vit.py",
+          "line": 586,
+          "end_line": 596,
+          "label": "SigLIP"
+        }
+      ],
+      "thumb": "assets/thumbs/deepseek-vl2.png",
+      "diagram": "assets/diagrams/deepseek-vl2.html"
+    },
+    {
+      "id": "janus",
+      "title": "Janus",
+      "headline": "一个脑子，两副眼睛",
+      "tagline": "一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。",
+      "plain": "这个模型既能看懂图，也能画图。它没有硬凑一套两边共用的图像编码，而是各配一套：一套专门把图变成「看得懂的意思」，另一套专门把图变成「拼得回去的碎片」。两套都接到同一个语言模型上，所以里面只有一条流水线，外面有两个接口——这样「看懂」和「画好」不用互相将就。",
+      "repo": "deepseek-ai/Janus",
+      "revision": "1daa72fa409002d40931bd7b36a9280362469ead",
+      "langs": [
+        "Python"
+      ],
+      "loc": 6635,
+      "date": "2026-11-04",
+      "tags": [
+        "多模态",
+        "统一模型",
+        "图像生成"
+      ],
+      "insights": [
+        "看懂和画图要的东西不一样：看懂只要知道「这像什么」，画出来却得知道「每个像素块长什么样」；一套编码同时干两件事，两边都得让步，所以干脆拆成两条路。",
+        "看懂那条路：384×384 的图切成 16×16 小块，得到 576 个词，直接顶替句子里「图」那个占位符；后面就是普通聊天，没有任何图像专用解码。",
+        "画图那条路：同一个语言模型一步一步吐 576 个「碎片编号」，每吐一个就查表变回向量喂回去接着吐；吐完交给专门的解码器放大 16 倍拼成图。"
+      ],
+      "sources": [
+        {
+          "path": "janus/models/modeling_vlm.py",
+          "line": 194,
+          "end_line": 219,
+          "label": "分叉的两条路"
+        },
+        {
+          "path": "janus/models/modeling_vlm.py",
+          "line": 246,
+          "end_line": 258,
+          "label": "图像嵌入"
+        },
+        {
+          "path": "janus/models/modeling_vlm.py",
+          "line": 36,
+          "end_line": 51,
+          "label": "两个头"
+        },
+        {
+          "path": "janus/models/vq_model.py",
+          "line": 33,
+          "end_line": 42,
+          "label": "VQ 编解码"
+        },
+        {
+          "path": "generation_inference.py",
+          "line": 62,
+          "end_line": 98,
+          "label": "逐步生成 576 个码"
+        },
+        {
+          "path": "janus/models/processing_vlm.py",
+          "line": 92,
+          "end_line": 92,
+          "label": "576 个视觉词"
+        },
+        {
+          "path": "janus/models/projector.py",
+          "line": 27,
+          "end_line": 60,
+          "label": "投影层"
+        }
+      ],
+      "thumb": "assets/thumbs/janus.png",
+      "diagram": "assets/diagrams/janus.html"
     }
   ],
   "roadmap": [

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Janus 架构图｜一个脑子，两副眼睛 · 开源项目可视化拆解</title>
+<meta name="description" content="一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。 交互式架构图，7 处结论可直接跳到 deepseek-ai/Janus 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/janus.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="Janus 架构图｜一个脑子，两副眼睛 · 开源项目可视化拆解" />
+<meta property="og:description" content="一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。 交互式架构图，7 处结论可直接跳到 deepseek-ai/Janus 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/janus.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Janus 架构图｜一个脑子，两副眼睛","description":"一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"Janus","codeRepository":"https://github.com/deepseek-ai/Janus"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>Janus</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">Janus</span> 架构图｜一个脑子，两副眼睛</h1>
+    <p class="sub">一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。</p>
+    <p class="plain"><b>人话版</b>这个模型既能看懂图，也能画图。它没有硬凑一套两边共用的图像编码，而是各配一套：一套专门把图变成「看得懂的意思」，另一套专门把图变成「拼得回去的碎片」。两套都接到同一个语言模型上，所以里面只有一条流水线，外面有两个接口——这样「看懂」和「画好」不用互相将就。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/Janus" target="_blank" rel="noopener">deepseek-ai/Janus</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 6,635 行</span>
+      <span><b>出处</b> 7 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/janus.html" title="Janus 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/janus.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>看懂和画图要的东西不一样：看懂只要知道「这像什么」，画出来却得知道「每个像素块长什么样」；一套编码同时干两件事，两边都得让步，所以干脆拆成两条路。</li><li>看懂那条路：384×384 的图切成 16×16 小块，得到 576 个词，直接顶替句子里「图」那个占位符；后面就是普通聊天，没有任何图像专用解码。</li><li>画图那条路：同一个语言模型一步一步吐 576 个「碎片编号」，每吐一个就查表变回向量喂回去接着吐；吐完交给专门的解码器放大 16 倍拼成图。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/modeling_vlm.py#L194" rel="noopener" target="_blank">janus/models/modeling_vlm.py:194–219</a></code><span>分叉的两条路</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/modeling_vlm.py#L246" rel="noopener" target="_blank">janus/models/modeling_vlm.py:246–258</a></code><span>图像嵌入</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/modeling_vlm.py#L36" rel="noopener" target="_blank">janus/models/modeling_vlm.py:36–51</a></code><span>两个头</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/vq_model.py#L33" rel="noopener" target="_blank">janus/models/vq_model.py:33–42</a></code><span>VQ 编解码</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/generation_inference.py#L62" rel="noopener" target="_blank">generation_inference.py:62–98</a></code><span>逐步生成 576 个码</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/processing_vlm.py#L92" rel="noopener" target="_blank">janus/models/processing_vlm.py:92–92</a></code><span>576 个视觉词</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/projector.py#L27" rel="noopener" target="_blank">janus/models/projector.py:27–60</a></code><span>投影层</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="deepseek-vl2.html"><span class="lbl">← 上一个</span>DeepSeek-VL2</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 13 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

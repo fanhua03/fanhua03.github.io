@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>11</b><span>已拆</span></div>
+      <div class="stat"><b>13</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -78,6 +78,9 @@
     <button class="chip" data-f="负载均衡">负载均衡</button>
     <button class="chip" data-f="TileLang">TileLang</button>
     <button class="chip" data-f="算子库">算子库</button>
+    <button class="chip" data-f="动态切图">动态切图</button>
+    <button class="chip" data-f="统一模型">统一模型</button>
+    <button class="chip" data-f="图像生成">图像生成</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -301,6 +304,46 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/deepseek-vl2.html" data-search="deepseek-vl2 deepseek-ai/deepseek-vl2 多模态 moe 动态切图 给已经很会说话的 deepseek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepseek-vl2.png" alt="DeepSeek-VL2 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-VL2</span>
+            <span class="repo">deepseek-ai/DeepSeek-VL2</span>
+            <span class="tags"><span class="tag">多模态</span><span class="tag">MoE</span><span class="tag">动态切图</span></span>
+          </div>
+          <div class="tagline">给已经很会说话的 DeepSeek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。</div>
+          <ul class="ins"><li>照片先切成 384×384 的方块：原图缩一份看全局，再按长宽比切几块放大看细节，切几块由图片自己决定。</li><li>看的模型把每块切成 27×27＝729 个小片，投影层把 2×2 共 4 片合成 1 个，729 变 196，再每行补一个「换行」——这块图就成了 210 个词，跟文字排在同一条句子里。</li><li>它没有另起一个语言模型：说话那半边原封不动用 DeepSeek-V2 的 MoE 解码器，新加的只有一双眼睛、一个翻译层、两个学出来的「标点」向量。</li></ul>
+          <div class="foot">
+            <span><b>6,333</b> 行</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/janus.html" data-search="janus deepseek-ai/janus 多模态 统一模型 图像生成 一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。">
+        <div class="thumb">
+          <img src="assets/thumbs/janus.png" alt="Janus 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">Janus</span>
+            <span class="repo">deepseek-ai/Janus</span>
+            <span class="tags"><span class="tag">多模态</span><span class="tag">统一模型</span><span class="tag">图像生成</span></span>
+          </div>
+          <div class="tagline">一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。</div>
+          <ul class="ins"><li>看懂和画图要的东西不一样：看懂只要知道「这像什么」，画出来却得知道「每个像素块长什么样」；一套编码同时干两件事，两边都得让步，所以干脆拆成两条路。</li><li>看懂那条路：384×384 的图切成 16×16 小块，得到 576 个词，直接顶替句子里「图」那个占位符；后面就是普通聊天，没有任何图像专用解码。</li><li>画图那条路：同一个语言模型一步一步吐 576 个「碎片编号」，每吐一个就查表变回向量喂回去接着吐；吐完交给专门的解码器放大 16 倍拼成图。</li></ul>
+          <div class="foot">
+            <span><b>6,635</b> 行</span>
+            <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -492,7 +535,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 11 张 · 纯静态，无后端</div>
+    <div>已拆 13 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>
