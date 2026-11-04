@@ -11,7 +11,7 @@
 <meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB、DeepSeek-Coder、DeepSeek-Prover-V1.5、DeepGEMM-Ascend、DeepEP-Ascend、DeepSeek-VL、DeepSeek-OCR 2、dsh-superagent、profile-data、DeepSeek-Math、DeepSeekMath-V2 已拆，41 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="assets/site.css?v=f0df458e" />
+<link rel="stylesheet" href="assets/site.css?v=e2710f5e" />
 </head>
 <body><div class="topbar">
   <div class="wrap topbar-in">
@@ -48,89 +48,23 @@
 
   <div class="filters" id="filters">
     <button class="chip on" data-f="all">全部</button>
-    <button class="chip" data-f="解释器">解释器</button>
-    <button class="chip" data-f="字节码">字节码</button>
-    <button class="chip" data-f="C">C</button>
-    <button class="chip" data-f="分布式">分布式</button>
-    <button class="chip" data-f="存储">存储</button>
-    <button class="chip" data-f="C++">C++</button>
-    <button class="chip" data-f="数据库">数据库</button>
-    <button class="chip" data-f="事件循环">事件循环</button>
-    <button class="chip" data-f="CUDA">CUDA</button>
-    <button class="chip" data-f="MLA">MLA</button>
-    <button class="chip" data-f="kernel">kernel</button>
-    <button class="chip" data-f="KV cache">KV cache</button>
-    <button class="chip" data-f="MoE">MoE</button>
-    <button class="chip" data-f="推理">推理</button>
-    <button class="chip" data-f="MoE 通信">MoE 通信</button>
-    <button class="chip" data-f="NVLink/RDMA">NVLink/RDMA</button>
-    <button class="chip" data-f="JIT 内核">JIT 内核</button>
-    <button class="chip" data-f="FP8 GEMM">FP8 GEMM</button>
-    <button class="chip" data-f="JIT 编译">JIT 编译</button>
-    <button class="chip" data-f="SM100 内核">SM100 内核</button>
-    <button class="chip" data-f="数据框架">数据框架</button>
-    <button class="chip" data-f="DuckDB">DuckDB</button>
-    <button class="chip" data-f="3FS">3FS</button>
-    <button class="chip" data-f="多模态">多模态</button>
-    <button class="chip" data-f="OCR">OCR</button>
-    <button class="chip" data-f="视觉编码器">视觉编码器</button>
-    <button class="chip" data-f="专家并行">专家并行</button>
-    <button class="chip" data-f="负载均衡">负载均衡</button>
-    <button class="chip" data-f="TileLang">TileLang</button>
-    <button class="chip" data-f="算子库">算子库</button>
-    <button class="chip" data-f="动态切图">动态切图</button>
-    <button class="chip" data-f="统一模型">统一模型</button>
-    <button class="chip" data-f="图像生成">图像生成</button>
-    <button class="chip" data-f="推理框架">推理框架</button>
-    <button class="chip" data-f="批调度">批调度</button>
-    <button class="chip" data-f="流水线并行">流水线并行</button>
-    <button class="chip" data-f="训练">训练</button>
-    <button class="chip" data-f="稀疏">稀疏</button>
-    <button class="chip" data-f="查表">查表</button>
-    <button class="chip" data-f="n-gram">n-gram</button>
-    <button class="chip" data-f="路由">路由</button>
-    <button class="chip" data-f="缓存">缓存</button>
-    <button class="chip" data-f="协议转换">协议转换</button>
-    <button class="chip" data-f="Rust">Rust</button>
-    <button class="chip" data-f="流式">流式</button>
-    <button class="chip" data-f="投机解码">投机解码</button>
-    <button class="chip" data-f="推理加速">推理加速</button>
-    <button class="chip" data-f="文生 3D">文生 3D</button>
-    <button class="chip" data-f="SDS">SDS</button>
-    <button class="chip" data-f="扩散先验">扩散先验</button>
-    <button class="chip" data-f="插件架构">插件架构</button>
-    <button class="chip" data-f="Agent">Agent</button>
-    <button class="chip" data-f="TypeScript">TypeScript</button>
-    <button class="chip" data-f="稀疏注意力">稀疏注意力</button>
-    <button class="chip" data-f="线性规划">线性规划</button>
-    <button class="chip" data-f="代码模型">代码模型</button>
-    <button class="chip" data-f="评测">评测</button>
-    <button class="chip" data-f="定理证明">定理证明</button>
-    <button class="chip" data-f="Lean 4">Lean 4</button>
-    <button class="chip" data-f="树搜索">树搜索</button>
-    <button class="chip" data-f="昇腾">昇腾</button>
-    <button class="chip" data-f="GEMM">GEMM</button>
-    <button class="chip" data-f="移植">移植</button>
-    <button class="chip" data-f="通信">通信</button>
-    <button class="chip" data-f="HCCL">HCCL</button>
-    <button class="chip" data-f="演进对照">演进对照</button>
-    <button class="chip" data-f="视觉编码">视觉编码</button>
-    <button class="chip" data-f="因果流">因果流</button>
-    <button class="chip" data-f="Agent 控制流">Agent 控制流</button>
-    <button class="chip" data-f="多轮">多轮</button>
-    <button class="chip" data-f="性能剖析">性能剖析</button>
-    <button class="chip" data-f="数据">数据</button>
-    <button class="chip" data-f="数学评测">数学评测</button>
-    <button class="chip" data-f="符号计算">符号计算</button>
-    <button class="chip" data-f="数学证明">数学证明</button>
-    <button class="chip" data-f="自验证">自验证</button>
-    <button class="chip" data-f="多轮精修">多轮精修</button>
+    <button class="chip" data-f="runtime">语言与运行时</button>
+    <button class="chip" data-f="model">模型与推理</button>
+    <button class="chip" data-f="kernel">内核与通信</button>
+    <button class="chip" data-f="infra">分布式与数据</button>
+    <button class="chip" data-f="agent">Agent 与工具</button>
   </div>
 
-  <section class="grid" id="gallery">
+  <div id="gallery">
+  <section class="group" id="g-runtime" data-group="runtime">
+    <div class="group-head">
+      <h2>语言与运行时<span>2</span></h2>
+      <p>一个请求进来，一行代码下去，机器上发生了什么</p>
+    </div>
+    <div class="grid">
       <a class="card" href="projects/jq.html" data-search="jq jqlang/jq 解释器 字节码 c 一个命令行小工具：你给它一条规则，它把 json 变成你要的样子。">
         <div class="thumb">
-          <img src="assets/thumbs/jq.png" alt="jq 架构图" loading="lazy" />
+          <img src="assets/thumbs/jq.webp" alt="jq 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -140,7 +74,7 @@
             <span class="tags"><span class="tag">解释器</span><span class="tag">字节码</span><span class="tag">C</span></span>
           </div>
           <div class="tagline">一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。</div>
-          <ul class="ins"><li>一条规则能吐出好几个结果（比如 .[]），靠的是「存档」：算出一个结果就先记住算到哪了，下次从那儿接着算，不用重头来。</li><li>它自带的那批函数（map、select 这些）不是 C 写的，就是用 jq 自己的语言写的源码，编译时和你的程序拼在一起——所以得先「对上名字」再「翻译成机器指令」。</li><li>整个仓库最长的文件不是执行引擎，是一个专门把小数打印得和输入一模一样的库（4276 行）。就为了让 1e1000 原样输出，不要变成 inf。</li></ul>
+          <ul class="ins"><li>一条规则能吐出好几个结果（比如 .[]），靠的是「存档」：算出一个结果就先记住算到哪了，下次从那儿接着算，不用重头来。</li></ul>
           <div class="foot">
             <span><b>28,460</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -148,29 +82,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/3fs.html" data-search="3fs deepseek-ai/3fs 分布式 存储 c++ deepseek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。">
-        <div class="thumb">
-          <img src="assets/thumbs/3fs.png" alt="3FS 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">3FS</span>
-            <span class="repo">deepseek-ai/3FS</span>
-            <span class="tags"><span class="tag">分布式</span><span class="tag">存储</span><span class="tag">C++</span></span>
-          </div>
-          <div class="tagline">DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</div>
-          <ul class="ins"><li>同一份数据存三份，排成一条链。写只找链头，链头一层层往下传；读随便挑一台都行——所以副本越多，读取越快。</li><li>「这个文件在哪、多大」这类目录信息不放在自己身上，全丢给一个外部数据库（FoundationDB）。所以每台元数据服务器都是无状态的，挂了换一台接着干。</li><li>系统自带的挂载方式（FUSE）太慢，每秒四十万次小读就卡住了。于是它在自己进程里开了条快速通道：应用直接往共享内存里写，网卡直接读走，不复制。</li></ul>
-          <div class="foot">
-            <span><b>122,058</b> 行</span>
-            <span><b>10</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/redis.html" data-search="redis redis/redis 数据库 事件循环 c 放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。">
         <div class="thumb">
-          <img src="assets/thumbs/redis.png" alt="Redis 架构图" loading="lazy" />
+          <img src="assets/thumbs/redis.webp" alt="Redis 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -180,7 +94,7 @@
             <span class="tags"><span class="tag">数据库</span><span class="tag">事件循环</span><span class="tag">C</span></span>
           </div>
           <div class="tagline">放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。</div>
-          <ul class="ins"><li>一条命令从头到尾只有一个线程在处理，所以不用加锁、也不会互相等。真正的瓶颈是网络来回那一趟（0.1 毫秒），不是算得慢。</li><li>只存几个字段的小表，它不当哈希表存，而是塞进一段连续内存里——省地方，也更快，因为一次就能读进 CPU 缓存。字段多了才升级成正经哈希表。</li><li>写日志落盘不占主线程：命令先写进内存里的一块缓冲，主线程到点刷给系统，真正落盘交给后台线程。所以开了日志也不会明显变慢。</li></ul>
+          <ul class="ins"><li>一条命令从头到尾只有一个线程在处理，所以不用加锁、也不会互相等。真正的瓶颈是网络来回那一趟（0.1 毫秒），不是算得慢。</li></ul>
           <div class="foot">
             <span><b>211,728</b> 行</span>
             <span><b>10</b> 处对得上源码</span>
@@ -188,29 +102,18 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/flashmla.html" data-search="flashmla deepseek-ai/flashmla cuda mla kernel kv cache 给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。">
-        <div class="thumb">
-          <img src="assets/thumbs/flashmla.png" alt="FlashMLA 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">FlashMLA</span>
-            <span class="repo">deepseek-ai/FlashMLA</span>
-            <span class="tags"><span class="tag">CUDA</span><span class="tag">MLA</span><span class="tag">kernel</span><span class="tag">KV cache</span></span>
-          </div>
-          <div class="tagline">给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</div>
-          <ul class="ins"><li>一个 GPU 核心里 384 个线程分工：128 个算指数、128 个把压缩过的数据还原、1 个发矩阵指令、1 个搬数据、1 个算地址——像流水线，各干一段。</li><li>数据是压缩着存的，用的时候才现算「第几页第几个」把它捞出来：一次搬 4 行，64 行分 16 次搬完；索引越界就填 -1，让硬件自己跳过。</li><li>压缩得很狠：512 个数字压成 8 位整数，连位置编码一起压，再配 16 字节缩放系数。一个 token 只占 528 字节；更狠的版本只占 256 字节。</li></ul>
-          <div class="foot">
-            <span><b>19,093</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
+    </div>
+    
+  </section>
+  <section class="group" id="g-model" data-group="model">
+    <div class="group-head">
+      <h2>模型与推理<span>15</span></h2>
+      <p>从一次前向、一份权重、一个 token 开始看</p>
+    </div>
+    <div class="grid">
       <a class="card" href="projects/deepseek-v3.html" data-search="deepseek-v3 inference deepseek-ai/deepseek-v3 moe mla 推理 官方推理代码：一个词进来，模型怎么一步步算出下一个词。">
         <div class="thumb">
-          <img src="assets/thumbs/deepseek-v3.png" alt="DeepSeek-V3 inference 架构图" loading="lazy" />
+          <img src="assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -220,7 +123,7 @@
             <span class="tags"><span class="tag">MoE</span><span class="tag">MLA</span><span class="tag">推理</span></span>
           </div>
           <div class="tagline">官方推理代码：一个词进来，模型怎么一步步算出下一个词。</div>
-          <ul class="ins"><li>128 个头要用的数据其实不用都存：只存 512 个压缩后的数 + 64 个位置数，一共 576 个；老老实实存要 32768 个——只要 1.76%。</li><li>压缩是在算分之前做的：先把提问也折进这 512 维里，于是「打分」变成两个小矩阵相乘；算完再把结果展开回 128 维。</li><li>挑专家分两道筛：256 个专家先按 8 组选出 4 组，再在这 4 组里挑 8 个；权重用原始分值归一化，不额外加偏置。</li></ul>
+          <ul class="ins"><li>128 个头要用的数据其实不用都存：只存 512 个压缩后的数 + 64 个位置数，一共 576 个；老老实实存要 32768 个——只要 1.76%。</li></ul>
           <div class="foot">
             <span><b>1,397</b> 行</span>
             <span><b>6</b> 处对得上源码</span>
@@ -228,69 +131,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/deepep.html" data-search="deepep deepseek-ai/deepep moe 通信 nvlink/rdma jit 内核 几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。">
-        <div class="thumb">
-          <img src="assets/thumbs/deepep.png" alt="DeepEP 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepEP</span>
-            <span class="repo">deepseek-ai/DeepEP</span>
-            <span class="tags"><span class="tag">MoE 通信</span><span class="tag">NVLink/RDMA</span><span class="tag">JIT 内核</span></span>
-          </div>
-          <div class="tagline">几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。</div>
-          <ul class="ins"><li>开多少个计算核、多少条网卡队列不是拍脑袋，是按带宽算出来的：直连模式 9 条，混合模式是核数 ×16+1。</li><li>统计「谁到了」不用每个线程都加一次：专门留一个通知线程，用一条 64 位原子操作同时记计数和到达数，干活的线程不参与统计。</li><li>同一个机箱内的卡，直接往对方内存里写（同一套地址）；跨机箱才先落到发送缓冲，再走网卡发出去。</li></ul>
-          <div class="foot">
-            <span><b>17,910</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/deepgemm.html" data-search="deepgemm deepseek-ai/deepgemm fp8 gemm jit 编译 sm100 内核 矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。">
-        <div class="thumb">
-          <img src="assets/thumbs/deepgemm.png" alt="DeepGEMM 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepGEMM</span>
-            <span class="repo">deepseek-ai/DeepGEMM</span>
-            <span class="tags"><span class="tag">FP8 GEMM</span><span class="tag">JIT 编译</span><span class="tag">SM100 内核</span></span>
-          </div>
-          <div class="tagline">矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。</div>
-          <ul class="ins"><li>它不在发布时编死，而是运行时现场编：30 个参数（分块、流水级数、线程数、数据类型）一起焊进一份只跑这一种形状的机器码，跑起来只剩「启动」。</li><li>流水几级不是调的，是算的：共享内存一共 232448 字节，能放几级就放几级；分块大小先被「显存列数 ≤512」卡掉一批。</li><li>启动的线程块数正好等于 GPU 里的核数，每个块算完一块就自己去拿下一块，不用调度器派活。</li></ul>
-          <div class="foot">
-            <span><b>33,867</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/smallpond.html" data-search="smallpond deepseek-ai/smallpond 数据框架 duckdb 3fs 海量数据框架：把大任务切成小的，丢到 3fs 上跑，算完就退。">
-        <div class="thumb">
-          <img src="assets/thumbs/smallpond.png" alt="smallpond 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">smallpond</span>
-            <span class="repo">deepseek-ai/smallpond</span>
-            <span class="tags"><span class="tag">数据框架</span><span class="tag">DuckDB</span><span class="tag">3FS</span></span>
-          </div>
-          <div class="tagline">海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</div>
-          <ul class="ins"><li>一个大作业被切成「生产任务」和「消费任务」两组：生产任务数按 worker 数和 CPU 数算出来；消费任务只合并不搬数据。</li><li>没有常驻服务：一个调度进程用 mpirun 拉起一堆 worker，任务队列就是 3FS 上的一个目录，取任务靠「改名」——谁改名成功谁拿走。</li><li>每个小任务开一个内存里的 DuckDB：读 Parquet、算完、写回 Parquet，进程就退。所以没有一堆常驻进程要养。</li></ul>
-          <div class="foot">
-            <span><b>15,996</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/dsocr.html" data-search="deepseek-ocr deepseek-ai/deepseek-ocr 多模态 ocr 视觉编码器 把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。">
         <div class="thumb">
-          <img src="assets/thumbs/dsocr.png" alt="DeepSeek-OCR 架构图" loading="lazy" />
+          <img src="assets/thumbs/dsocr.webp" alt="DeepSeek-OCR 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -300,7 +143,7 @@
             <span class="tags"><span class="tag">多模态</span><span class="tag">OCR</span><span class="tag">视觉编码器</span></span>
           </div>
           <div class="tagline">把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。</div>
-          <ul class="ins"><li>压缩发生在编码器里：一张 1024×1024 的图先切成 16 像素的小块，再两次减半，最后只剩 16×16=256 个 token。</li><li>一页的「视觉开销」是固定的 273 个：16×16 的格子每行补一个换行、末尾补一个分隔符，正好 16×17+1。</li><li>花多少 token 只看图片多大，不看字有多少：512 像素→64 个，1024→256 个，1280→400 个；位置则靠输出里的坐标标记还原。</li></ul>
+          <ul class="ins"><li>压缩发生在编码器里：一张 1024×1024 的图先切成 16 像素的小块，再两次减半，最后只剩 16×16=256 个 token。</li></ul>
           <div class="foot">
             <span><b>3,198</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -308,49 +151,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/eplb.html" data-search="eplb deepseek-ai/eplb 专家并行 负载均衡 给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。">
-        <div class="thumb">
-          <img src="assets/thumbs/eplb.png" alt="EPLB 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">EPLB</span>
-            <span class="repo">deepseek-ai/EPLB</span>
-            <span class="tags"><span class="tag">专家并行</span><span class="tag">负载均衡</span></span>
-          </div>
-          <div class="tagline">给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。</div>
-          <ul class="ins"><li>热门的专家会被复制几份，每次挑当前最热的那个加副本（replicate_experts 里比较 weight/logcnt）。</li><li>装箱先放大件再补小件：最重的组先放，放进当前最轻的箱子，且每箱数量必须一样（balanced_packing）。</li><li>两层装箱：先把专家组按机器装一遍，再把副本按卡装一遍；全局模式跳过第一层。</li></ul>
-          <div class="foot">
-            <span><b>164</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/tilekernels.html" data-search="tilekernels deepseek-ai/tilekernels tilelang 算子库 把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 nvidia 和昇腾。">
-        <div class="thumb">
-          <img src="assets/thumbs/tilekernels.png" alt="TileKernels 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">TileKernels</span>
-            <span class="repo">deepseek-ai/TileKernels</span>
-            <span class="tags"><span class="tag">TileLang</span><span class="tag">算子库</span></span>
-          </div>
-          <div class="tagline">把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。</div>
-          <ul class="ins"><li>你只写开多少 block、每个 block 多少线程，搬运和计算都按块写（T.Kernel / T.copy / T.Parallel）。</li><li>块多大、用几个线程是算出来的：小 batch 用 64 线程 × 32 元素，block_k 取与 hidden 的最大公约数。</li><li>同一份写法换后端就能跑：探测到昇腾就换另一份 launcher，形状用 T.dynamic 留给运行时决定。</li></ul>
-          <div class="foot">
-            <span><b>26,181</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/deepseek-vl2.html" data-search="deepseek-vl2 deepseek-ai/deepseek-vl2 多模态 moe 动态切图 给已经很会说话的 deepseek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。">
         <div class="thumb">
-          <img src="assets/thumbs/deepseek-vl2.png" alt="DeepSeek-VL2 架构图" loading="lazy" />
+          <img src="assets/thumbs/deepseek-vl2.webp" alt="DeepSeek-VL2 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -360,7 +163,7 @@
             <span class="tags"><span class="tag">多模态</span><span class="tag">MoE</span><span class="tag">动态切图</span></span>
           </div>
           <div class="tagline">给已经很会说话的 DeepSeek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。</div>
-          <ul class="ins"><li>照片先切成 384×384 的方块：原图缩一份看全局，再按长宽比切几块放大看细节，切几块由图片自己决定。</li><li>看的模型把每块切成 27×27＝729 个小片，投影层把 2×2 共 4 片合成 1 个，729 变 196，再每行补一个「换行」——这块图就成了 210 个词，跟文字排在同一条句子里。</li><li>它没有另起一个语言模型：说话那半边原封不动用 DeepSeek-V2 的 MoE 解码器，新加的只有一双眼睛、一个翻译层、两个学出来的「标点」向量。</li></ul>
+          <ul class="ins"><li>照片先切成 384×384 的方块：原图缩一份看全局，再按长宽比切几块放大看细节，切几块由图片自己决定。</li></ul>
           <div class="foot">
             <span><b>6,333</b> 行</span>
             <span><b>6</b> 处对得上源码</span>
@@ -370,7 +173,7 @@
       </a>
       <a class="card" href="projects/janus.html" data-search="janus deepseek-ai/janus 多模态 统一模型 图像生成 一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。">
         <div class="thumb">
-          <img src="assets/thumbs/janus.png" alt="Janus 架构图" loading="lazy" />
+          <img src="assets/thumbs/janus.webp" alt="Janus 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -380,7 +183,7 @@
             <span class="tags"><span class="tag">多模态</span><span class="tag">统一模型</span><span class="tag">图像生成</span></span>
           </div>
           <div class="tagline">一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。</div>
-          <ul class="ins"><li>看懂和画图要的东西不一样：看懂只要知道「这像什么」，画出来却得知道「每个像素块长什么样」；一套编码同时干两件事，两边都得让步，所以干脆拆成两条路。</li><li>看懂那条路：384×384 的图切成 16×16 小块，得到 576 个词，直接顶替句子里「图」那个占位符；后面就是普通聊天，没有任何图像专用解码。</li><li>画图那条路：同一个语言模型一步一步吐 576 个「碎片编号」，每吐一个就查表变回向量喂回去接着吐；吐完交给专门的解码器放大 16 倍拼成图。</li></ul>
+          <ul class="ins"><li>看懂和画图要的东西不一样：看懂只要知道「这像什么」，画出来却得知道「每个像素块长什么样」；一套编码同时干两件事，两边都得让步，所以干脆拆成两条路。</li></ul>
           <div class="foot">
             <span><b>6,635</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -388,49 +191,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/deepinfer.html" data-search="deepinfer deepseek-ai/deepinfer 推理框架 批调度 kv cache 线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。">
-        <div class="thumb">
-          <img src="assets/thumbs/deepinfer.png" alt="DeepInfer 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepInfer</span>
-            <span class="repo">deepseek-ai/DeepInfer</span>
-            <span class="tags"><span class="tag">推理框架</span><span class="tag">批调度</span><span class="tag">KV cache</span></span>
-          </div>
-          <div class="tagline">线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</div>
-          <ul class="ins"><li>一条请求先排队，再和别人的凑成一批一起算；这批是先「读题」还是接着「续写」，由调度器每隔几步让各台机器投一次票决定。</li><li>为了让显卡不空等，这一步的收尾被故意拖到下一步计算期间去做，发指令时也明确不许停下来等显卡。</li><li>显存被切成固定大小的块来记账，用完还回一条带计数的空闲链；块不够时按「谁已经写得最多」排序，先抢占最老的请求。</li></ul>
-          <div class="foot">
-            <span><b>60,844</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/dualpipe.html" data-search="dualpipe deepseek-ai/dualpipe 流水线并行 训练 训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。">
-        <div class="thumb">
-          <img src="assets/thumbs/dualpipe.png" alt="DualPipe 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DualPipe</span>
-            <span class="repo">deepseek-ai/DualPipe</span>
-            <span class="tags"><span class="tag">流水线并行</span><span class="tag">训练</span></span>
-          </div>
-          <div class="tagline">训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</div>
-          <ul class="ins"><li>每台机器同时管两段模型，一段在流水线前头、一段在后头，所以两个方向的数据可以交替走：一边等数据，另一边正好在算。</li><li>收发数据不挡着算：先把要收要发的包全挂上、一起提交，然后立刻去算，算完才统一等结果。</li><li>「反向传播」被拆成两半，算权重的那半先存起来，等有空隙了再补算，于是最后几段机器也不会干等。</li></ul>
-          <div class="foot">
-            <span><b>1,390</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/engram.html" data-search="engram deepseek-ai/engram 稀疏 查表 n-gram 有些事不用算，查一下就行：把词组搭配存成一张巨大的表，用的时候按地址取几行。">
         <div class="thumb">
-          <img src="assets/thumbs/engram.png" alt="Engram 架构图" loading="lazy" />
+          <img src="assets/thumbs/engram.webp" alt="Engram 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -440,7 +203,7 @@
             <span class="tags"><span class="tag">稀疏</span><span class="tag">查表</span><span class="tag">n-gram</span></span>
           </div>
           <div class="tagline">有些事不用算，查一下就行：把词组搭配存成一张巨大的表，用的时候按地址取几行。</div>
-          <ul class="ins"><li>表是按词组搭配建的：2 个词、3 个词的组合各一套，每套再拆成 8 个头，每个头用自己的质数取模，所以同一个组合会落进 8 个不同的桶。</li><li>地址是算出来的、不是学出来的：先把文本归一化（大小写、全半角、重音都抹平），再用固定乘子做「乘加再异或」取模。同样输入永远同样地址，表才能放主机内存按需搬。</li><li>取出来的向量不直接相加：先跟当前状态做点积当门（4 条并行连接各一个门），乘完再叠一个很短的卷积把相邻记忆抹平，最后加回残差。</li></ul>
+          <ul class="ins"><li>表是按词组搭配建的：2 个词、3 个词的组合各一套，每套再拆成 8 个头，每个头用自己的质数取模，所以同一个组合会落进 8 个不同的桶。</li></ul>
           <div class="foot">
             <span><b>422</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -450,7 +213,7 @@
       </a>
       <a class="card" href="projects/deepseekmoe-routing.html" data-search="deepseekmoe 路由 deepseek-ai/deepseek-vl2 moe 路由 负载均衡 这段 moe 建模代码躺在 deepseek-vl2 仓库里（官方 v2 的 modeling_deepseek.py 搬过来的）——因为 v2 / deepseek-moe 两个仓库只放了 readme 和 pdf。">
         <div class="thumb">
-          <img src="assets/thumbs/deepseekmoe-routing.png" alt="DeepSeekMoE 路由 架构图" loading="lazy" />
+          <img src="assets/thumbs/deepseekmoe-routing.webp" alt="DeepSeekMoE 路由 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -460,7 +223,7 @@
             <span class="tags"><span class="tag">MoE</span><span class="tag">路由</span><span class="tag">负载均衡</span></span>
           </div>
           <div class="tagline">这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。</div>
-          <ul class="ins"><li>把一个大前馈层拆成很多个窄的，每个词只请几个——能拼出来的组合比单个大层多得多，参数涨了，但每个词只付几个专家的算力。</li><li>训练时多了一项扣分：统计每个专家被选中的比例和它拿到的平均分数，两者相乘再求和；谁被用得太偏这项就大，梯度会把门往平均那边推。这项只在训练时有。</li><li>把词送到专家手里有两套代码：训练时每个词复制 k 份、逐个专家跑；推理时先按专家排序再一次算完，跨卡时用 all_to_all 把词发到有这个专家的机器上。</li></ul>
+          <ul class="ins"><li>把一个大前馈层拆成很多个窄的，每个词只请几个——能拼出来的组合比单个大层多得多，参数涨了，但每个词只付几个专家的算力。</li></ul>
           <div class="foot">
             <span><b>1,975</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -468,49 +231,11 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/deepjit.html" data-search="deepjit deepseek-ai/deepjit jit 编译 缓存 同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。">
-        <div class="thumb">
-          <img src="assets/thumbs/deepjit.png" alt="DeepJIT 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepJIT</span>
-            <span class="repo">deepseek-ai/DeepJIT</span>
-            <span class="tags"><span class="tag">JIT 编译</span><span class="tag">缓存</span></span>
-          </div>
-          <div class="tagline">同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。</div>
-          <ul class="ins"><li>编过的东西按「源码 + 编译器版本 + 编译选项」算一个指纹，指纹一样就直接拿旧的。</li><li>两级缓存：先看进程内存里的表，再看硬盘上的目录；硬盘上先写 .committed 再改名，别人要么看不见、要么看见完整的。</li><li>第一次要现场调 nvcc，之后同机同选项都不用再编；编完还会检查有没有寄存器溢出。</li></ul>
-          <div class="foot">
-            <span><b>10,658</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/dsrecipe.html" data-search="deepseek-recipe deepseek-ai/deepseek-recipe 协议转换 rust 流式 把 openai、anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。">
-        <div class="thumb">
-          <img src="assets/thumbs/dsrecipe.png" alt="deepseek-recipe 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">deepseek-recipe</span>
-            <span class="repo">deepseek-ai/deepseek-recipe</span>
-            <span class="tags"><span class="tag">协议转换</span><span class="tag">Rust</span><span class="tag">流式</span></span>
-          </div>
-          <div class="tagline">把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。</div>
-          <ul class="ins"><li>三种接口进来先翻成一套统一的对话结构，后面就不用再管原来是哪种格式。</li><li>变成 prompt 时顺手记下特殊标记在字符串里的位置，编码时不用再找一遍。</li><li>模型边吐边翻：每来一小段就解析成事件，再包成对应格式推给客户端。</li></ul>
-          <div class="foot">
-            <span><b>22,340</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
+    </div>
+    <div class="grid extra" hidden>
       <a class="card" href="projects/deepspec.html" data-search="deepspec deepseek-ai/deepspec 投机解码 推理加速 训练 让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。">
         <div class="thumb">
-          <img src="assets/thumbs/deepspec.png" alt="DeepSpec 架构图" loading="lazy" />
+          <img src="assets/thumbs/deepspec.webp" alt="DeepSpec 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -520,7 +245,7 @@
             <span class="tags"><span class="tag">投机解码</span><span class="tag">推理加速</span><span class="tag">训练</span></span>
           </div>
           <div class="tagline">让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。</div>
-          <ul class="ins"><li>草稿模型很小，只有 5 层，靠抄大模型中间几层的「内部笔记」来猜（第 1/9/17/25/33 层）。</li><li>它一次猜 7 个字，猜完先给自己打分，没把握的后半截直接砍掉，再交给大模型一次验完整块。</li><li>验证时逐个比概率，一旦有一个不对，后面的全丢，只收下对的那段再补 1 个新的；每轮收下几个字就是加速倍数。</li></ul>
+          <ul class="ins"><li>草稿模型很小，只有 5 层，靠抄大模型中间几层的「内部笔记」来猜（第 1/9/17/25/33 层）。</li></ul>
           <div class="foot">
             <span><b>11,244</b> 行</span>
             <span><b>8</b> 处对得上源码</span>
@@ -530,7 +255,7 @@
       </a>
       <a class="card" href="projects/dreamcraft.html" data-search="dreamcraft3d deepseek-ai/dreamcraft3d 文生 3d sds 扩散先验 一句话加一张参考图，先在 3d 里捏出大概形状，再抽成网格、刷上颜色。">
         <div class="thumb">
-          <img src="assets/thumbs/dreamcraft.png" alt="DreamCraft3D 架构图" loading="lazy" />
+          <img src="assets/thumbs/dreamcraft.webp" alt="DreamCraft3D 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -540,7 +265,7 @@
             <span class="tags"><span class="tag">文生 3D</span><span class="tag">SDS</span><span class="tag">扩散先验</span></span>
           </div>
           <div class="tagline">一句话加一张参考图，先在 3D 里捏出大概形状，再抽成网格、刷上颜色。</div>
-          <ul class="ins"><li>先在 3D 里捏个大概（256 分辨率的隐式场），再从里面抽出一层皮做成网格，最后只在这层皮上刷颜色（1024 分辨率、几何冻住）。</li><li>判断像不像，是把 3D 从随机角度拍成图，让两个画图模型各猜一次噪声，用两次猜的差去改 3D。</li><li>它还会拿自己刚拍出来的图把其中一个画图模型再教一遍，教完更懂这个物体，下一轮挑毛病更准。</li></ul>
+          <ul class="ins"><li>先在 3D 里捏个大概（256 分辨率的隐式场），再从里面抽出一层皮做成网格，最后只在这层皮上刷颜色（1024 分辨率、几何冻住）。</li></ul>
           <div class="foot">
             <span><b>44,915</b> 行</span>
             <span><b>8</b> 处对得上源码</span>
@@ -548,29 +273,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/dsh.html" data-search="deepseek harness deepseek-ai/deepseek-harness 插件架构 agent typescript 一个 ai 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。">
-        <div class="thumb">
-          <img src="assets/thumbs/dsh.png" alt="DeepSeek Harness 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepSeek Harness</span>
-            <span class="repo">deepseek-ai/deepseek-harness</span>
-            <span class="tags"><span class="tag">插件架构</span><span class="tag">Agent</span><span class="tag">TypeScript</span></span>
-          </div>
-          <div class="tagline">一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</div>
-          <ul class="ins"><li>连对话主循环、系统提示、工具表、会话存储都是独立 npm 包，按 cordis.yml 装进同一个容器；「主线」不在代码里，在配置里。</li><li>系统提示不是写死的常量，是每一步重算出来的：先看现在有哪些工具，再把工具说明拼进提示里——工具变了提示就跟着变。</li><li>模型一轮可以吐多个工具调用，一次性交出去并行跑，每个结果都写回会话，下一轮模型看到的是完整历史。</li></ul>
-          <div class="foot">
-            <span>无源码</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/dsv32.html" data-search="deepseek-v3.2-exp deepseek-ai/deepseek-v3.2-exp 稀疏注意力 推理 先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。">
         <div class="thumb">
-          <img src="assets/thumbs/dsv32.png" alt="DeepSeek-V3.2-Exp 架构图" loading="lazy" />
+          <img src="assets/thumbs/dsv32.webp" alt="DeepSeek-V3.2-Exp 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -580,7 +285,7 @@
             <span class="tags"><span class="tag">稀疏注意力</span><span class="tag">推理</span></span>
           </div>
           <div class="tagline">先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。</div>
-          <ul class="ins"><li>选择器是另一套小注意力：64 个 index 头、每头 128 维，q/k 都压成 fp8。</li><li>64 个分数先 ReLU 再按头权重求和，一个 key 最后只剩一个分数，然后取前 2048。</li><li>这段参考实现没省算力：q·k 全表照算再盖 -inf 遮罩，真省要靠部署时只算选中的 2048 个。</li></ul>
+          <ul class="ins"><li>选择器是另一套小注意力：64 个 index 头、每头 128 维，q/k 都压成 fp8。</li></ul>
           <div class="foot">
             <span><b>1,482</b> 行</span>
             <span><b>8</b> 处对得上源码</span>
@@ -588,29 +293,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/lplb.html" data-search="lplb deepseek-ai/lplb 负载均衡 线性规划 moe 每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。">
-        <div class="thumb">
-          <img src="assets/thumbs/lplb.png" alt="LPLB 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">LPLB</span>
-            <span class="repo">deepseek-ai/LPLB</span>
-            <span class="tags"><span class="tag">负载均衡</span><span class="tag">线性规划</span><span class="tag">MoE</span></span>
-          </div>
-          <div class="tagline">每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。</div>
-          <ul class="ins"><li>EPLB 治长期过热、决定复制谁；LPLB 治每批抖动、只决定这一批的活往哪倒。</li><li>把「冗余副本能接多少活」当变量解线性规划，让最忙的那张卡尽量轻。</li><li>每批多花约 100µs 求解；极端不平衡时可能还不如 EPLB 简单粗暴。</li></ul>
-          <div class="foot">
-            <span><b>2,163</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/dscoder.html" data-search="deepseek-coder deepseek-ai/deepseek-coder 代码模型 评测 不带模型结构，只带一套考场：每道题写几十份答案，剪干净、补上标准测试、丢进沙箱跑，按 pass@k 记分。">
         <div class="thumb">
-          <img src="assets/thumbs/dscoder.png" alt="DeepSeek-Coder 架构图" loading="lazy" />
+          <img src="assets/thumbs/dscoder.webp" alt="DeepSeek-Coder 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -620,7 +305,7 @@
             <span class="tags"><span class="tag">代码模型</span><span class="tag">评测</span></span>
           </div>
           <div class="tagline">不带模型结构，只带一套考场：每道题写几十份答案，剪干净、补上标准测试、丢进沙箱跑，按 pass@k 记分。</div>
-          <ul class="ins"><li>仓库里没有模型本身的代码，权重挂在 Hugging Face 上；这里装的是评测、微调、demo 三块。</li><li>评测时每道题生成 40 份答案，按关键字把多余内容剪掉，再拼上标准测试丢进独立进程跑，10 秒跑不完就判错。</li><li>最后算 pass@k：40 份里抽 k 份，只要有一份通过就算过，衡量的是「多试几次能不能做出来」。</li></ul>
+          <ul class="ins"><li>仓库里没有模型本身的代码，权重挂在 Hugging Face 上；这里装的是评测、微调、demo 三块。</li></ul>
           <div class="foot">
             <span><b>5,637</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -630,7 +315,7 @@
       </a>
       <a class="card" href="projects/prover.html" data-search="deepseek-prover-v1.5 deepseek-ai/deepseek-prover-v1.5 定理证明 lean 4 树搜索 模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。">
         <div class="thumb">
-          <img src="assets/thumbs/prover.png" alt="DeepSeek-Prover-V1.5 架构图" loading="lazy" />
+          <img src="assets/thumbs/prover.webp" alt="DeepSeek-Prover-V1.5 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -640,7 +325,7 @@
             <span class="tags"><span class="tag">定理证明</span><span class="tag">Lean 4</span><span class="tag">树搜索</span></span>
           </div>
           <div class="tagline">模型每次只猜下一小步证明，能不能算数由数学软件说了算；猜错换写法，猜对了记下来下次优先试。</div>
-          <ul class="ins"><li>模型每次只写一小段证明，交给 Lean 编译器检查；有报错、或者留了 sorry 占位，都算没证完。</li><li>所有尝试会长成一棵树，每步记下当时的目标状态，下一轮按「多试又不太差」的规则挑一条接着写。</li><li>一道题要试很多次：默认 6400 次采样、256 个搜索进程共用一棵树，谁把树撑大了就给谁加分。</li></ul>
+          <ul class="ins"><li>模型每次只写一小段证明，交给 Lean 编译器检查；有报错、或者留了 sorry 占位，都算没证完。</li></ul>
           <div class="foot">
             <span><b>2,517</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -648,49 +333,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/gemm-ascend.html" data-search="deepgemm-ascend deepseek-ai/deepgemm-ascend 昇腾 gemm 移植 同样的矩阵乘法，昇腾上数据要依次过 gm→l1→l0→l0c：没有 tma、没有 cluster，连 scale 的存法都得改。">
-        <div class="thumb">
-          <img src="assets/thumbs/gemm-ascend.png" alt="DeepGEMM-Ascend 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepGEMM-Ascend</span>
-            <span class="repo">deepseek-ai/DeepGEMM-Ascend</span>
-            <span class="tags"><span class="tag">昇腾</span><span class="tag">GEMM</span><span class="tag">移植</span></span>
-          </div>
-          <div class="tagline">同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。</div>
-          <ul class="ins"><li>TMA 和 cluster 在昇腾上没有对应物：全仓库搜不到，搬运换成 MTE2/MTE1 两条搬指。</li><li>shared memory 换成 L1、TMEM 换成 L0C，装不下直接在编译期报错。</li><li>连 scale factor 都得改格式：一对 UE8M0 打包成一个 int16，按 MN-major 存。</li></ul>
-          <div class="foot">
-            <span><b>19,908</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/ep-ascend.html" data-search="deepep-ascend deepseek-ai/deepep-ascend 昇腾 通信 hccl 同机的对称写换成 ubmem，跨机的 rdma put 换成 urma；连「对端地址怎么算」都得自己重写。">
-        <div class="thumb">
-          <img src="assets/thumbs/ep-ascend.png" alt="DeepEP-Ascend 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">DeepEP-Ascend</span>
-            <span class="repo">deepseek-ai/DeepEP-Ascend</span>
-            <span class="tags"><span class="tag">昇腾</span><span class="tag">通信</span><span class="tag">HCCL</span></span>
-          </div>
-          <div class="tagline">同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。</div>
-          <ul class="ins"><li>NCCL Gin 换成 HCCL/HCOMM，RDMA 的 QP 换成 Jetty 通道，窗口换成自己申请再注册的对称缓冲。</li><li>没有「同机走不通就退回网卡」：构造时要求每个 peer 都 UBMEM 直连，否则直接断言失败。</li><li>URMA 在 kernel 退出之后还在读源数据，所以要开一个专门的环境变量才安全。</li></ul>
-          <div class="foot">
-            <span><b>11,138</b> 行</span>
-            <span><b>8</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/deepseek-vl.html" data-search="deepseek-vl deepseek-ai/deepseek-vl 多模态 视觉编码器 演进对照 v1 让两双眼睛同时看同一张图：一双看得细，一双看得懂，再把两边的印象拼起来。">
         <div class="thumb">
-          <img src="assets/thumbs/deepseek-vl.png" alt="DeepSeek-VL 架构图" loading="lazy" />
+          <img src="assets/thumbs/deepseek-vl.webp" alt="DeepSeek-VL 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -700,7 +345,7 @@
             <span class="tags"><span class="tag">多模态</span><span class="tag">视觉编码器</span><span class="tag">演进对照</span></span>
           </div>
           <div class="tagline">v1 让两双眼睛同时看同一张图：一双看得细，一双看得懂，再把两边的印象拼起来。</div>
-          <ul class="ins"><li>两双眼睛分工不同：一双吃 1024 的整图，负责「这儿有什么、在哪儿」；一双吃缩到 384 的小图，负责「这像什么」。</li><li>合的方式很朴素：两路各投一半维度，再在通道上拼起来——两边格子数必须一样，拼得上才不报错。</li><li>麻烦在「固定」两个字：长图先缩到 1024 再补成正方形，横条图补完一大半是底色；每张图固定占那么多位置，跟内容多少无关。</li></ul>
+          <ul class="ins"><li>两双眼睛分工不同：一双吃 1024 的整图，负责「这儿有什么、在哪儿」；一双吃缩到 384 的小图，负责「这像什么」。</li></ul>
           <div class="foot">
             <span><b>4,391</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
@@ -710,7 +355,7 @@
       </a>
       <a class="card" href="projects/deepseek-ocr-2.html" data-search="deepseek-ocr 2 deepseek-ai/deepseek-ocr-2 ocr 视觉编码 因果流 v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。">
         <div class="thumb">
-          <img src="assets/thumbs/deepseek-ocr-2.png" alt="DeepSeek-OCR 2 架构图" loading="lazy" />
+          <img src="assets/thumbs/deepseek-ocr-2.webp" alt="DeepSeek-OCR 2 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -720,7 +365,7 @@
             <span class="tags"><span class="tag">OCR</span><span class="tag">视觉编码</span><span class="tag">因果流</span></span>
           </div>
           <div class="tagline">v2 不再让模型直接「看」图，而是派一串会提问的小助手，排好队一个接一个把图读成文字。</div>
-          <ul class="ins"><li>编码器整个换了：先用 SAM 把图变成像素特征图，再让一个 24 层的 Qwen2——本来是语言解码器——去读这些特征。</li><li>关键在顺序：图像特征和固定数量的「提问」拼成一条序列，配一张混合可见性表——图像之间互相都看得见，提问之间只能看见前面的。</li><li>提问的个数刚好等于 SAM 出来的特征个数：1024 的图 256 个特征配 256 个提问，768 的块 144 个配 144 个，一对一拼进同一条序列。</li></ul>
+          <ul class="ins"><li>编码器整个换了：先用 SAM 把图变成像素特征图，再让一个 24 层的 Qwen2——本来是语言解码器——去读这些特征。</li></ul>
           <div class="foot">
             <span><b>3,031</b> 行</span>
             <span><b>6</b> 处对得上源码</span>
@@ -728,49 +373,9 @@
           </div>
         </div>
       </a>
-      <a class="card" href="projects/superagent.html" data-search="dsh-superagent deepseek-ai/dsh-superagent-prototype agent 控制流 多轮 有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。">
-        <div class="thumb">
-          <img src="assets/thumbs/superagent.png" alt="dsh-superagent 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">dsh-superagent</span>
-            <span class="repo">deepseek-ai/dsh-superagent-prototype</span>
-            <span class="tags"><span class="tag">Agent 控制流</span><span class="tag">多轮</span></span>
-          </div>
-          <div class="tagline">有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。</div>
-          <ul class="ins"><li>它不靠一次规划到底，而是每轮交一份报告：progress/ready/blocked/failed/dropped 五选一。</li><li>接活前要逐条对规则：每条启用的规则都要给一条判定，选了 accept 还得起一个英文短目录名。</li><li>后台还有任务就不算收工：turn 结束时留着 shell job 会保持 working，最多再等 30 分钟。</li></ul>
-          <div class="foot">
-            <span><b>25,388</b> 行</span>
-            <span><b>6</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
-      <a class="card" href="projects/profiledata.html" data-search="profile-data deepseek-ai/profile-data 性能剖析 数据 没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。">
-        <div class="thumb">
-          <img src="assets/thumbs/profiledata.png" alt="profile-data 架构图" loading="lazy" />
-          <span class="open-pill">打开交互图 ↗</span>
-        </div>
-        <div class="body">
-          <div class="row">
-            <span class="title">profile-data</span>
-            <span class="repo">deepseek-ai/profile-data</span>
-            <span class="tags"><span class="tag">性能剖析</span><span class="tag">数据</span></span>
-          </div>
-          <div class="tagline">没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。</div>
-          <ul class="ins"><li>三份记录对应训练、预填充、解码三种跑法，EP/TP/batch 各不同，结论只在对应配置下成立。</li><li>每条事件都有 ts 和 dur，不同的 tid 就是不同的流；chrome://tracing 把它们画在同一条时间轴上。</li><li>重叠可以直接算：combine 持续 6074µs 的区间里，attention 跑了 3863µs、整段落在里面。</li></ul>
-          <div class="foot">
-            <span>无源码</span>
-            <span><b>6</b> 处对得上源码</span>
-            <span class="go">打开 →</span>
-          </div>
-        </div>
-      </a>
       <a class="card" href="projects/dsmath.html" data-search="deepseek-math deepseek-ai/deepseek-math 数学评测 符号计算 一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。">
         <div class="thumb">
-          <img src="assets/thumbs/dsmath.png" alt="DeepSeek-Math 架构图" loading="lazy" />
+          <img src="assets/thumbs/dsmath.webp" alt="DeepSeek-Math 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -780,7 +385,7 @@
             <span class="tags"><span class="tag">数学评测</span><span class="tag">符号计算</span></span>
           </div>
           <div class="tagline">一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。</div>
-          <ul class="ins"><li>这套东西不训练模型，只负责打分：把题目套进对应数据集的 few-shot 模板，再交给模型写解答。</li><li>答案要从一长段推理里抠出来，先找 oxed{}，再找「the answer is」，实在没有就取最后一个数字。</li><li>判对错不是字符串相等：先按数字比（误差 1e-3），不行再交给符号计算判断两个式子是不是一回事。</li></ul>
+          <ul class="ins"><li>这套东西不训练模型，只负责打分：把题目套进对应数据集的 few-shot 模板，再交给模型写解答。</li></ul>
           <div class="foot">
             <span><b>4,556</b> 行</span>
             <span><b>6</b> 处对得上源码</span>
@@ -790,7 +395,7 @@
       </a>
       <a class="card" href="projects/dsmathv2.html" data-search="deepseekmath-v2 deepseek-ai/deepseek-math-v2 数学证明 自验证 多轮精修 不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。">
         <div class="thumb">
-          <img src="assets/thumbs/dsmathv2.png" alt="DeepSeekMath-V2 架构图" loading="lazy" />
+          <img src="assets/thumbs/dsmathv2.webp" alt="DeepSeekMath-V2 架构图" loading="lazy" />
           <span class="open-pill">打开交互图 ↗</span>
         </div>
         <div class="body">
@@ -800,7 +405,7 @@
             <span class="tags"><span class="tag">数学证明</span><span class="tag">自验证</span><span class="tag">多轮精修</span></span>
           </div>
           <div class="tagline">不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。</div>
-          <ul class="ins"><li>证明写出来后由模型自己按 0 / 0.5 / 1 三档打分，同一份要打 4 次取平均，避免一次打歪。</li><li>打完分还要再验一次「这份评分合不合理」，重点看它指出的错误是不是真的存在。</li><li>一轮结束按平均分排序取前 6 份，再抽样组合成最多 16 组让模型改写；有证明拿到 0.99999 就直接收工。</li></ul>
+          <ul class="ins"><li>证明写出来后由模型自己按 0 / 0.5 / 1 三档打分，同一份要打 4 次取平均，避免一次打歪。</li></ul>
           <div class="foot">
             <span><b>967</b> 行</span>
             <span><b>6</b> 处对得上源码</span>
@@ -808,7 +413,379 @@
           </div>
         </div>
       </a>
+    </div>
+    <button class="more-btn" data-more>展开剩下 9 个 ↓</button>
   </section>
+  <section class="group" id="g-kernel" data-group="kernel">
+    <div class="group-head">
+      <h2>内核与通信<span>9</span></h2>
+      <p>显卡上真正跑的代码，和卡与卡之间搬的数据</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="projects/flashmla.html" data-search="flashmla deepseek-ai/flashmla cuda mla kernel kv cache 给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。">
+        <div class="thumb">
+          <img src="assets/thumbs/flashmla.webp" alt="FlashMLA 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">FlashMLA</span>
+            <span class="repo">deepseek-ai/FlashMLA</span>
+            <span class="tags"><span class="tag">CUDA</span><span class="tag">MLA</span><span class="tag">kernel</span><span class="tag">KV cache</span></span>
+          </div>
+          <div class="tagline">给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</div>
+          <ul class="ins"><li>一个 GPU 核心里 384 个线程分工：128 个算指数、128 个把压缩过的数据还原、1 个发矩阵指令、1 个搬数据、1 个算地址——像流水线，各干一段。</li></ul>
+          <div class="foot">
+            <span><b>19,093</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepep.html" data-search="deepep deepseek-ai/deepep moe 通信 nvlink/rdma jit 内核 几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepep.webp" alt="DeepEP 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepEP</span>
+            <span class="repo">deepseek-ai/DeepEP</span>
+            <span class="tags"><span class="tag">MoE 通信</span><span class="tag">NVLink/RDMA</span><span class="tag">JIT 内核</span></span>
+          </div>
+          <div class="tagline">几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。</div>
+          <ul class="ins"><li>开多少个计算核、多少条网卡队列不是拍脑袋，是按带宽算出来的：直连模式 9 条，混合模式是核数 ×16+1。</li></ul>
+          <div class="foot">
+            <span><b>17,910</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepgemm.html" data-search="deepgemm deepseek-ai/deepgemm fp8 gemm jit 编译 sm100 内核 矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepgemm.webp" alt="DeepGEMM 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepGEMM</span>
+            <span class="repo">deepseek-ai/DeepGEMM</span>
+            <span class="tags"><span class="tag">FP8 GEMM</span><span class="tag">JIT 编译</span><span class="tag">SM100 内核</span></span>
+          </div>
+          <div class="tagline">矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。</div>
+          <ul class="ins"><li>它不在发布时编死，而是运行时现场编：30 个参数（分块、流水级数、线程数、数据类型）一起焊进一份只跑这一种形状的机器码，跑起来只剩「启动」。</li></ul>
+          <div class="foot">
+            <span><b>33,867</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/eplb.html" data-search="eplb deepseek-ai/eplb 专家并行 负载均衡 给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。">
+        <div class="thumb">
+          <img src="assets/thumbs/eplb.webp" alt="EPLB 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">EPLB</span>
+            <span class="repo">deepseek-ai/EPLB</span>
+            <span class="tags"><span class="tag">专家并行</span><span class="tag">负载均衡</span></span>
+          </div>
+          <div class="tagline">给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。</div>
+          <ul class="ins"><li>热门的专家会被复制几份，每次挑当前最热的那个加副本（replicate_experts 里比较 weight/logcnt）。</li></ul>
+          <div class="foot">
+            <span><b>164</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/tilekernels.html" data-search="tilekernels deepseek-ai/tilekernels tilelang 算子库 把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 nvidia 和昇腾。">
+        <div class="thumb">
+          <img src="assets/thumbs/tilekernels.webp" alt="TileKernels 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">TileKernels</span>
+            <span class="repo">deepseek-ai/TileKernels</span>
+            <span class="tags"><span class="tag">TileLang</span><span class="tag">算子库</span></span>
+          </div>
+          <div class="tagline">把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。</div>
+          <ul class="ins"><li>你只写开多少 block、每个 block 多少线程，搬运和计算都按块写（T.Kernel / T.copy / T.Parallel）。</li></ul>
+          <div class="foot">
+            <span><b>26,181</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepjit.html" data-search="deepjit deepseek-ai/deepjit jit 编译 缓存 同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepjit.webp" alt="DeepJIT 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepJIT</span>
+            <span class="repo">deepseek-ai/DeepJIT</span>
+            <span class="tags"><span class="tag">JIT 编译</span><span class="tag">缓存</span></span>
+          </div>
+          <div class="tagline">同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。</div>
+          <ul class="ins"><li>编过的东西按「源码 + 编译器版本 + 编译选项」算一个指纹，指纹一样就直接拿旧的。</li></ul>
+          <div class="foot">
+            <span><b>10,658</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="grid extra" hidden>
+      <a class="card" href="projects/lplb.html" data-search="lplb deepseek-ai/lplb 负载均衡 线性规划 moe 每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。">
+        <div class="thumb">
+          <img src="assets/thumbs/lplb.webp" alt="LPLB 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">LPLB</span>
+            <span class="repo">deepseek-ai/LPLB</span>
+            <span class="tags"><span class="tag">负载均衡</span><span class="tag">线性规划</span><span class="tag">MoE</span></span>
+          </div>
+          <div class="tagline">每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。</div>
+          <ul class="ins"><li>EPLB 治长期过热、决定复制谁；LPLB 治每批抖动、只决定这一批的活往哪倒。</li></ul>
+          <div class="foot">
+            <span><b>2,163</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/gemm-ascend.html" data-search="deepgemm-ascend deepseek-ai/deepgemm-ascend 昇腾 gemm 移植 同样的矩阵乘法，昇腾上数据要依次过 gm→l1→l0→l0c：没有 tma、没有 cluster，连 scale 的存法都得改。">
+        <div class="thumb">
+          <img src="assets/thumbs/gemm-ascend.webp" alt="DeepGEMM-Ascend 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepGEMM-Ascend</span>
+            <span class="repo">deepseek-ai/DeepGEMM-Ascend</span>
+            <span class="tags"><span class="tag">昇腾</span><span class="tag">GEMM</span><span class="tag">移植</span></span>
+          </div>
+          <div class="tagline">同样的矩阵乘法，昇腾上数据要依次过 GM→L1→L0→L0C：没有 TMA、没有 cluster，连 scale 的存法都得改。</div>
+          <ul class="ins"><li>TMA 和 cluster 在昇腾上没有对应物：全仓库搜不到，搬运换成 MTE2/MTE1 两条搬指。</li></ul>
+          <div class="foot">
+            <span><b>19,908</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/ep-ascend.html" data-search="deepep-ascend deepseek-ai/deepep-ascend 昇腾 通信 hccl 同机的对称写换成 ubmem，跨机的 rdma put 换成 urma；连「对端地址怎么算」都得自己重写。">
+        <div class="thumb">
+          <img src="assets/thumbs/ep-ascend.webp" alt="DeepEP-Ascend 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepEP-Ascend</span>
+            <span class="repo">deepseek-ai/DeepEP-Ascend</span>
+            <span class="tags"><span class="tag">昇腾</span><span class="tag">通信</span><span class="tag">HCCL</span></span>
+          </div>
+          <div class="tagline">同机的对称写换成 UBMEM，跨机的 RDMA put 换成 URMA；连「对端地址怎么算」都得自己重写。</div>
+          <ul class="ins"><li>NCCL Gin 换成 HCCL/HCOMM，RDMA 的 QP 换成 Jetty 通道，窗口换成自己申请再注册的对称缓冲。</li></ul>
+          <div class="foot">
+            <span><b>11,138</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    <button class="more-btn" data-more>展开剩下 3 个 ↓</button>
+  </section>
+  <section class="group" id="g-infra" data-group="infra">
+    <div class="group-head">
+      <h2>分布式与数据<span>5</span></h2>
+      <p>多机多盘之间，数据怎么放、怎么跑</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="projects/3fs.html" data-search="3fs deepseek-ai/3fs 分布式 存储 c++ deepseek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。">
+        <div class="thumb">
+          <img src="assets/thumbs/3fs.webp" alt="3FS 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">3FS</span>
+            <span class="repo">deepseek-ai/3FS</span>
+            <span class="tags"><span class="tag">分布式</span><span class="tag">存储</span><span class="tag">C++</span></span>
+          </div>
+          <div class="tagline">DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</div>
+          <ul class="ins"><li>同一份数据存三份，排成一条链。写只找链头，链头一层层往下传；读随便挑一台都行——所以副本越多，读取越快。</li></ul>
+          <div class="foot">
+            <span><b>122,058</b> 行</span>
+            <span><b>10</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/smallpond.html" data-search="smallpond deepseek-ai/smallpond 数据框架 duckdb 3fs 海量数据框架：把大任务切成小的，丢到 3fs 上跑，算完就退。">
+        <div class="thumb">
+          <img src="assets/thumbs/smallpond.webp" alt="smallpond 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">smallpond</span>
+            <span class="repo">deepseek-ai/smallpond</span>
+            <span class="tags"><span class="tag">数据框架</span><span class="tag">DuckDB</span><span class="tag">3FS</span></span>
+          </div>
+          <div class="tagline">海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</div>
+          <ul class="ins"><li>一个大作业被切成「生产任务」和「消费任务」两组：生产任务数按 worker 数和 CPU 数算出来；消费任务只合并不搬数据。</li></ul>
+          <div class="foot">
+            <span><b>15,996</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/deepinfer.html" data-search="deepinfer deepseek-ai/deepinfer 推理框架 批调度 kv cache 线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。">
+        <div class="thumb">
+          <img src="assets/thumbs/deepinfer.webp" alt="DeepInfer 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepInfer</span>
+            <span class="repo">deepseek-ai/DeepInfer</span>
+            <span class="tags"><span class="tag">推理框架</span><span class="tag">批调度</span><span class="tag">KV cache</span></span>
+          </div>
+          <div class="tagline">线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</div>
+          <ul class="ins"><li>一条请求先排队，再和别人的凑成一批一起算；这批是先「读题」还是接着「续写」，由调度器每隔几步让各台机器投一次票决定。</li></ul>
+          <div class="foot">
+            <span><b>60,844</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dualpipe.html" data-search="dualpipe deepseek-ai/dualpipe 流水线并行 训练 训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。">
+        <div class="thumb">
+          <img src="assets/thumbs/dualpipe.webp" alt="DualPipe 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DualPipe</span>
+            <span class="repo">deepseek-ai/DualPipe</span>
+            <span class="tags"><span class="tag">流水线并行</span><span class="tag">训练</span></span>
+          </div>
+          <div class="tagline">训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</div>
+          <ul class="ins"><li>每台机器同时管两段模型，一段在流水线前头、一段在后头，所以两个方向的数据可以交替走：一边等数据，另一边正好在算。</li></ul>
+          <div class="foot">
+            <span><b>1,390</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/profiledata.html" data-search="profile-data deepseek-ai/profile-data 性能剖析 数据 没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。">
+        <div class="thumb">
+          <img src="assets/thumbs/profiledata.webp" alt="profile-data 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">profile-data</span>
+            <span class="repo">deepseek-ai/profile-data</span>
+            <span class="tags"><span class="tag">性能剖析</span><span class="tag">数据</span></span>
+          </div>
+          <div class="tagline">没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。</div>
+          <ul class="ins"><li>三份记录对应训练、预填充、解码三种跑法，EP/TP/batch 各不同，结论只在对应配置下成立。</li></ul>
+          <div class="foot">
+            <span>无源码</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+  </section>
+  <section class="group" id="g-agent" data-group="agent">
+    <div class="group-head">
+      <h2>Agent 与工具<span>3</span></h2>
+      <p>让模型自己动手的那一层</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="projects/dsrecipe.html" data-search="deepseek-recipe deepseek-ai/deepseek-recipe 协议转换 rust 流式 把 openai、anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsrecipe.webp" alt="deepseek-recipe 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">deepseek-recipe</span>
+            <span class="repo">deepseek-ai/deepseek-recipe</span>
+            <span class="tags"><span class="tag">协议转换</span><span class="tag">Rust</span><span class="tag">流式</span></span>
+          </div>
+          <div class="tagline">把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。</div>
+          <ul class="ins"><li>三种接口进来先翻成一套统一的对话结构，后面就不用再管原来是哪种格式。</li></ul>
+          <div class="foot">
+            <span><b>22,340</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dsh.html" data-search="deepseek harness deepseek-ai/deepseek-harness 插件架构 agent typescript 一个 ai 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsh.webp" alt="DeepSeek Harness 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek Harness</span>
+            <span class="repo">deepseek-ai/deepseek-harness</span>
+            <span class="tags"><span class="tag">插件架构</span><span class="tag">Agent</span><span class="tag">TypeScript</span></span>
+          </div>
+          <div class="tagline">一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</div>
+          <ul class="ins"><li>连对话主循环、系统提示、工具表、会话存储都是独立 npm 包，按 cordis.yml 装进同一个容器；「主线」不在代码里，在配置里。</li></ul>
+          <div class="foot">
+            <span>无源码</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/superagent.html" data-search="dsh-superagent deepseek-ai/dsh-superagent-prototype agent 控制流 多轮 有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。">
+        <div class="thumb">
+          <img src="assets/thumbs/superagent.webp" alt="dsh-superagent 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">dsh-superagent</span>
+            <span class="repo">deepseek-ai/dsh-superagent-prototype</span>
+            <span class="tags"><span class="tag">Agent 控制流</span><span class="tag">多轮</span></span>
+          </div>
+          <div class="tagline">有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。</div>
+          <ul class="ins"><li>它不靠一次规划到底，而是每轮交一份报告：progress/ready/blocked/failed/dropped 五选一。</li></ul>
+          <div class="foot">
+            <span><b>25,388</b> 行</span>
+            <span><b>6</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+  </section>
+  </div>
 
   <section class="roadmap" id="roadmap">
     <div class="section-title" style="margin-top:56px">
@@ -1151,13 +1128,18 @@ const SEED = [{"name":"linux","n":5},{"name":"react","n":3},{"name":"tensorflow"
 function apply(){
   let shown = 0;
   cards.forEach(c => {
-    const okTag = state.f === "all" || (c.dataset.tags || "").includes(state.f) || c.textContent.includes(state.f);
+    const grp = c.closest(".group");
+    const okTag = state.f === "all" || (grp && grp.dataset.group === state.f);
     const okQ = !state.q || c.dataset.search.includes(state.q.toLowerCase());
     const on = okTag && okQ;
     c.style.display = on ? "" : "none";
     if (on) shown++;
   });
   document.getElementById("gallery").style.display = shown ? "" : "none";
+  document.querySelectorAll(".group").forEach(g => {
+    const any = [...g.querySelectorAll(".card")].some(c => c.style.display !== "none");
+    g.style.display = any ? "" : "none";
+  });
 }
 
 document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
@@ -1167,6 +1149,12 @@ document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
   apply();
 });
 document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim(); apply(); });
+
+document.querySelectorAll("[data-more]").forEach(b => b.addEventListener("click", () => {
+  const box = b.previousElementSibling;
+  box.hidden = false;
+  b.remove();
+}));
 
 function readOrders(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }
 function writeOrders(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }

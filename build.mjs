@@ -74,7 +74,27 @@ const fill = (tpl, base) => tpl.replaceAll("{BASE}", base);
 const done = DATA.projects;
 const allTags = [...new Set(done.flatMap(p => p.tags))];
 
-const cards = done.map(p => `
+const GROUPS = [
+  { id: "runtime", label: "语言与运行时", desc: "一个请求进来，一行代码下去，机器上发生了什么" },
+  { id: "model", label: "模型与推理", desc: "从一次前向、一份权重、一个 token 开始看" },
+  { id: "kernel", label: "内核与通信", desc: "显卡上真正跑的代码，和卡与卡之间搬的数据" },
+  { id: "infra", label: "分布式与数据", desc: "多机多盘之间，数据怎么放、怎么跑" },
+  { id: "agent", label: "Agent 与工具", desc: "让模型自己动手的那一层" },
+];
+
+const GROUP_OF = {
+  jq: "runtime", redis: "runtime",
+  "deepseek-v3": "model", dsv32: "model", "deepseek-vl": "model", "deepseek-vl2": "model",
+  janus: "model", dsocr: "model", "deepseek-ocr-2": "model", engram: "model",
+  "deepseekmoe-routing": "model", deepspec: "model", dsmath: "model", dsmathv2: "model",
+  prover: "model", dscoder: "model", dreamcraft: "model",
+  flashmla: "kernel", deepgemm: "kernel", tilekernels: "kernel", deepjit: "kernel",
+  deepep: "kernel", eplb: "kernel", lplb: "kernel", "gemm-ascend": "kernel", "ep-ascend": "kernel",
+  "3fs": "infra", smallpond: "infra", profiledata: "infra", dualpipe: "infra", deepinfer: "infra",
+  dsh: "agent", superagent: "agent", dsrecipe: "agent",
+};
+
+const cardHtml = p => `
       <a class="card" href="projects/${p.id}.html" data-search="${esc((p.title + " " + p.repo + " " + p.tags.join(" ") + " " + p.tagline).toLowerCase())}">
         <div class="thumb">
           <img src="${p.thumb}" alt="${esc(p.title)} 架构图" loading="lazy" />
@@ -87,16 +107,36 @@ const cards = done.map(p => `
             <span class="tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</span>
           </div>
           <div class="tagline">${esc(p.tagline)}</div>
-          <ul class="ins">${p.insights.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+          <ul class="ins"><li>${esc(p.insights[0])}</li></ul>
           <div class="foot">
             ${p.loc ? `<span><b>${num(p.loc)}</b> 行</span>` : `<span>无源码</span>`}
             <span><b>${p.sources.length}</b> 处对得上源码</span>
             <span class="go">打开 →</span>
           </div>
         </div>
-      </a>`).join("");
+      </a>`;
 
-const chips = [["all", "全部"], ...allTags.map(t => [t, t])]
+const LIMIT = 6;
+const sections = GROUPS.map(g => {
+  const items = done.filter(p => (GROUP_OF[p.id] || "model") === g.id);
+  if (!items.length) return "";
+  const head = items.slice(0, LIMIT);
+  const rest = items.slice(LIMIT);
+  return `
+  <section class="group" id="g-${g.id}" data-group="${g.id}">
+    <div class="group-head">
+      <h2>${g.label}<span>${items.length}</span></h2>
+      <p>${g.desc}</p>
+    </div>
+    <div class="grid">${head.map(cardHtml).join("")}
+    </div>
+    ${rest.length ? `<div class="grid extra" hidden>${rest.map(cardHtml).join("")}
+    </div>
+    <button class="more-btn" data-more>展开剩下 ${rest.length} 个 ↓</button>` : ""}
+  </section>`;
+}).join("");
+
+const chips = [["all", "全部"], ...GROUPS.map(g => [g.id, g.label])]
   .map(([v, label], i) => `<button class="chip${i === 0 ? " on" : ""}" data-f="${esc(v)}">${esc(label)}</button>`).join("\n    ");
 
 const rows = DATA.roadmap.map(([name, repo, stars, lang, hook]) => `
@@ -136,8 +176,8 @@ const indexHtml = fill(head({
     ${chips}
   </div>
 
-  <section class="grid" id="gallery">${cards}
-  </section>
+  <div id="gallery">${sections}
+  </div>
 
   <section class="roadmap" id="roadmap">
     <div class="section-title" style="margin-top:56px">
@@ -190,13 +230,18 @@ const SEED = ${JSON.stringify(DATA.roadmap.slice(0, 3).map(([n], i) => ({ name: 
 function apply(){
   let shown = 0;
   cards.forEach(c => {
-    const okTag = state.f === "all" || (c.dataset.tags || "").includes(state.f) || c.textContent.includes(state.f);
+    const grp = c.closest(".group");
+    const okTag = state.f === "all" || (grp && grp.dataset.group === state.f);
     const okQ = !state.q || c.dataset.search.includes(state.q.toLowerCase());
     const on = okTag && okQ;
     c.style.display = on ? "" : "none";
     if (on) shown++;
   });
   document.getElementById("gallery").style.display = shown ? "" : "none";
+  document.querySelectorAll(".group").forEach(g => {
+    const any = [...g.querySelectorAll(".card")].some(c => c.style.display !== "none");
+    g.style.display = any ? "" : "none";
+  });
 }
 
 document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
@@ -206,6 +251,12 @@ document.querySelectorAll(".chip").forEach(c => c.onclick = () => {
   apply();
 });
 document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim(); apply(); });
+
+document.querySelectorAll("[data-more]").forEach(b => b.addEventListener("click", () => {
+  const box = b.previousElementSibling;
+  box.hidden = false;
+  b.remove();
+}));
 
 function readOrders(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }
 function writeOrders(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }
@@ -299,7 +350,10 @@ function projectPage(p, prev, next) {
   </header>
 
   <figure class="embed">
-    <iframe src="../${p.diagram}" title="${esc(p.title)} 交互式架构图" loading="lazy"></iframe>
+    <button class="embed-load" id="embed-load" aria-label="加载交互图">
+      <img src="../${p.thumb}" alt="${esc(p.title)} 架构图预览" />
+      <span class="play"><span>▶ 加载交互图（约 800KB）</span></span>
+    </button>
     <figcaption>
       <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
       <a href="../${p.diagram}" target="_blank" rel="noopener">新窗口打开 ↗</a>
@@ -316,6 +370,20 @@ ${ev}
 ${pager}
   ${footer(done.length)}
 </main>
+<script>
+(() => {
+  const btn = document.getElementById("embed-load");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const f = document.createElement("iframe");
+    f.src = "../${p.diagram}";
+    f.title = ${JSON.stringify(esc(p.title))} + " 交互式架构图";
+    f.loading = "eager";
+    const fig = document.getElementById("embed-load");
+    fig.parentNode.replaceChild(f, fig);
+  });
+})();
+</script>
 </body>
 </html>
 `;

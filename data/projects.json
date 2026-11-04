@@ -22,7 +22,7 @@
         "字节码",
         "C"
       ],
-      "thumb": "assets/thumbs/jq.png",
+      "thumb": "assets/thumbs/jq.webp",
       "diagram": "assets/diagrams/jq.html",
       "insights": [
         "一条规则能吐出好几个结果（比如 .[]），靠的是「存档」：算出一个结果就先记住算到哪了，下次从那儿接着算，不用重头来。",
@@ -88,7 +88,7 @@
         "存储",
         "C++"
       ],
-      "thumb": "assets/thumbs/3fs.png",
+      "thumb": "assets/thumbs/3fs.webp",
       "diagram": "assets/diagrams/3fs.html",
       "insights": [
         "同一份数据存三份，排成一条链。写只找链头，链头一层层往下传；读随便挑一台都行——所以副本越多，读取越快。",
@@ -169,7 +169,7 @@
         "事件循环",
         "C"
       ],
-      "thumb": "assets/thumbs/redis.png",
+      "thumb": "assets/thumbs/redis.webp",
       "diagram": "assets/diagrams/redis.html",
       "insights": [
         "一条命令从头到尾只有一个线程在处理，所以不用加锁、也不会互相等。真正的瓶颈是网络来回那一趟（0.1 毫秒），不是算得慢。",
@@ -304,7 +304,7 @@
           "label": "split-KV 汇总"
         }
       ],
-      "thumb": "assets/thumbs/flashmla.png",
+      "thumb": "assets/thumbs/flashmla.webp",
       "diagram": "assets/diagrams/flashmla.html",
       "plain": "FlashMLA 是一段专门给显卡写的计算程序，只干一件事：算注意力。它把一个 GPU 核心的活拆给 384 个线程，各管一段，最后拼起来。"
     },
@@ -368,7 +368,7 @@
           "label": "专家计算与 all_reduce"
         }
       ],
-      "thumb": "assets/thumbs/deepseek-v3.png",
+      "thumb": "assets/thumbs/deepseek-v3.webp",
       "diagram": "assets/diagrams/deepseek-v3.html",
       "plain": "这是 DeepSeek-V3 官方的推理参考代码，就一页 Python。它回答的是：给一段话，模型内部按什么顺序算，才能吐出下一个词。"
     },
@@ -438,7 +438,7 @@
           "label": "combine_impl"
         }
       ],
-      "thumb": "assets/thumbs/deepep.png",
+      "thumb": "assets/thumbs/deepep.webp",
       "diagram": "assets/diagrams/deepep.html",
       "plain": "DeepEP 负责在几百张显卡之间搬数据。同一个机箱里的卡直接往对方内存里写，跨机箱才走网线——所以大部分数据根本不出门。"
     },
@@ -508,7 +508,7 @@
           "label": "持久取块"
         }
       ],
-      "thumb": "assets/thumbs/deepgemm.png",
+      "thumb": "assets/thumbs/deepgemm.webp",
       "diagram": "assets/diagrams/deepgemm.html",
       "plain": "DeepGEMM 是算矩阵乘法的加速库。它不在发布时编好，而是你运行时现场编译——因为只有知道矩阵多大、什么类型，才能编出最合适的那份代码。"
     },
@@ -583,7 +583,7 @@
           "label": "GraySort 110.5TiB / 30 分 14 秒"
         }
       ],
-      "thumb": "assets/thumbs/smallpond.png",
+      "thumb": "assets/thumbs/smallpond.webp",
       "diagram": "assets/diagrams/smallpond.html",
       "plain": "smallpond 是处理海量数据的框架。它把一个大作业切成很多小任务，扔到 3FS 上跑；每个小任务开一个 DuckDB 算完就退出，不留状态。"
     },
@@ -653,7 +653,7 @@
           "label": "vLLM 采样参数"
         }
       ],
-      "thumb": "assets/thumbs/dsocr.png",
+      "thumb": "assets/thumbs/dsocr.webp",
       "diagram": "assets/diagrams/dsocr.html",
       "plain": "DeepSeek-OCR 干两件事：先把一整页图压成几百个「视觉小块」，再把这些小块翻成文字，顺便告诉你每行字在页面上的位置。"
     },
@@ -721,7 +721,7 @@
           "label": "负载预测不在仓库内"
         }
       ],
-      "thumb": "assets/thumbs/eplb.png",
+      "thumb": "assets/thumbs/eplb.webp",
       "diagram": "assets/diagrams/eplb.html"
     },
     {
@@ -789,7 +789,7 @@
           "label": "benchmark 只给自己计时"
         }
       ],
-      "thumb": "assets/thumbs/tilekernels.png",
+      "thumb": "assets/thumbs/tilekernels.webp",
       "diagram": "assets/diagrams/tilekernels.html"
     },
     {
@@ -853,7 +853,7 @@
           "label": "SigLIP"
         }
       ],
-      "thumb": "assets/thumbs/deepseek-vl2.png",
+      "thumb": "assets/thumbs/deepseek-vl2.webp",
       "diagram": "assets/diagrams/deepseek-vl2.html"
     },
     {
@@ -923,7 +923,7 @@
           "label": "投影层"
         }
       ],
-      "thumb": "assets/thumbs/janus.png",
+      "thumb": "assets/thumbs/janus.webp",
       "diagram": "assets/diagrams/janus.html"
     },
     {
@@ -1000,7 +1000,7 @@
           "label": "EPLB 重排专家"
         }
       ],
-      "thumb": "assets/thumbs/deepinfer.png",
+      "thumb": "assets/thumbs/deepinfer.webp",
       "diagram": "assets/diagrams/deepinfer.html"
     },
     {
@@ -1075,7 +1075,7 @@
           "label": "气泡对比表"
         }
       ],
-      "thumb": "assets/thumbs/dualpipe.png",
+      "thumb": "assets/thumbs/dualpipe.webp",
       "diagram": "assets/diagrams/dualpipe.html"
     },
     {
@@ -1145,7 +1145,7 @@
           "label": "残差加回"
         }
       ],
-      "thumb": "assets/thumbs/engram.png",
+      "thumb": "assets/thumbs/engram.webp",
       "diagram": "assets/diagrams/engram.html"
     },
     {
@@ -1215,7 +1215,7 @@
           "label": "EP all_to_all"
         }
       ],
-      "thumb": "assets/thumbs/deepseekmoe-routing.png",
+      "thumb": "assets/thumbs/deepseekmoe-routing.webp",
       "diagram": "assets/diagrams/deepseekmoe-routing.html"
     },
     {
@@ -1283,7 +1283,7 @@
           "label": "launch"
         }
       ],
-      "thumb": "assets/thumbs/deepjit.png",
+      "thumb": "assets/thumbs/deepjit.webp",
       "diagram": "assets/diagrams/deepjit.html"
     },
     {
@@ -1352,7 +1352,7 @@
           "label": "SSE 响应"
         }
       ],
-      "thumb": "assets/thumbs/dsrecipe.png",
+      "thumb": "assets/thumbs/dsrecipe.webp",
       "diagram": "assets/diagrams/dsrecipe.html"
     },
     {
@@ -1428,7 +1428,7 @@
           "label": "训练一步"
         }
       ],
-      "thumb": "assets/thumbs/deepspec.png",
+      "thumb": "assets/thumbs/deepspec.webp",
       "diagram": "assets/diagrams/deepspec.html"
     },
     {
@@ -1504,7 +1504,7 @@
           "label": "可微光栅化"
         }
       ],
-      "thumb": "assets/thumbs/dreamcraft.png",
+      "thumb": "assets/thumbs/dreamcraft.webp",
       "diagram": "assets/diagrams/dreamcraft.html"
     },
     {
@@ -1572,7 +1572,7 @@
           "label": "append 事件落盘"
         }
       ],
-      "thumb": "assets/thumbs/dsh.png",
+      "thumb": "assets/thumbs/dsh.webp",
       "diagram": "assets/diagrams/dsh.html"
     },
     {
@@ -1639,7 +1639,7 @@
           "label": "index_mask"
         }
       ],
-      "thumb": "assets/thumbs/dsv32.png",
+      "thumb": "assets/thumbs/dsv32.webp",
       "diagram": "assets/diagrams/dsv32.html"
     },
     {
@@ -1708,7 +1708,7 @@
           "label": "求解耗时"
         }
       ],
-      "thumb": "assets/thumbs/lplb.png",
+      "thumb": "assets/thumbs/lplb.webp",
       "diagram": "assets/diagrams/lplb.html"
     },
     {
@@ -1777,7 +1777,7 @@
           "label": "Gradio demo"
         }
       ],
-      "thumb": "assets/thumbs/dscoder.png",
+      "thumb": "assets/thumbs/dscoder.webp",
       "diagram": "assets/diagrams/dscoder.html"
     },
     {
@@ -1847,7 +1847,7 @@
           "label": "按 split 取样"
         }
       ],
-      "thumb": "assets/thumbs/prover.png",
+      "thumb": "assets/thumbs/prover.webp",
       "diagram": "assets/diagrams/prover.html"
     },
     {
@@ -1916,7 +1916,7 @@
           "label": "Runtime<Ascend>"
         }
       ],
-      "thumb": "assets/thumbs/gemm-ascend.png",
+      "thumb": "assets/thumbs/gemm-ascend.webp",
       "diagram": "assets/diagrams/gemm-ascend.html"
     },
     {
@@ -1985,7 +1985,7 @@
           "label": "combine_impl"
         }
       ],
-      "thumb": "assets/thumbs/ep-ascend.png",
+      "thumb": "assets/thumbs/ep-ascend.webp",
       "diagram": "assets/diagrams/ep-ascend.html"
     },
     {
@@ -2055,7 +2055,7 @@
           "label": "写回占位符"
         }
       ],
-      "thumb": "assets/thumbs/deepseek-vl.png",
+      "thumb": "assets/thumbs/deepseek-vl.webp",
       "diagram": "assets/diagrams/deepseek-vl.html"
     },
     {
@@ -2119,7 +2119,7 @@
           "label": "动态切块"
         }
       ],
-      "thumb": "assets/thumbs/deepseek-ocr-2.png",
+      "thumb": "assets/thumbs/deepseek-ocr-2.webp",
       "diagram": "assets/diagrams/deepseek-ocr-2.html"
     },
     {
@@ -2176,7 +2176,7 @@
           "label": "后台未完不算结束"
         }
       ],
-      "thumb": "assets/thumbs/superagent.png",
+      "thumb": "assets/thumbs/superagent.webp",
       "diagram": "assets/diagrams/superagent.html"
     },
     {
@@ -2233,7 +2233,7 @@
           "label": "CPU 侧 dispatch 标注"
         }
       ],
-      "thumb": "assets/thumbs/profiledata.png",
+      "thumb": "assets/thumbs/profiledata.webp",
       "diagram": "assets/diagrams/profiledata.html"
     },
     {
@@ -2296,7 +2296,7 @@
           "label": "挡 input / os.system"
         }
       ],
-      "thumb": "assets/thumbs/dsmath.png",
+      "thumb": "assets/thumbs/dsmath.webp",
       "diagram": "assets/diagrams/dsmath.html"
     },
     {
@@ -2360,7 +2360,7 @@
           "label": "元验证模板"
         }
       ],
-      "thumb": "assets/thumbs/dsmathv2.png",
+      "thumb": "assets/thumbs/dsmathv2.webp",
       "diagram": "assets/diagrams/dsmathv2.html"
     }
   ],

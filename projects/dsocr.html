@@ -11,8 +11,8 @@
 <meta property="og:description" content="把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。 交互式架构图，7 处结论可直接跳到 deepseek-ai/DeepSeek-OCR 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
-<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsocr.png" />
+<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsocr.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-OCR 架构图｜整页文档压成 273 个视觉 token","description":"把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-OCR","codeRepository":"https://github.com/deepseek-ai/DeepSeek-OCR"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
@@ -48,7 +48,10 @@
   </header>
 
   <figure class="embed">
-    <iframe src="../assets/diagrams/dsocr.html" title="DeepSeek-OCR 交互式架构图" loading="lazy"></iframe>
+    <button class="embed-load" id="embed-load" aria-label="加载交互图">
+      <img src="../assets/thumbs/dsocr.webp" alt="DeepSeek-OCR 架构图预览" />
+      <span class="play"><span>▶ 加载交互图（约 800KB）</span></span>
+    </button>
     <figcaption>
       <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
       <a href="../assets/diagrams/dsocr.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
@@ -78,5 +81,19 @@
     <div>已拆 34 张 · 纯静态，无后端</div>
   </footer>
 </main>
+<script>
+(() => {
+  const btn = document.getElementById("embed-load");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const f = document.createElement("iframe");
+    f.src = "../assets/diagrams/dsocr.html";
+    f.title = "DeepSeek-OCR" + " 交互式架构图";
+    f.loading = "eager";
+    const fig = document.getElementById("embed-load");
+    fig.parentNode.replaceChild(f, fig);
+  });
+})();
+</script>
 </body>
 </html>

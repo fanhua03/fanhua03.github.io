@@ -11,8 +11,8 @@
 <meta property="og:description" content="先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSeek-V3.2-Exp 的源码行。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
-<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsv32.png" />
+<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsv32.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-V3.2-Exp 架构图｜只让 2048 个词参与注意力","description":"先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-V3.2-Exp","codeRepository":"https://github.com/deepseek-ai/DeepSeek-V3.2-Exp"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
 <body><div class="topbar">
@@ -48,7 +48,10 @@
   </header>
 
   <figure class="embed">
-    <iframe src="../assets/diagrams/dsv32.html" title="DeepSeek-V3.2-Exp 交互式架构图" loading="lazy"></iframe>
+    <button class="embed-load" id="embed-load" aria-label="加载交互图">
+      <img src="../assets/thumbs/dsv32.webp" alt="DeepSeek-V3.2-Exp 架构图预览" />
+      <span class="play"><span>▶ 加载交互图（约 800KB）</span></span>
+    </button>
     <figcaption>
       <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
       <a href="../assets/diagrams/dsv32.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
@@ -79,5 +82,19 @@
     <div>已拆 34 张 · 纯静态，无后端</div>
   </footer>
 </main>
+<script>
+(() => {
+  const btn = document.getElementById("embed-load");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const f = document.createElement("iframe");
+    f.src = "../assets/diagrams/dsv32.html";
+    f.title = "DeepSeek-V3.2-Exp" + " 交互式架构图";
+    f.loading = "eager";
+    const fig = document.getElementById("embed-load");
+    fig.parentNode.replaceChild(f, fig);
+  });
+})();
+</script>
 </body>
 </html>
