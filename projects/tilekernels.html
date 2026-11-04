@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TileKernels 架构图｜按块写代码，编译器翻译成线程 · 开源项目可视化拆解</title>
-<meta name="description" content="把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。 交互式架构图，8 处结论可直接跳到 deepseek-ai/TileKernels 的源码行。" />
+<title>TileKernels: Writing GPU Kernels Block by Block · 开源项目可视化拆解</title>
+<meta name="description" content="TileKernels describes kernels in blocks and lets tilelang turn them into threads, shared memory and backend code." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/tilekernels.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="TileKernels 架构图｜按块写代码，编译器翻译成线程 · 开源项目可视化拆解" />
-<meta property="og:description" content="把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。 交互式架构图，8 处结论可直接跳到 deepseek-ai/TileKernels 的源码行。" />
+<meta property="og:title" content="TileKernels: Writing GPU Kernels Block by Block · 开源项目可视化拆解" />
+<meta property="og:description" content="TileKernels describes kernels in blocks and lets tilelang turn them into threads, shared memory and backend code." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/tilekernels.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"TileKernels 架构图｜按块写代码，编译器翻译成线程","description":"把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"TileKernels","codeRepository":"https://github.com/deepseek-ai/TileKernels"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>TileKernels</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/kernel.html">内核与通信</a><span>/</span><span>TileKernels</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">TileKernels</span> 架构图｜按块写代码，编译器翻译成线程</h1>
     <p class="sub">把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。</p>
+    <p class="en">TileKernels describes work in blocks and lets the compiler turn it into threads and shared memory.</p>
     <p class="plain"><b>人话版</b>显卡干活前，得有人把活儿切成一块一块、分给几千个线程，还得管好每块数据放在哪个片上内存。这个项目用一种「按块描述」的写法来做这件事：你只说这块数据怎么搬、怎么算，翻译成显卡指令的活交给编译器。好处是同一份写法能换后端跑，代价是得按它的规矩写。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/TileKernels" target="_blank" rel="noopener">deepseek-ai/TileKernels</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/TileKernels/blob/c1cf914a82e6901c679445f872051ce44ac2cc63/tile_kernels/quant/per_token_cast_cuda.py#L84" rel="noopener" target="_blank">tile_kernels/quant/per_token_cast_cuda.py:84</a></code><span>T.dynamic</span></li>
       <li><code><a href="https://github.com/deepseek-ai/TileKernels/blob/c1cf914a82e6901c679445f872051ce44ac2cc63/tests/quant/test_per_token_cast.py#L243" rel="noopener" target="_blank">tests/quant/test_per_token_cast.py:243</a></code><span>benchmark 只给自己计时</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="flashmla.html">
+        <img src="../assets/thumbs/flashmla.webp" alt="FlashMLA" loading="lazy" />
+        <div><b>FlashMLA</b><span>给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</span></div>
+      </a>
+      <a class="rel" href="deepep.html">
+        <img src="../assets/thumbs/deepep.webp" alt="DeepEP" loading="lazy" />
+        <div><b>DeepEP</b><span>几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。</span></div>
+      </a>
+      <a class="rel" href="deepgemm.html">
+        <img src="../assets/thumbs/deepgemm.webp" alt="DeepGEMM" loading="lazy" />
+        <div><b>DeepGEMM</b><span>矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="eplb.html"><span class="lbl">← 上一个</span>EPLB</a>

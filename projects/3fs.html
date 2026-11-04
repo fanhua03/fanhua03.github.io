@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3FS 架构图｜写一条链，读任意副本 · 开源项目可视化拆解</title>
-<meta name="description" content="DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
+<title>3FS Architecture Diagram: Chain Replication, Write to Head, Read Anywhere · 开源项目可视化拆解</title>
+<meta name="description" content="How DeepSeek 3FS stores training data: CRAQ chains, stateless metadata on FoundationDB, and a zero-copy client that bypasses FUSE." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/3fs.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="3FS 架构图｜写一条链，读任意副本 · 开源项目可视化拆解" />
-<meta property="og:description" content="DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。 交互式架构图，10 处结论可直接跳到 deepseek-ai/3FS 的源码行。" />
+<meta property="og:title" content="3FS Architecture Diagram: Chain Replication, Write to Head, Read Anywhere · 开源项目可视化拆解" />
+<meta property="og:description" content="How DeepSeek 3FS stores training data: CRAQ chains, stateless metadata on FoundationDB, and a zero-copy client that bypasses FUSE." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/3fs.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"3FS 架构图｜写一条链，读任意副本","description":"DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"3FS","codeRepository":"https://github.com/deepseek-ai/3FS"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>3FS</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/infra.html">分布式与数据</a><span>/</span><span>3FS</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">3FS</span> 架构图｜写一条链，读任意副本</h1>
     <p class="sub">DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</p>
+    <p class="en">3FS keeps three copies of every chunk in a chain: writes hit the head, reads go to any replica.</p>
     <p class="plain"><b>人话版</b>3FS 是 DeepSeek 给训练用的「网盘」。同一份数据存三份排成一条链：写入只找链头，链头往下传；读的时候随便挑一台——所以副本越多，读得越快。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/3FS" target="_blank" rel="noopener">deepseek-ai/3FS</a></span>
@@ -74,6 +75,22 @@
       <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/docs/design_notes.md#L11" rel="noopener" target="_blank">docs/design_notes.md:11</a></code><span>CRAQ 写链读任意</span></li>
       <li><code><a href="https://github.com/deepseek-ai/3FS/blob/22fca04564c7cc230fd8b9523b8b92864e1dad47/docs/design_notes.md#L63" rel="noopener" target="_blank">docs/design_notes.md:63</a></code><span>无状态元数据</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="smallpond.html">
+        <img src="../assets/thumbs/smallpond.webp" alt="smallpond" loading="lazy" />
+        <div><b>smallpond</b><span>海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</span></div>
+      </a>
+      <a class="rel" href="deepinfer.html">
+        <img src="../assets/thumbs/deepinfer.webp" alt="DeepInfer" loading="lazy" />
+        <div><b>DeepInfer</b><span>线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</span></div>
+      </a>
+      <a class="rel" href="dualpipe.html">
+        <img src="../assets/thumbs/dualpipe.webp" alt="DualPipe" loading="lazy" />
+        <div><b>DualPipe</b><span>训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="jq.html"><span class="lbl">← 上一个</span>jq</a>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Distributed Systems &amp; Data — Open Source Architecture Diagrams | 开源项目可视化拆解</title>
+<meta name="description" content="5 interactive architecture diagrams of distributed systems &amp; data: 3FS, smallpond, DeepInfer, DualPipe, profile-data. Every claim links to a source line." />
+<link rel="canonical" href="https://fanhua03.github.io/groups/infra.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="Distributed Systems &amp; Data — Open Source Architecture Diagrams | 开源项目可视化拆解" />
+<meta property="og:description" content="5 interactive architecture diagrams of distributed systems &amp; data: 3FS, smallpond, DeepInfer, DualPipe, profile-data. Every claim links to a source line." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap">
+  <div class="crumb"><a href="../index.html">全部项目</a><span>/</span><span>分布式与数据</span></div>
+  <header class="proj-head">
+    <h1>分布式与数据 <span class="cnt">5</span></h1>
+    <p class="sub">Distributed Systems &amp; Data · 多机多盘之间，数据怎么放、怎么跑</p>
+  </header>
+  <div class="grid">
+      <a class="card" href="../projects/3fs.html">
+        <div class="thumb"><img src="../assets/thumbs/3fs.webp" alt="3FS architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">3FS</span><span class="repo">deepseek-ai/3FS</span></div>
+          <div class="tagline">3FS keeps three copies of every chunk in a chain: writes hit the head, reads go to any replica.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/smallpond.html">
+        <div class="thumb"><img src="../assets/thumbs/smallpond.webp" alt="smallpond architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">smallpond</span><span class="repo">deepseek-ai/smallpond</span></div>
+          <div class="tagline">smallpond splits a dataframe job into tasks and runs each one in a throwaway DuckDB process on 3FS.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepinfer.html">
+        <div class="thumb"><img src="../assets/thumbs/deepinfer.webp" alt="DeepInfer architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepInfer</span><span class="repo">deepseek-ai/DeepInfer</span></div>
+          <div class="tagline">DeepInfer queues requests, batches them, and moves the bookkeeping off the critical path so the GPU never idles.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dualpipe.html">
+        <div class="thumb"><img src="../assets/thumbs/dualpipe.webp" alt="DualPipe architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DualPipe</span><span class="repo">deepseek-ai/DualPipe</span></div>
+          <div class="tagline">DualPipe fills the idle gaps of pipeline parallelism by running two directions at once.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/profiledata.html">
+        <div class="thumb"><img src="../assets/thumbs/profiledata.webp" alt="profile-data architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">profile-data</span><span class="repo">deepseek-ai/profile-data</span></div>
+          <div class="tagline">profile-data is three PyTorch profiler traces: overlay compute and communication to see whether they overlap.</div>
+        </div>
+      </a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 34 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

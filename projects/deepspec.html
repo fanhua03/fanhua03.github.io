@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DeepSpec 架构图｜先猜一块，再一次验完 · 开源项目可视化拆解</title>
-<meta name="description" content="让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSpec 的源码行。" />
+<title>DeepSpec: Guess a Block, Verify It Once · 开源项目可视化拆解</title>
+<meta name="description" content="How speculative decoding works in DeepSpec: a 5-layer draft model guesses 7 tokens, then the target model verifies the block." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/deepspec.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="DeepSpec 架构图｜先猜一块，再一次验完 · 开源项目可视化拆解" />
-<meta property="og:description" content="让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSpec 的源码行。" />
+<meta property="og:title" content="DeepSpec: Guess a Block, Verify It Once · 开源项目可视化拆解" />
+<meta property="og:description" content="How speculative decoding works in DeepSpec: a 5-layer draft model guesses 7 tokens, then the target model verifies the block." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepspec.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSpec 架构图｜先猜一块，再一次验完","description":"让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSpec","codeRepository":"https://github.com/deepseek-ai/DeepSpec"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>DeepSpec</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/model.html">模型与推理</a><span>/</span><span>DeepSpec</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">DeepSpec</span> 架构图｜先猜一块，再一次验完</h1>
     <p class="sub">让模型先一口气猜出后面几个字，再一次性检查对不对；猜对几个就一次收下几个。</p>
+    <p class="en">DeepSpec drafts several tokens, then verifies the whole block in one pass.</p>
     <p class="plain"><b>人话版</b>它是给大模型提速的：让一个小号的「草稿模型」先猜出后面几个字，再让大模型一次性检查这些猜测对不对。猜对几个就一次收下几个，不用一个字一个字地算。这个仓库主要是在训练那个草稿模型，另外带一套评测代码，用来量到底能快多少。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSpec" target="_blank" rel="noopener">deepseek-ai/DeepSpec</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/modeling/dspark/markov_head.py#L55" rel="noopener" target="_blank">deepspec/modeling/dspark/markov_head.py:55–90</a></code><span>半自回归采样</span></li>
       <li><code><a href="https://github.com/deepseek-ai/DeepSpec/blob/005e03b81cec38b7da6399833d609ee89a2587f2/deepspec/trainer/dspark_trainer.py#L25" rel="noopener" target="_blank">deepspec/trainer/dspark_trainer.py:25–39</a></code><span>训练一步</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="dualpipe.html">
+        <img src="../assets/thumbs/dualpipe.webp" alt="DualPipe" loading="lazy" />
+        <div><b>DualPipe</b><span>训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</span></div>
+      </a>
+      <a class="rel" href="deepseek-v3.html">
+        <img src="../assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference" loading="lazy" />
+        <div><b>DeepSeek-V3 inference</b><span>官方推理代码：一个词进来，模型怎么一步步算出下一个词。</span></div>
+      </a>
+      <a class="rel" href="dsocr.html">
+        <img src="../assets/thumbs/dsocr.webp" alt="DeepSeek-OCR" loading="lazy" />
+        <div><b>DeepSeek-OCR</b><span>把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="dsrecipe.html"><span class="lbl">← 上一个</span>deepseek-recipe</a>

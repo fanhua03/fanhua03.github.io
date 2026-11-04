@@ -69,7 +69,12 @@
           "label": "C 原语表"
         }
       ],
-      "plain": "jq 是命令行里处理 JSON 的小工具。奇怪的是你给它一条规则，它可能一次吐出好几个结果——因为它会「存档读档」：算出一个就先记下算到哪了，下次从记下的地方接着算。"
+      "plain": "jq 是命令行里处理 JSON 的小工具。奇怪的是你给它一条规则，它可能一次吐出好几个结果——因为它会「存档读档」：算出一个就先记下算到哪了，下次从记下的地方接着算。",
+      "en": {
+        "title": "jq Architecture Diagram: How Filters Become a Bytecode VM",
+        "desc": "Interactive diagram of jq internals: lexer, linker, bytecode compiler and the backtracking VM that lets .[] emit several values. Every claim links to a source line.",
+        "one": "jq turns a filter into 42 bytecode instructions and runs them on a VM that can rewind — that is how .[] yields several values."
+      }
     },
     {
       "id": "3fs",
@@ -150,7 +155,12 @@
           "label": "无状态元数据"
         }
       ],
-      "plain": "3FS 是 DeepSeek 给训练用的「网盘」。同一份数据存三份排成一条链：写入只找链头，链头往下传；读的时候随便挑一台——所以副本越多，读得越快。"
+      "plain": "3FS 是 DeepSeek 给训练用的「网盘」。同一份数据存三份排成一条链：写入只找链头，链头往下传；读的时候随便挑一台——所以副本越多，读得越快。",
+      "en": {
+        "title": "3FS Architecture Diagram: Chain Replication, Write to Head, Read Anywhere",
+        "desc": "How DeepSeek 3FS stores training data: CRAQ chains, stateless metadata on FoundationDB, and a zero-copy client that bypasses FUSE.",
+        "one": "3FS keeps three copies of every chunk in a chain: writes hit the head, reads go to any replica."
+      }
     },
     {
       "id": "redis",
@@ -228,7 +238,12 @@
           "label": "replicationFeedSlaves"
         }
       ],
-      "plain": "Redis 是把数据放内存里的数据库。它快不是因为它会并行，而是因为它「一个人干活」——一条命令从头到尾只有一个线程处理，不用加锁、也不用等别人。"
+      "plain": "Redis 是把数据放内存里的数据库。它快不是因为它会并行，而是因为它「一个人干活」——一条命令从头到尾只有一个线程处理，不用加锁、也不用等别人。",
+      "en": {
+        "title": "Redis Architecture Diagram: Why a Single Thread Is Enough",
+        "desc": "How one Redis command travels from socket to reply on one thread, plus the AOF, RDB and replication paths that run beside it.",
+        "one": "Redis executes every command on a single thread, so nothing needs a lock; the bottleneck is the network round trip, not the CPU."
+      }
     },
     {
       "id": "flashmla",
@@ -306,7 +321,12 @@
       ],
       "thumb": "assets/thumbs/flashmla.webp",
       "diagram": "assets/diagrams/flashmla.html",
-      "plain": "FlashMLA 是一段专门给显卡写的计算程序，只干一件事：算注意力。它把一个 GPU 核心的活拆给 384 个线程，各管一段，最后拼起来。"
+      "plain": "FlashMLA 是一段专门给显卡写的计算程序，只干一件事：算注意力。它把一个 GPU 核心的活拆给 384 个线程，各管一段，最后拼起来。",
+      "en": {
+        "title": "FlashMLA Architecture Diagram: One CTA Eats 2048 Top-K Tokens",
+        "desc": "How DeepSeek MLA decode kernel splits one GPU CTA into 384 threads and streams paged, quantized KV cache through TMA.",
+        "one": "FlashMLA splits one GPU kernel across 384 threads: 128 compute exponentials, 128 dequantize, one issues the MMA."
+      }
     },
     {
       "id": "deepseek-v3",
@@ -370,7 +390,12 @@
       ],
       "thumb": "assets/thumbs/deepseek-v3.webp",
       "diagram": "assets/diagrams/deepseek-v3.html",
-      "plain": "这是 DeepSeek-V3 官方的推理参考代码，就一页 Python。它回答的是：给一段话，模型内部按什么顺序算，才能吐出下一个词。"
+      "plain": "这是 DeepSeek-V3 官方的推理参考代码，就一页 Python。它回答的是：给一段话，模型内部按什么顺序算，才能吐出下一个词。",
+      "en": {
+        "title": "DeepSeek-V3 Inference: 576 Numbers Instead of 32768",
+        "desc": "The official DeepSeek-V3 inference code: how MLA absorbs the query into a 512-dim latent and how the two-stage MoE gate picks experts.",
+        "one": "DeepSeek-V3 stores 576 numbers per token per layer instead of 32768 — the MLA trick, in code."
+      }
     },
     {
       "id": "deepep",
@@ -440,7 +465,12 @@
       ],
       "thumb": "assets/thumbs/deepep.webp",
       "diagram": "assets/diagrams/deepep.html",
-      "plain": "DeepEP 负责在几百张显卡之间搬数据。同一个机箱里的卡直接往对方内存里写，跨机箱才走网线——所以大部分数据根本不出门。"
+      "plain": "DeepEP 负责在几百张显卡之间搬数据。同一个机箱里的卡直接往对方内存里写，跨机箱才走网线——所以大部分数据根本不出门。",
+      "en": {
+        "title": "DeepEP Architecture Diagram: Microsecond Expert-Parallel All-to-All",
+        "desc": "How DeepEP moves tokens between GPUs: symmetric addresses and TMA on the same node, RDMA put across nodes, a notify warp for counting.",
+        "one": "DeepEP moves tokens between GPUs: same node copies memory directly, across nodes it goes over the network."
+      }
     },
     {
       "id": "deepgemm",
@@ -510,7 +540,12 @@
       ],
       "thumb": "assets/thumbs/deepgemm.webp",
       "diagram": "assets/diagrams/deepgemm.html",
-      "plain": "DeepGEMM 是算矩阵乘法的加速库。它不在发布时编好，而是你运行时现场编译——因为只有知道矩阵多大、什么类型，才能编出最合适的那份代码。"
+      "plain": "DeepGEMM 是算矩阵乘法的加速库。它不在发布时编好，而是你运行时现场编译——因为只有知道矩阵多大、什么类型，才能编出最合适的那份代码。",
+      "en": {
+        "title": "DeepGEMM Architecture Diagram: JIT-Compiled FP8 GEMM",
+        "desc": "DeepGEMM compiles a fresh FP8 kernel at runtime, sizes its stages from shared memory and runs a persistent grid of exactly num_sms blocks.",
+        "one": "DeepGEMM compiles a fresh kernel at runtime, because only then does it know the matrix shape and dtype."
+      }
     },
     {
       "id": "smallpond",
@@ -585,7 +620,12 @@
       ],
       "thumb": "assets/thumbs/smallpond.webp",
       "diagram": "assets/diagrams/smallpond.html",
-      "plain": "smallpond 是处理海量数据的框架。它把一个大作业切成很多小任务，扔到 3FS 上跑；每个小任务开一个 DuckDB 算完就退出，不留状态。"
+      "plain": "smallpond 是处理海量数据的框架。它把一个大作业切成很多小任务，扔到 3FS 上跑；每个小任务开一个 DuckDB 算完就退出，不留状态。",
+      "en": {
+        "title": "smallpond Architecture Diagram: DuckDB Tasks on 3FS",
+        "desc": "How smallpond turns a dataframe job into producer and consumer task groups and runs each in a throwaway DuckDB process on 3FS.",
+        "one": "smallpond splits a dataframe job into tasks and runs each one in a throwaway DuckDB process on 3FS."
+      }
     },
     {
       "id": "dsocr",
@@ -655,7 +695,12 @@
       ],
       "thumb": "assets/thumbs/dsocr.webp",
       "diagram": "assets/diagrams/dsocr.html",
-      "plain": "DeepSeek-OCR 干两件事：先把一整页图压成几百个「视觉小块」，再把这些小块翻成文字，顺便告诉你每行字在页面上的位置。"
+      "plain": "DeepSeek-OCR 干两件事：先把一整页图压成几百个「视觉小块」，再把这些小块翻成文字，顺便告诉你每行字在页面上的位置。",
+      "en": {
+        "title": "DeepSeek-OCR Architecture Diagram: A Page Becomes 273 Visual Tokens",
+        "desc": "How DeepSeek-OCR compresses a document page into 273 visual tokens with a 16x reduction inside the vision encoder.",
+        "one": "DeepSeek-OCR compresses a page into 273 visual tokens, then decodes them back into text and coordinates."
+      }
     },
     {
       "id": "eplb",
@@ -722,7 +767,12 @@
         }
       ],
       "thumb": "assets/thumbs/eplb.webp",
-      "diagram": "assets/diagrams/eplb.html"
+      "diagram": "assets/diagrams/eplb.html",
+      "en": {
+        "title": "EPLB: Which GPU Gets Which Expert",
+        "desc": "EPLB replicates hot experts and balances the replicas across GPUs with a two-level packing algorithm.",
+        "one": "EPLB replicates the busy experts and spreads the copies evenly across GPUs."
+      }
     },
     {
       "id": "tilekernels",
@@ -790,7 +840,12 @@
         }
       ],
       "thumb": "assets/thumbs/tilekernels.webp",
-      "diagram": "assets/diagrams/tilekernels.html"
+      "diagram": "assets/diagrams/tilekernels.html",
+      "en": {
+        "title": "TileKernels: Writing GPU Kernels Block by Block",
+        "desc": "TileKernels describes kernels in blocks and lets tilelang turn them into threads, shared memory and backend code.",
+        "one": "TileKernels describes work in blocks and lets the compiler turn it into threads and shared memory."
+      }
     },
     {
       "id": "deepseek-vl2",
@@ -854,7 +909,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepseek-vl2.webp",
-      "diagram": "assets/diagrams/deepseek-vl2.html"
+      "diagram": "assets/diagrams/deepseek-vl2.html",
+      "en": {
+        "title": "DeepSeek-VL2 Architecture Diagram: A Photo Folded Into 210 Words",
+        "desc": "How DeepSeek-VL2 slices an image dynamically, folds each slice into 4 tokens and puts them inline with the text.",
+        "one": "DeepSeek-VL2 slices an image, folds each slice into a few tokens, and puts them inline with the text."
+      }
     },
     {
       "id": "janus",
@@ -924,7 +984,12 @@
         }
       ],
       "thumb": "assets/thumbs/janus.webp",
-      "diagram": "assets/diagrams/janus.html"
+      "diagram": "assets/diagrams/janus.html",
+      "en": {
+        "title": "Janus Architecture Diagram: One Brain, Two Eyes",
+        "desc": "Why Janus keeps two separate image encoders, one for understanding and one for generation, on a single language model.",
+        "one": "Janus keeps two image encoders, one for understanding and one for generation, on a single language model."
+      }
     },
     {
       "id": "deepinfer",
@@ -1001,7 +1066,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepinfer.webp",
-      "diagram": "assets/diagrams/deepinfer.html"
+      "diagram": "assets/diagrams/deepinfer.html",
+      "en": {
+        "title": "DeepInfer Architecture Diagram: Keeping the GPU Busy",
+        "desc": "How DeepInfer queues, batches and schedules inference requests, moving bookkeeping off the critical path.",
+        "one": "DeepInfer queues requests, batches them, and moves the bookkeeping off the critical path so the GPU never idles."
+      }
     },
     {
       "id": "dualpipe",
@@ -1076,7 +1146,12 @@
         }
       ],
       "thumb": "assets/thumbs/dualpipe.webp",
-      "diagram": "assets/diagrams/dualpipe.html"
+      "diagram": "assets/diagrams/dualpipe.html",
+      "en": {
+        "title": "DualPipe: Filling the Bubbles in Pipeline Parallelism",
+        "desc": "How DualPipe fills pipeline-parallel idle time by running two directions at once and deferring weight gradients.",
+        "one": "DualPipe fills the idle gaps of pipeline parallelism by running two directions at once."
+      }
     },
     {
       "id": "engram",
@@ -1146,7 +1221,12 @@
         }
       ],
       "thumb": "assets/thumbs/engram.webp",
-      "diagram": "assets/diagrams/engram.html"
+      "diagram": "assets/diagrams/engram.html",
+      "en": {
+        "title": "Engram: Look It Up Instead of Computing It",
+        "desc": "Engram replaces part of the computation with a huge n-gram lookup table addressed by a deterministic hash.",
+        "one": "Engram replaces some computation with a lookup table of n-gram combinations."
+      }
     },
     {
       "id": "deepseekmoe-routing",
@@ -1216,7 +1296,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepseekmoe-routing.webp",
-      "diagram": "assets/diagrams/deepseekmoe-routing.html"
+      "diagram": "assets/diagrams/deepseekmoe-routing.html",
+      "en": {
+        "title": "DeepSeekMoE Routing: How Experts Are Chosen",
+        "desc": "The official MoE modeling code shipped inside the DeepSeek-VL2 repo: gate scoring, grouped top-k, and the auxiliary loss that keeps experts balanced.",
+        "one": "DeepSeekMoE picks a few small experts per token, and an auxiliary loss keeps them from collapsing onto one."
+      }
     },
     {
       "id": "deepjit",
@@ -1284,7 +1369,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepjit.webp",
-      "diagram": "assets/diagrams/deepjit.html"
+      "diagram": "assets/diagrams/deepjit.html",
+      "en": {
+        "title": "DeepJIT: Source In, Machine Code Out",
+        "desc": "DeepJIT compiles a CUDA kernel on first use, fingerprints the result and caches both in memory and on disk.",
+        "one": "DeepJIT compiles a kernel the first time it is used and caches the binary for next time."
+      }
     },
     {
       "id": "dsrecipe",
@@ -1353,7 +1443,12 @@
         }
       ],
       "thumb": "assets/thumbs/dsrecipe.webp",
-      "diagram": "assets/diagrams/dsrecipe.html"
+      "diagram": "assets/diagrams/dsrecipe.html",
+      "en": {
+        "title": "deepseek-recipe: Three APIs Folded Into One Conversation",
+        "desc": "deepseek-recipe converts OpenAI Chat, Anthropic Messages and Responses into one conversation, then renders and encodes it.",
+        "one": "deepseek-recipe converts OpenAI, Anthropic and Responses formats into one conversation structure."
+      }
     },
     {
       "id": "deepspec",
@@ -1429,7 +1524,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepspec.webp",
-      "diagram": "assets/diagrams/deepspec.html"
+      "diagram": "assets/diagrams/deepspec.html",
+      "en": {
+        "title": "DeepSpec: Guess a Block, Verify It Once",
+        "desc": "How speculative decoding works in DeepSpec: a 5-layer draft model guesses 7 tokens, then the target model verifies the block.",
+        "one": "DeepSpec drafts several tokens, then verifies the whole block in one pass."
+      }
     },
     {
       "id": "dreamcraft",
@@ -1505,7 +1605,12 @@
         }
       ],
       "thumb": "assets/thumbs/dreamcraft.webp",
-      "diagram": "assets/diagrams/dreamcraft.html"
+      "diagram": "assets/diagrams/dreamcraft.html",
+      "en": {
+        "title": "DreamCraft3D: Text to 3D in Three Stages",
+        "desc": "How DreamCraft3D grows a 3D shape from a prompt, extracts a mesh and paints it with view-dependent diffusion guidance.",
+        "one": "DreamCraft3D grows a 3D shape from a prompt, extracts a mesh, then paints it."
+      }
     },
     {
       "id": "dsh",
@@ -1573,7 +1678,12 @@
         }
       ],
       "thumb": "assets/thumbs/dsh.webp",
-      "diagram": "assets/diagrams/dsh.html"
+      "diagram": "assets/diagrams/dsh.html",
+      "en": {
+        "title": "DeepSeek Harness: Everything Is a Plugin",
+        "desc": "Inside DeepSeek Harness: the agent loop, the system prompt and the tool table are all plugins loaded from a config file.",
+        "one": "In DeepSeek Harness even the agent loop and the system prompt are plugins."
+      }
     },
     {
       "id": "dsv32",
@@ -1640,7 +1750,12 @@
         }
       ],
       "thumb": "assets/thumbs/dsv32.webp",
-      "diagram": "assets/diagrams/dsv32.html"
+      "diagram": "assets/diagrams/dsv32.html",
+      "en": {
+        "title": "DeepSeek-V3.2-Exp: Only 2048 Tokens Attend",
+        "desc": "How the sparse attention in V3.2 selects 2048 keys per query with a small fp8 indexer, and why the reference code still scores everything.",
+        "one": "The sparse attention in V3.2 selects 2048 keys per query with a small indexer."
+      }
     },
     {
       "id": "lplb",
@@ -1709,7 +1824,12 @@
         }
       ],
       "thumb": "assets/thumbs/lplb.webp",
-      "diagram": "assets/diagrams/lplb.html"
+      "diagram": "assets/diagrams/lplb.html",
+      "en": {
+        "title": "LPLB: Re-solving Token Placement Every Batch",
+        "desc": "LPLB solves a small linear program each batch to move tokens toward expert replicas that are idle.",
+        "one": "LPLB solves a tiny linear program each batch to move tokens toward idle expert replicas."
+      }
     },
     {
       "id": "dscoder",
@@ -1778,7 +1898,12 @@
         }
       ],
       "thumb": "assets/thumbs/dscoder.webp",
-      "diagram": "assets/diagrams/dscoder.html"
+      "diagram": "assets/diagrams/dscoder.html",
+      "en": {
+        "title": "DeepSeek-Coder: The Exam Room, Not the Model",
+        "desc": "The DeepSeek-Coder repo ships the evaluation harness: 40 samples per problem, cleanup, sandboxed execution, pass@k.",
+        "one": "The DeepSeek-Coder repo contains the evaluation harness, not the model."
+      }
     },
     {
       "id": "prover",
@@ -1848,7 +1973,12 @@
         }
       ],
       "thumb": "assets/thumbs/prover.webp",
-      "diagram": "assets/diagrams/prover.html"
+      "diagram": "assets/diagrams/prover.html",
+      "en": {
+        "title": "DeepSeek-Prover-V1.5: The Model Writes, Lean Judges",
+        "desc": "How DeepSeek-Prover does theorem proving: one tactic at a time, judged by Lean, guided by a tree search.",
+        "one": "DeepSeek-Prover guesses one proof step at a time and Lean decides whether it is valid."
+      }
     },
     {
       "id": "gemm-ascend",
@@ -1917,7 +2047,12 @@
         }
       ],
       "thumb": "assets/thumbs/gemm-ascend.webp",
-      "diagram": "assets/diagrams/gemm-ascend.html"
+      "diagram": "assets/diagrams/gemm-ascend.html",
+      "en": {
+        "title": "DeepGEMM-Ascend: Same GEMM, Different Stairs",
+        "desc": "Porting DeepGEMM to Ascend: GM to L1 to L0 to L0C, no TMA, no clusters, and a new scale-factor layout.",
+        "one": "DeepGEMM-Ascend moves the same matrix multiply onto the Ascend memory hierarchy."
+      }
     },
     {
       "id": "ep-ascend",
@@ -1986,7 +2121,12 @@
         }
       ],
       "thumb": "assets/thumbs/ep-ascend.webp",
-      "diagram": "assets/diagrams/ep-ascend.html"
+      "diagram": "assets/diagrams/ep-ascend.html",
+      "en": {
+        "title": "DeepEP-Ascend: Communication on Different Rails",
+        "desc": "Porting DeepEP to Ascend: HCCL instead of NCCL, Jetty instead of QP, UBMEM instead of NVLink.",
+        "one": "DeepEP-Ascend swaps NVLink and RDMA for UBMEM and URMA."
+      }
     },
     {
       "id": "deepseek-vl",
@@ -2056,7 +2196,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepseek-vl.webp",
-      "diagram": "assets/diagrams/deepseek-vl.html"
+      "diagram": "assets/diagrams/deepseek-vl.html",
+      "en": {
+        "title": "DeepSeek-VL: Two Eyes, One Budget",
+        "desc": "How DeepSeek-VL v1 runs a detail encoder and a semantic encoder on the same image and concatenates both feature maps.",
+        "one": "DeepSeek-VL v1 runs two vision encoders on the same image and concatenates their features."
+      }
     },
     {
       "id": "deepseek-ocr-2",
@@ -2120,7 +2265,12 @@
         }
       ],
       "thumb": "assets/thumbs/deepseek-ocr-2.webp",
-      "diagram": "assets/diagrams/deepseek-ocr-2.html"
+      "diagram": "assets/diagrams/deepseek-ocr-2.html",
+      "en": {
+        "title": "DeepSeek-OCR 2: A Queue of Questions Reads the Page",
+        "desc": "DeepSeek-OCR 2 replaces the single-pass encoder with a causal flow of learned queries through a Qwen2 encoder.",
+        "one": "DeepSeek-OCR 2 reads an image with a sequence of learned queries instead of a single pass."
+      }
     },
     {
       "id": "superagent",
@@ -2177,7 +2327,12 @@
         }
       ],
       "thumb": "assets/thumbs/superagent.webp",
-      "diagram": "assets/diagrams/superagent.html"
+      "diagram": "assets/diagrams/superagent.html",
+      "en": {
+        "title": "dsh-superagent: Accept, Work, Report",
+        "desc": "How dsh-superagent decides whether to accept a task, works in its own worktree and reports progress each turn.",
+        "one": "dsh-superagent decides whether to accept a task, works in its own directory, and reports progress each turn."
+      }
     },
     {
       "id": "profiledata",
@@ -2234,7 +2389,12 @@
         }
       ],
       "thumb": "assets/thumbs/profiledata.webp",
-      "diagram": "assets/diagrams/profiledata.html"
+      "diagram": "assets/diagrams/profiledata.html",
+      "en": {
+        "title": "profile-data: Compute and Communication on One Timeline",
+        "desc": "Three PyTorch profiler traces from DeepSeek training runs: overlay compute and communication and check whether they overlap.",
+        "one": "profile-data is three PyTorch profiler traces: overlay compute and communication to see whether they overlap."
+      }
     },
     {
       "id": "dsmath",
@@ -2297,7 +2457,12 @@
         }
       ],
       "thumb": "assets/thumbs/dsmath.webp",
-      "diagram": "assets/diagrams/dsmath.html"
+      "diagram": "assets/diagrams/dsmath.html",
+      "en": {
+        "title": "DeepSeek-Math: How a Math Answer Is Judged",
+        "desc": "How DeepSeek-Math extracts an answer from a long chain of reasoning and compares it numerically and symbolically.",
+        "one": "DeepSeek-Math extracts the answer from a long chain of reasoning, then compares numerically and symbolically."
+      }
     },
     {
       "id": "dsmathv2",
@@ -2361,7 +2526,12 @@
         }
       ],
       "thumb": "assets/thumbs/dsmathv2.webp",
-      "diagram": "assets/diagrams/dsmathv2.html"
+      "diagram": "assets/diagrams/dsmathv2.html",
+      "en": {
+        "title": "DeepSeekMath-V2: Proofs That Grade Themselves",
+        "desc": "DeepSeekMath-V2 has the model score its own proofs on a 0/0.5/1 scale, meta-verify the scores, then revise the best proofs.",
+        "one": "DeepSeekMathV2 has the model score its own proofs, then revises the best ones."
+      }
     }
   ],
   "roadmap": [

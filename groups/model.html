@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Models &amp; Inference — Open Source Architecture Diagrams | 开源项目可视化拆解</title>
+<meta name="description" content="15 interactive architecture diagrams of models &amp; inference: DeepSeek-V3 inference, DeepSeek-OCR, DeepSeek-VL2, Janus, Engram, DeepSeekMoE 路由, DeepSpec, DreamCraft3D, DeepSeek-V3.2-Exp, DeepSeek-Coder, DeepSeek-Prover-V1.5, DeepSeek-VL, DeepSeek-OCR 2, DeepSeek-Math, DeepSeekMath-V2. Every claim links to a source line." />
+<link rel="canonical" href="https://fanhua03.github.io/groups/model.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="Models &amp; Inference — Open Source Architecture Diagrams | 开源项目可视化拆解" />
+<meta property="og:description" content="15 interactive architecture diagrams of models &amp; inference: DeepSeek-V3 inference, DeepSeek-OCR, DeepSeek-VL2, Janus, Engram, DeepSeekMoE 路由, DeepSpec, DreamCraft3D, DeepSeek-V3.2-Exp, DeepSeek-Coder, DeepSeek-Prover-V1.5, DeepSeek-VL, DeepSeek-OCR 2, DeepSeek-Math, DeepSeekMath-V2. Every claim links to a source line." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap">
+  <div class="crumb"><a href="../index.html">全部项目</a><span>/</span><span>模型与推理</span></div>
+  <header class="proj-head">
+    <h1>模型与推理 <span class="cnt">15</span></h1>
+    <p class="sub">Models &amp; Inference · 从一次前向、一份权重、一个 token 开始看</p>
+  </header>
+  <div class="grid">
+      <a class="card" href="../projects/deepseek-v3.html">
+        <div class="thumb"><img src="../assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-V3 inference</span><span class="repo">deepseek-ai/DeepSeek-V3</span></div>
+          <div class="tagline">DeepSeek-V3 stores 576 numbers per token per layer instead of 32768 — the MLA trick, in code.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dsocr.html">
+        <div class="thumb"><img src="../assets/thumbs/dsocr.webp" alt="DeepSeek-OCR architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-OCR</span><span class="repo">deepseek-ai/DeepSeek-OCR</span></div>
+          <div class="tagline">DeepSeek-OCR compresses a page into 273 visual tokens, then decodes them back into text and coordinates.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepseek-vl2.html">
+        <div class="thumb"><img src="../assets/thumbs/deepseek-vl2.webp" alt="DeepSeek-VL2 architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-VL2</span><span class="repo">deepseek-ai/DeepSeek-VL2</span></div>
+          <div class="tagline">DeepSeek-VL2 slices an image, folds each slice into a few tokens, and puts them inline with the text.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/janus.html">
+        <div class="thumb"><img src="../assets/thumbs/janus.webp" alt="Janus architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">Janus</span><span class="repo">deepseek-ai/Janus</span></div>
+          <div class="tagline">Janus keeps two image encoders, one for understanding and one for generation, on a single language model.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/engram.html">
+        <div class="thumb"><img src="../assets/thumbs/engram.webp" alt="Engram architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">Engram</span><span class="repo">deepseek-ai/Engram</span></div>
+          <div class="tagline">Engram replaces some computation with a lookup table of n-gram combinations.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepseekmoe-routing.html">
+        <div class="thumb"><img src="../assets/thumbs/deepseekmoe-routing.webp" alt="DeepSeekMoE 路由 architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeekMoE 路由</span><span class="repo">deepseek-ai/DeepSeek-VL2</span></div>
+          <div class="tagline">DeepSeekMoE picks a few small experts per token, and an auxiliary loss keeps them from collapsing onto one.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepspec.html">
+        <div class="thumb"><img src="../assets/thumbs/deepspec.webp" alt="DeepSpec architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSpec</span><span class="repo">deepseek-ai/DeepSpec</span></div>
+          <div class="tagline">DeepSpec drafts several tokens, then verifies the whole block in one pass.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dreamcraft.html">
+        <div class="thumb"><img src="../assets/thumbs/dreamcraft.webp" alt="DreamCraft3D architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DreamCraft3D</span><span class="repo">deepseek-ai/DreamCraft3D</span></div>
+          <div class="tagline">DreamCraft3D grows a 3D shape from a prompt, extracts a mesh, then paints it.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dsv32.html">
+        <div class="thumb"><img src="../assets/thumbs/dsv32.webp" alt="DeepSeek-V3.2-Exp architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-V3.2-Exp</span><span class="repo">deepseek-ai/DeepSeek-V3.2-Exp</span></div>
+          <div class="tagline">The sparse attention in V3.2 selects 2048 keys per query with a small indexer.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dscoder.html">
+        <div class="thumb"><img src="../assets/thumbs/dscoder.webp" alt="DeepSeek-Coder architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-Coder</span><span class="repo">deepseek-ai/DeepSeek-Coder</span></div>
+          <div class="tagline">The DeepSeek-Coder repo contains the evaluation harness, not the model.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/prover.html">
+        <div class="thumb"><img src="../assets/thumbs/prover.webp" alt="DeepSeek-Prover-V1.5 architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-Prover-V1.5</span><span class="repo">deepseek-ai/DeepSeek-Prover-V1.5</span></div>
+          <div class="tagline">DeepSeek-Prover guesses one proof step at a time and Lean decides whether it is valid.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepseek-vl.html">
+        <div class="thumb"><img src="../assets/thumbs/deepseek-vl.webp" alt="DeepSeek-VL architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-VL</span><span class="repo">deepseek-ai/DeepSeek-VL</span></div>
+          <div class="tagline">DeepSeek-VL v1 runs two vision encoders on the same image and concatenates their features.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepseek-ocr-2.html">
+        <div class="thumb"><img src="../assets/thumbs/deepseek-ocr-2.webp" alt="DeepSeek-OCR 2 architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-OCR 2</span><span class="repo">deepseek-ai/DeepSeek-OCR-2</span></div>
+          <div class="tagline">DeepSeek-OCR 2 reads an image with a sequence of learned queries instead of a single pass.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dsmath.html">
+        <div class="thumb"><img src="../assets/thumbs/dsmath.webp" alt="DeepSeek-Math architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeek-Math</span><span class="repo">deepseek-ai/DeepSeek-Math</span></div>
+          <div class="tagline">DeepSeek-Math extracts the answer from a long chain of reasoning, then compares numerically and symbolically.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/dsmathv2.html">
+        <div class="thumb"><img src="../assets/thumbs/dsmathv2.webp" alt="DeepSeekMath-V2 architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepSeekMath-V2</span><span class="repo">deepseek-ai/DeepSeek-Math-V2</span></div>
+          <div class="tagline">DeepSeekMathV2 has the model score its own proofs, then revises the best ones.</div>
+        </div>
+      </a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 34 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://fanhua03.github.io/index.html</loc><lastmod>2026-11-04</lastmod></url>
+  <url><loc>https://fanhua03.github.io/groups/runtime.html</loc><lastmod>2026-11-04</lastmod></url>
+  <url><loc>https://fanhua03.github.io/groups/model.html</loc><lastmod>2026-11-04</lastmod></url>
+  <url><loc>https://fanhua03.github.io/groups/kernel.html</loc><lastmod>2026-11-04</lastmod></url>
+  <url><loc>https://fanhua03.github.io/groups/infra.html</loc><lastmod>2026-11-04</lastmod></url>
+  <url><loc>https://fanhua03.github.io/groups/agent.html</loc><lastmod>2026-11-04</lastmod></url>
   <url><loc>https://fanhua03.github.io/projects/jq.html</loc><lastmod>2026-11-04</lastmod></url>
   <url><loc>https://fanhua03.github.io/projects/3fs.html</loc><lastmod>2026-11-04</lastmod></url>
   <url><loc>https://fanhua03.github.io/projects/redis.html</loc><lastmod>2026-11-04</lastmod></url>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>profile-data 架构图｜把「算」和「送」画在同一时间轴 · 开源项目可视化拆解</title>
-<meta name="description" content="没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。 交互式架构图，6 处结论可直接跳到 deepseek-ai/profile-data 的源码行。" />
+<title>profile-data: Compute and Communication on One Timeline · 开源项目可视化拆解</title>
+<meta name="description" content="Three PyTorch profiler traces from DeepSeek training runs: overlay compute and communication and check whether they overlap." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/profiledata.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="profile-data 架构图｜把「算」和「送」画在同一时间轴 · 开源项目可视化拆解" />
-<meta property="og:description" content="没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。 交互式架构图，6 处结论可直接跳到 deepseek-ai/profile-data 的源码行。" />
+<meta property="og:title" content="profile-data: Compute and Communication on One Timeline · 开源项目可视化拆解" />
+<meta property="og:description" content="Three PyTorch profiler traces from DeepSeek training runs: overlay compute and communication and check whether they overlap." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/profiledata.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"profile-data 架构图｜把「算」和「送」画在同一时间轴","description":"没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"profile-data","codeRepository":"https://github.com/deepseek-ai/profile-data"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>profile-data</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/infra.html">分布式与数据</a><span>/</span><span>profile-data</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">profile-data</span> 架构图｜把「算」和「送」画在同一时间轴</h1>
     <p class="sub">没有代码，只有三次运行留下的原始记录：把计算和通信画在同一条时间轴上，重叠没重叠一眼看出来。</p>
+    <p class="en">profile-data is three PyTorch profiler traces: overlay compute and communication to see whether they overlap.</p>
     <p class="plain"><b>人话版</b>训练大模型时，一边算、一边还要给别的机器送数据，这两件事能不能同时干，直接决定快慢。这个仓库没有代码，只有三次运行留下的「行车记录仪」：谁在什么时刻占用了显卡多久。把记录倒进浏览器的追踪页面，就能看见「算」和「送」这两条道有没有真并排跑。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/profile-data" target="_blank" rel="noopener">deepseek-ai/profile-data</a></span>
@@ -70,6 +71,22 @@
       <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/train.json#L58925" rel="noopener" target="_blank">train.json:58925</a></code><span>同段 FlashAttention（3863µs）</span></li>
       <li><code><a href="https://github.com/deepseek-ai/profile-data/blob/449602428a1b023acb8a505d4f34fef536535db6/train.json#L17196" rel="noopener" target="_blank">train.json:17196</a></code><span>CPU 侧 dispatch 标注</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="3fs.html">
+        <img src="../assets/thumbs/3fs.webp" alt="3FS" loading="lazy" />
+        <div><b>3FS</b><span>DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</span></div>
+      </a>
+      <a class="rel" href="smallpond.html">
+        <img src="../assets/thumbs/smallpond.webp" alt="smallpond" loading="lazy" />
+        <div><b>smallpond</b><span>海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</span></div>
+      </a>
+      <a class="rel" href="deepinfer.html">
+        <img src="../assets/thumbs/deepinfer.webp" alt="DeepInfer" loading="lazy" />
+        <div><b>DeepInfer</b><span>线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="superagent.html"><span class="lbl">← 上一个</span>dsh-superagent</a>

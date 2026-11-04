@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DeepInfer 架构图｜让显卡一直在算的推理引擎 · 开源项目可视化拆解</title>
-<meta name="description" content="线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepInfer 的源码行。" />
+<title>DeepInfer Architecture Diagram: Keeping the GPU Busy · 开源项目可视化拆解</title>
+<meta name="description" content="How DeepInfer queues, batches and schedules inference requests, moving bookkeeping off the critical path." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/deepinfer.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="DeepInfer 架构图｜让显卡一直在算的推理引擎 · 开源项目可视化拆解" />
-<meta property="og:description" content="线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepInfer 的源码行。" />
+<meta property="og:title" content="DeepInfer Architecture Diagram: Keeping the GPU Busy · 开源项目可视化拆解" />
+<meta property="og:description" content="How DeepInfer queues, batches and schedules inference requests, moving bookkeeping off the critical path." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepinfer.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepInfer 架构图｜让显卡一直在算的推理引擎","description":"线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepInfer","codeRepository":"https://github.com/deepseek-ai/DeepInfer"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>DeepInfer</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/infra.html">分布式与数据</a><span>/</span><span>DeepInfer</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">DeepInfer</span> 架构图｜让显卡一直在算的推理引擎</h1>
     <p class="sub">线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</p>
+    <p class="en">DeepInfer queues requests, batches them, and moves the bookkeeping off the critical path so the GPU never idles.</p>
     <p class="plain"><b>人话版</b>这是 DeepSeek 线上服务用的推理引擎。用户提问进来后，它负责排队、凑成一批、分配显存，再让显卡把回答一个字一个字算出来。它的重点是让这些「杂活」不占显卡时间——上一批还在算，下一批的准备已经悄悄做完了。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepInfer" target="_blank" rel="noopener">deepseek-ai/DeepInfer</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/DeepInfer/blob/a679bb86ce36e883a98a97733492b686e5b9a08e/deepinfer/worker/model_runner.py#L307" rel="noopener" target="_blank">deepinfer/worker/model_runner.py:307–335</a></code><span>execute_main_model</span></li>
       <li><code><a href="https://github.com/deepseek-ai/DeepInfer/blob/a679bb86ce36e883a98a97733492b686e5b9a08e/deepinfer/model_executor/eplb/policy.py#L12" rel="noopener" target="_blank">deepinfer/model_executor/eplb/policy.py:12–72</a></code><span>EPLB 重排专家</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="flashmla.html">
+        <img src="../assets/thumbs/flashmla.webp" alt="FlashMLA" loading="lazy" />
+        <div><b>FlashMLA</b><span>给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</span></div>
+      </a>
+      <a class="rel" href="3fs.html">
+        <img src="../assets/thumbs/3fs.webp" alt="3FS" loading="lazy" />
+        <div><b>3FS</b><span>DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</span></div>
+      </a>
+      <a class="rel" href="smallpond.html">
+        <img src="../assets/thumbs/smallpond.webp" alt="smallpond" loading="lazy" />
+        <div><b>smallpond</b><span>海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="janus.html"><span class="lbl">← 上一个</span>Janus</a>

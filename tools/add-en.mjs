@@ -1,0 +1,51 @@
+import fs from "node:fs";
+
+const p = "data/projects.json";
+const d = JSON.parse(fs.readFileSync(p, "utf8"));
+
+const EN = {
+  jq: ["jq Architecture Diagram: How Filters Become a Bytecode VM", "Interactive diagram of jq internals: lexer, linker, bytecode compiler and the backtracking VM that lets .[] emit several values. Every claim links to a source line.", "jq turns a filter into 42 bytecode instructions and runs them on a VM that can rewind — that is how .[] yields several values."],
+  "3fs": ["3FS Architecture Diagram: Chain Replication, Write to Head, Read Anywhere", "How DeepSeek 3FS stores training data: CRAQ chains, stateless metadata on FoundationDB, and a zero-copy client that bypasses FUSE.", "3FS keeps three copies of every chunk in a chain: writes hit the head, reads go to any replica."],
+  redis: ["Redis Architecture Diagram: Why a Single Thread Is Enough", "How one Redis command travels from socket to reply on one thread, plus the AOF, RDB and replication paths that run beside it.", "Redis executes every command on a single thread, so nothing needs a lock; the bottleneck is the network round trip, not the CPU."],
+  flashmla: ["FlashMLA Architecture Diagram: One CTA Eats 2048 Top-K Tokens", "How DeepSeek MLA decode kernel splits one GPU CTA into 384 threads and streams paged, quantized KV cache through TMA.", "FlashMLA splits one GPU kernel across 384 threads: 128 compute exponentials, 128 dequantize, one issues the MMA."],
+  "deepseek-v3": ["DeepSeek-V3 Inference: 576 Numbers Instead of 32768", "The official DeepSeek-V3 inference code: how MLA absorbs the query into a 512-dim latent and how the two-stage MoE gate picks experts.", "DeepSeek-V3 stores 576 numbers per token per layer instead of 32768 — the MLA trick, in code."],
+  deepep: ["DeepEP Architecture Diagram: Microsecond Expert-Parallel All-to-All", "How DeepEP moves tokens between GPUs: symmetric addresses and TMA on the same node, RDMA put across nodes, a notify warp for counting.", "DeepEP moves tokens between GPUs: same node copies memory directly, across nodes it goes over the network."],
+  deepgemm: ["DeepGEMM Architecture Diagram: JIT-Compiled FP8 GEMM", "DeepGEMM compiles a fresh FP8 kernel at runtime, sizes its stages from shared memory and runs a persistent grid of exactly num_sms blocks.", "DeepGEMM compiles a fresh kernel at runtime, because only then does it know the matrix shape and dtype."],
+  smallpond: ["smallpond Architecture Diagram: DuckDB Tasks on 3FS", "How smallpond turns a dataframe job into producer and consumer task groups and runs each in a throwaway DuckDB process on 3FS.", "smallpond splits a dataframe job into tasks and runs each one in a throwaway DuckDB process on 3FS."],
+  dsocr: ["DeepSeek-OCR Architecture Diagram: A Page Becomes 273 Visual Tokens", "How DeepSeek-OCR compresses a document page into 273 visual tokens with a 16x reduction inside the vision encoder.", "DeepSeek-OCR compresses a page into 273 visual tokens, then decodes them back into text and coordinates."],
+  eplb: ["EPLB: Which GPU Gets Which Expert", "EPLB replicates hot experts and balances the replicas across GPUs with a two-level packing algorithm.", "EPLB replicates the busy experts and spreads the copies evenly across GPUs."],
+  tilekernels: ["TileKernels: Writing GPU Kernels Block by Block", "TileKernels describes kernels in blocks and lets tilelang turn them into threads, shared memory and backend code.", "TileKernels describes work in blocks and lets the compiler turn it into threads and shared memory."],
+  "deepseek-vl2": ["DeepSeek-VL2 Architecture Diagram: A Photo Folded Into 210 Words", "How DeepSeek-VL2 slices an image dynamically, folds each slice into 4 tokens and puts them inline with the text.", "DeepSeek-VL2 slices an image, folds each slice into a few tokens, and puts them inline with the text."],
+  janus: ["Janus Architecture Diagram: One Brain, Two Eyes", "Why Janus keeps two separate image encoders, one for understanding and one for generation, on a single language model.", "Janus keeps two image encoders, one for understanding and one for generation, on a single language model."],
+  deepinfer: ["DeepInfer Architecture Diagram: Keeping the GPU Busy", "How DeepInfer queues, batches and schedules inference requests, moving bookkeeping off the critical path.", "DeepInfer queues requests, batches them, and moves the bookkeeping off the critical path so the GPU never idles."],
+  dualpipe: ["DualPipe: Filling the Bubbles in Pipeline Parallelism", "How DualPipe fills pipeline-parallel idle time by running two directions at once and deferring weight gradients.", "DualPipe fills the idle gaps of pipeline parallelism by running two directions at once."],
+  engram: ["Engram: Look It Up Instead of Computing It", "Engram replaces part of the computation with a huge n-gram lookup table addressed by a deterministic hash.", "Engram replaces some computation with a lookup table of n-gram combinations."],
+  "deepseekmoe-routing": ["DeepSeekMoE Routing: How Experts Are Chosen", "The official MoE modeling code shipped inside the DeepSeek-VL2 repo: gate scoring, grouped top-k, and the auxiliary loss that keeps experts balanced.", "DeepSeekMoE picks a few small experts per token, and an auxiliary loss keeps them from collapsing onto one."],
+  deepjit: ["DeepJIT: Source In, Machine Code Out", "DeepJIT compiles a CUDA kernel on first use, fingerprints the result and caches both in memory and on disk.", "DeepJIT compiles a kernel the first time it is used and caches the binary for next time."],
+  dsrecipe: ["deepseek-recipe: Three APIs Folded Into One Conversation", "deepseek-recipe converts OpenAI Chat, Anthropic Messages and Responses into one conversation, then renders and encodes it.", "deepseek-recipe converts OpenAI, Anthropic and Responses formats into one conversation structure."],
+  deepspec: ["DeepSpec: Guess a Block, Verify It Once", "How speculative decoding works in DeepSpec: a 5-layer draft model guesses 7 tokens, then the target model verifies the block.", "DeepSpec drafts several tokens, then verifies the whole block in one pass."],
+  dreamcraft: ["DreamCraft3D: Text to 3D in Three Stages", "How DreamCraft3D grows a 3D shape from a prompt, extracts a mesh and paints it with view-dependent diffusion guidance.", "DreamCraft3D grows a 3D shape from a prompt, extracts a mesh, then paints it."],
+  dsv32: ["DeepSeek-V3.2-Exp: Only 2048 Tokens Attend", "How the sparse attention in V3.2 selects 2048 keys per query with a small fp8 indexer, and why the reference code still scores everything.", "The sparse attention in V3.2 selects 2048 keys per query with a small indexer."],
+  lplb: ["LPLB: Re-solving Token Placement Every Batch", "LPLB solves a small linear program each batch to move tokens toward expert replicas that are idle.", "LPLB solves a tiny linear program each batch to move tokens toward idle expert replicas."],
+  dscoder: ["DeepSeek-Coder: The Exam Room, Not the Model", "The DeepSeek-Coder repo ships the evaluation harness: 40 samples per problem, cleanup, sandboxed execution, pass@k.", "The DeepSeek-Coder repo contains the evaluation harness, not the model."],
+  prover: ["DeepSeek-Prover-V1.5: The Model Writes, Lean Judges", "How DeepSeek-Prover does theorem proving: one tactic at a time, judged by Lean, guided by a tree search.", "DeepSeek-Prover guesses one proof step at a time and Lean decides whether it is valid."],
+  "gemm-ascend": ["DeepGEMM-Ascend: Same GEMM, Different Stairs", "Porting DeepGEMM to Ascend: GM to L1 to L0 to L0C, no TMA, no clusters, and a new scale-factor layout.", "DeepGEMM-Ascend moves the same matrix multiply onto the Ascend memory hierarchy."],
+  "ep-ascend": ["DeepEP-Ascend: Communication on Different Rails", "Porting DeepEP to Ascend: HCCL instead of NCCL, Jetty instead of QP, UBMEM instead of NVLink.", "DeepEP-Ascend swaps NVLink and RDMA for UBMEM and URMA."],
+  "deepseek-vl": ["DeepSeek-VL: Two Eyes, One Budget", "How DeepSeek-VL v1 runs a detail encoder and a semantic encoder on the same image and concatenates both feature maps.", "DeepSeek-VL v1 runs two vision encoders on the same image and concatenates their features."],
+  "deepseek-ocr-2": ["DeepSeek-OCR 2: A Queue of Questions Reads the Page", "DeepSeek-OCR 2 replaces the single-pass encoder with a causal flow of learned queries through a Qwen2 encoder.", "DeepSeek-OCR 2 reads an image with a sequence of learned queries instead of a single pass."],
+  dsh: ["DeepSeek Harness: Everything Is a Plugin", "Inside DeepSeek Harness: the agent loop, the system prompt and the tool table are all plugins loaded from a config file.", "In DeepSeek Harness even the agent loop and the system prompt are plugins."],
+  superagent: ["dsh-superagent: Accept, Work, Report", "How dsh-superagent decides whether to accept a task, works in its own worktree and reports progress each turn.", "dsh-superagent decides whether to accept a task, works in its own directory, and reports progress each turn."],
+  profiledata: ["profile-data: Compute and Communication on One Timeline", "Three PyTorch profiler traces from DeepSeek training runs: overlay compute and communication and check whether they overlap.", "profile-data is three PyTorch profiler traces: overlay compute and communication to see whether they overlap."],
+  dsmath: ["DeepSeek-Math: How a Math Answer Is Judged", "How DeepSeek-Math extracts an answer from a long chain of reasoning and compares it numerically and symbolically.", "DeepSeek-Math extracts the answer from a long chain of reasoning, then compares numerically and symbolically."],
+  dsmathv2: ["DeepSeekMath-V2: Proofs That Grade Themselves", "DeepSeekMath-V2 has the model score its own proofs on a 0/0.5/1 scale, meta-verify the scores, then revise the best proofs.", "DeepSeekMathV2 has the model score its own proofs, then revises the best ones."],
+};
+
+let n = 0;
+for (const proj of d.projects) {
+  const e = EN[proj.id];
+  if (!e) { console.log("missing:", proj.id); continue; }
+  proj.en = { title: e[0], desc: e[1], one: e[2] };
+  n++;
+}
+fs.writeFileSync(p, JSON.stringify(d, null, 2) + "\n");
+console.log("english copy added:", n, "/", d.projects.length);

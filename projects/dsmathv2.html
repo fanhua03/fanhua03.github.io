@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DeepSeekMath-V2 架构图｜证明自己打分，挑好的再改 · 开源项目可视化拆解</title>
-<meta name="description" content="不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-Math-V2 的源码行。" />
+<title>DeepSeekMath-V2: Proofs That Grade Themselves · 开源项目可视化拆解</title>
+<meta name="description" content="DeepSeekMath-V2 has the model score its own proofs on a 0/0.5/1 scale, meta-verify the scores, then revise the best proofs." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/dsmathv2.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="DeepSeekMath-V2 架构图｜证明自己打分，挑好的再改 · 开源项目可视化拆解" />
-<meta property="og:description" content="不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-Math-V2 的源码行。" />
+<meta property="og:title" content="DeepSeekMath-V2: Proofs That Grade Themselves · 开源项目可视化拆解" />
+<meta property="og:description" content="DeepSeekMath-V2 has the model score its own proofs on a 0/0.5/1 scale, meta-verify the scores, then revise the best proofs." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsmathv2.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeekMath-V2 架构图｜证明自己打分，挑好的再改","description":"不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeekMath-V2","codeRepository":"https://github.com/deepseek-ai/DeepSeek-Math-V2"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeekMath-V2</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/model.html">模型与推理</a><span>/</span><span>DeepSeekMath-V2</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">DeepSeekMath-V2</span> 架构图｜证明自己打分，挑好的再改</h1>
     <p class="sub">不给标准答案：让模型先写证明、再给自己的证明打分，然后挑得分最高的几份改一改，一轮轮往上加。</p>
+    <p class="en">DeepSeekMathV2 has the model score its own proofs, then revises the best ones.</p>
     <p class="plain"><b>人话版</b>这是让模型写数学证明的项目。它先让模型写几份证明，再让模型自己给这些证明打分，还专门检查「打分是不是打歪了」。然后挑出得分最高的几份改一改，再重新打分，一轮轮往上加。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-Math-V2" target="_blank" rel="noopener">deepseek-ai/DeepSeek-Math-V2</a></span>
@@ -70,6 +71,22 @@
       <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Math-V2/blob/665c840782baf7faae8a8b244ea313f3cfcc346f/inference/math_templates.py#L2" rel="noopener" target="_blank">inference/math_templates.py:2–20</a></code><span>三档评分</span></li>
       <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Math-V2/blob/665c840782baf7faae8a8b244ea313f3cfcc346f/inference/math_templates.py#L46" rel="noopener" target="_blank">inference/math_templates.py:46–62</a></code><span>元验证模板</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="deepseek-v3.html">
+        <img src="../assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference" loading="lazy" />
+        <div><b>DeepSeek-V3 inference</b><span>官方推理代码：一个词进来，模型怎么一步步算出下一个词。</span></div>
+      </a>
+      <a class="rel" href="dsocr.html">
+        <img src="../assets/thumbs/dsocr.webp" alt="DeepSeek-OCR" loading="lazy" />
+        <div><b>DeepSeek-OCR</b><span>把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。</span></div>
+      </a>
+      <a class="rel" href="deepseek-vl2.html">
+        <img src="../assets/thumbs/deepseek-vl2.webp" alt="DeepSeek-VL2" loading="lazy" />
+        <div><b>DeepSeek-VL2</b><span>给已经很会说话的 DeepSeek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="dsmath.html"><span class="lbl">← 上一个</span>DeepSeek-Math</a>

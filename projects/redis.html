@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Redis 架构图｜一条命令跑完，为什么一个线程就够 · 开源项目可视化拆解</title>
-<meta name="description" content="放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
+<title>Redis Architecture Diagram: Why a Single Thread Is Enough · 开源项目可视化拆解</title>
+<meta name="description" content="How one Redis command travels from socket to reply on one thread, plus the AOF, RDB and replication paths that run beside it." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/redis.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="Redis 架构图｜一条命令跑完，为什么一个线程就够 · 开源项目可视化拆解" />
-<meta property="og:description" content="放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。 交互式架构图，10 处结论可直接跳到 redis/redis 的源码行。" />
+<meta property="og:title" content="Redis Architecture Diagram: Why a Single Thread Is Enough · 开源项目可视化拆解" />
+<meta property="og:description" content="How one Redis command travels from socket to reply on one thread, plus the AOF, RDB and replication paths that run beside it." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/redis.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Redis 架构图｜一条命令跑完，为什么一个线程就够","description":"放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"Redis","codeRepository":"https://github.com/redis/redis"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>Redis</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/runtime.html">语言与运行时</a><span>/</span><span>Redis</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">Redis</span> 架构图｜一条命令跑完，为什么一个线程就够</h1>
     <p class="sub">放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。</p>
+    <p class="en">Redis executes every command on a single thread, so nothing needs a lock; the bottleneck is the network round trip, not the CPU.</p>
     <p class="plain"><b>人话版</b>Redis 是把数据放内存里的数据库。它快不是因为它会并行，而是因为它「一个人干活」——一条命令从头到尾只有一个线程处理，不用加锁、也不用等别人。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/redis/redis" target="_blank" rel="noopener">redis/redis</a></span>
@@ -74,6 +75,22 @@
       <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/rdb.c#L2352" rel="noopener" target="_blank">src/rdb.c:2352</a></code><span>rdbSaveBackground fork</span></li>
       <li><code><a href="https://github.com/redis/redis/blob/8e2ba8c4ef6ccf76d327c689cddd5fbe64daa5e5/src/replication.c#L656" rel="noopener" target="_blank">src/replication.c:656</a></code><span>replicationFeedSlaves</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="jq.html">
+        <img src="../assets/thumbs/jq.webp" alt="jq" loading="lazy" />
+        <div><b>jq</b><span>一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。</span></div>
+      </a>
+      <a class="rel" href="3fs.html">
+        <img src="../assets/thumbs/3fs.webp" alt="3FS" loading="lazy" />
+        <div><b>3FS</b><span>DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</span></div>
+      </a>
+      <a class="rel" href="flashmla.html">
+        <img src="../assets/thumbs/flashmla.webp" alt="FlashMLA" loading="lazy" />
+        <div><b>FlashMLA</b><span>给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="3fs.html"><span class="lbl">← 上一个</span>3FS</a>

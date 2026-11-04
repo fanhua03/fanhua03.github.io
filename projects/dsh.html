@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DeepSeek Harness 架构图｜没有内核，只有插件 · 开源项目可视化拆解</title>
-<meta name="description" content="一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。 交互式架构图，8 处结论可直接跳到 deepseek-ai/deepseek-harness 的源码行。" />
+<title>DeepSeek Harness: Everything Is a Plugin · 开源项目可视化拆解</title>
+<meta name="description" content="Inside DeepSeek Harness: the agent loop, the system prompt and the tool table are all plugins loaded from a config file." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/dsh.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="DeepSeek Harness 架构图｜没有内核，只有插件 · 开源项目可视化拆解" />
-<meta property="og:description" content="一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。 交互式架构图，8 处结论可直接跳到 deepseek-ai/deepseek-harness 的源码行。" />
+<meta property="og:title" content="DeepSeek Harness: Everything Is a Plugin · 开源项目可视化拆解" />
+<meta property="og:description" content="Inside DeepSeek Harness: the agent loop, the system prompt and the tool table are all plugins loaded from a config file." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsh.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek Harness 架构图｜没有内核，只有插件","description":"一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek Harness","codeRepository":"https://github.com/deepseek-ai/deepseek-harness"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek Harness</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/agent.html">Agent 与工具</a><span>/</span><span>DeepSeek Harness</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">DeepSeek Harness</span> 架构图｜没有内核，只有插件</h1>
     <p class="sub">一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</p>
+    <p class="en">In DeepSeek Harness even the agent loop and the system prompt are plugins.</p>
     <p class="plain"><b>人话版</b>这是 DeepSeek 官方那个 AI 编程工具（就是你现在用的这个）。它最特别的地方是：连「怎么跟模型对话」这条主线本身都是一个插件，跟工具、提示词、会话存储一样，全是可替换的零件。所以换一个零件，整个工具的行为就变了，别的零件一行都不用改。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">deepseek-ai/deepseek-harness</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/core/agent-loop/src/agent.ts#L283" rel="noopener" target="_blank">packages/core/agent-loop/src/agent.ts:283</a></code><span>preStep 解析工具+拼提示</span></li>
       <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/session/session-persistence-jsonl/src/storage.ts#L187" rel="noopener" target="_blank">packages/session/session-persistence-jsonl/src/storage.ts:187</a></code><span>append 事件落盘</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="dsrecipe.html">
+        <img src="../assets/thumbs/dsrecipe.webp" alt="deepseek-recipe" loading="lazy" />
+        <div><b>deepseek-recipe</b><span>把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。</span></div>
+      </a>
+      <a class="rel" href="superagent.html">
+        <img src="../assets/thumbs/superagent.webp" alt="dsh-superagent" loading="lazy" />
+        <div><b>dsh-superagent</b><span>有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。</span></div>
+      </a>
+      <a class="rel" href="jq.html">
+        <img src="../assets/thumbs/jq.webp" alt="jq" loading="lazy" />
+        <div><b>jq</b><span>一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="dreamcraft.html"><span class="lbl">← 上一个</span>DreamCraft3D</a>

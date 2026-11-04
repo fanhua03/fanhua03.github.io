@@ -75,11 +75,11 @@ const done = DATA.projects;
 const allTags = [...new Set(done.flatMap(p => p.tags))];
 
 const GROUPS = [
-  { id: "runtime", label: "语言与运行时", desc: "一个请求进来，一行代码下去，机器上发生了什么" },
-  { id: "model", label: "模型与推理", desc: "从一次前向、一份权重、一个 token 开始看" },
-  { id: "kernel", label: "内核与通信", desc: "显卡上真正跑的代码，和卡与卡之间搬的数据" },
-  { id: "infra", label: "分布式与数据", desc: "多机多盘之间，数据怎么放、怎么跑" },
-  { id: "agent", label: "Agent 与工具", desc: "让模型自己动手的那一层" },
+  { id: "runtime", label: "语言与运行时", labelEn: "Language Runtimes", desc: "一个请求进来，一行代码下去，机器上发生了什么" },
+  { id: "model", label: "模型与推理", labelEn: "Models & Inference", desc: "从一次前向、一份权重、一个 token 开始看" },
+  { id: "kernel", label: "内核与通信", labelEn: "Kernels & Communication", desc: "显卡上真正跑的代码，和卡与卡之间搬的数据" },
+  { id: "infra", label: "分布式与数据", labelEn: "Distributed Systems & Data", desc: "多机多盘之间，数据怎么放、怎么跑" },
+  { id: "agent", label: "Agent 与工具", labelEn: "Agents & Tools", desc: "让模型自己动手的那一层" },
 ];
 
 const GROUP_OF = {
@@ -297,6 +297,21 @@ renderQueue();
 </html>
 `;
 
+/* ---------- related ---------- */
+function relatedProjects(p, limit = 3) {
+  const groupOf = id => GROUP_OF[id] || "model";
+  const scored = done
+    .filter(x => x.id !== p.id)
+    .map(x => {
+      let sc = 0;
+      if (groupOf(x.id) === groupOf(p.id)) sc += 2;
+      sc += x.tags.filter(t => p.tags.includes(t)).length * 3;
+      return { x, sc };
+    })
+    .sort((a, b) => b.sc - a.sc);
+  return scored.slice(0, limit).map(o => o.x);
+}
+
 /* ---------- project pages ---------- */
 function projectPage(p, prev, next) {
   const link = p.repo + "/blob/" + p.revision + "/";
@@ -305,6 +320,12 @@ function projectPage(p, prev, next) {
     const range = s.line ? (s.end_line ? `${s.line}–${s.end_line}` : `${s.line}`) : "";
     return `      <li><code><a href="${href}" rel="noopener" target="_blank">${esc(s.path)}${range ? ":" + range : ""}</a></code><span>${esc(s.label || "")}</span></li>`;
   }).join("\n");
+
+  const rel = relatedProjects(p).map(x => `
+      <a class="rel" href="${x.id}.html">
+        <img src="../${x.thumb}" alt="${esc(x.title)}" loading="lazy" />
+        <div><b>${esc(x.title)}</b><span>${esc(x.tagline)}</span></div>
+      </a>`).join("");
 
   const pager = `
   <div class="pager">
@@ -324,8 +345,8 @@ function projectPage(p, prev, next) {
   });
 
   return fill(head({
-    title: `${p.title} 架构图｜${p.headline} · ${DATA.site.name}`,
-    desc: `${p.tagline} 交互式架构图，${p.sources.length} 处结论可直接跳到 ${p.repo} 的源码行。`,
+    title: `${p.en ? p.en.title : p.title + " 架构图｜" + p.headline} · ${DATA.site.name}`,
+    desc: `${p.en ? p.en.desc : p.tagline}`,
     canonical: `${SITE}/projects/${p.id}.html`,
     extra: `<meta property="og:image" content="${SITE}/${p.thumb}" />
 <script type="application/ld+json">${jsonld}</script>
@@ -333,12 +354,13 @@ function projectPage(p, prev, next) {
   }), "../") + fill(topbar("../"), "../") + `
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>${esc(p.title)}</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/${GROUP_OF[p.id] || "model"}.html">${esc((GROUPS.find(g=>g.id===(GROUP_OF[p.id]||"model"))||{}).label||"")}</a><span>/</span><span>${esc(p.title)}</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">${esc(p.title)}</span> 架构图｜${esc(p.headline)}</h1>
     <p class="sub">${esc(p.tagline)}</p>
+    ${p.en ? `<p class="en">${esc(p.en.one)}</p>` : ""}
     ${p.plain ? `<p class="plain"><b>人话版</b>${esc(p.plain)}</p>` : ""}
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/${p.repo}" target="_blank" rel="noopener">${esc(p.repo)}</a></span>
@@ -367,6 +389,10 @@ function projectPage(p, prev, next) {
   <ol class="ev">
 ${ev}
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">${rel}
+  </div>
 ${pager}
   ${footer(done.length)}
 </main>
@@ -384,6 +410,38 @@ ${pager}
   });
 })();
 </script>
+</body>
+</html>
+`;
+}
+
+/* ---------- group pages ---------- */
+function groupPage(g) {
+  const items = done.filter(p => (GROUP_OF[p.id] || "model") === g.id);
+  const cards = items.map(p => `
+      <a class="card" href="../projects/${p.id}.html">
+        <div class="thumb"><img src="../${p.thumb}" alt="${esc(p.title)} architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">${esc(p.title)}</span><span class="repo">${esc(p.repo)}</span></div>
+          <div class="tagline">${esc(p.en ? p.en.one : p.tagline)}</div>
+        </div>
+      </a>`).join("");
+
+  return fill(head({
+    title: `${g.labelEn} — Open Source Architecture Diagrams | ${DATA.site.name}`,
+    desc: `${items.length} interactive architecture diagrams of ${g.labelEn.toLowerCase()}: ${items.map(p => p.title).join(", ")}. Every claim links to a source line.`,
+    canonical: `${SITE}/groups/${g.id}.html`,
+  }), "../") + fill(topbar("../"), "../") + `
+<main class="wrap">
+  <div class="crumb"><a href="../index.html">全部项目</a><span>/</span><span>${esc(g.label)}</span></div>
+  <header class="proj-head">
+    <h1>${esc(g.label)} <span class="cnt">${items.length}</span></h1>
+    <p class="sub">${esc(g.labelEn)} · ${esc(g.desc)}</p>
+  </header>
+  <div class="grid">${cards}
+  </div>
+  ${footer(done.length)}
+</main>
 </body>
 </html>
 `;
@@ -415,7 +473,10 @@ done.forEach((p, i) => {
   writeFileSync(join(ROOT, "projects", `${p.id}.html`), page);
 });
 
-const urls = [`${SITE}/index.html`, ...done.map(p => `${SITE}/projects/${p.id}.html`)];
+if (!existsSync(join(ROOT, "groups"))) mkdirSync(join(ROOT, "groups"));
+GROUPS.forEach(g => writeFileSync(join(ROOT, "groups", `${g.id}.html`), groupPage(g)));
+
+const urls = [`${SITE}/index.html`, ...GROUPS.map(g => `${SITE}/groups/${g.id}.html`), ...done.map(p => `${SITE}/projects/${p.id}.html`)];
 writeFileSync(join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${u}</loc><lastmod>${done[0]?.date || "2026-11-04"}</lastmod></url>`).join("\n")}

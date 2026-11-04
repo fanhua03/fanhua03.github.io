@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kernels &amp; Communication — Open Source Architecture Diagrams | 开源项目可视化拆解</title>
+<meta name="description" content="9 interactive architecture diagrams of kernels &amp; communication: FlashMLA, DeepEP, DeepGEMM, EPLB, TileKernels, DeepJIT, LPLB, DeepGEMM-Ascend, DeepEP-Ascend. Every claim links to a source line." />
+<link rel="canonical" href="https://fanhua03.github.io/groups/kernel.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="Kernels &amp; Communication — Open Source Architecture Diagrams | 开源项目可视化拆解" />
+<meta property="og:description" content="9 interactive architecture diagrams of kernels &amp; communication: FlashMLA, DeepEP, DeepGEMM, EPLB, TileKernels, DeepJIT, LPLB, DeepGEMM-Ascend, DeepEP-Ascend. Every claim links to a source line." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap">
+  <div class="crumb"><a href="../index.html">全部项目</a><span>/</span><span>内核与通信</span></div>
+  <header class="proj-head">
+    <h1>内核与通信 <span class="cnt">9</span></h1>
+    <p class="sub">Kernels &amp; Communication · 显卡上真正跑的代码，和卡与卡之间搬的数据</p>
+  </header>
+  <div class="grid">
+      <a class="card" href="../projects/flashmla.html">
+        <div class="thumb"><img src="../assets/thumbs/flashmla.webp" alt="FlashMLA architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">FlashMLA</span><span class="repo">deepseek-ai/FlashMLA</span></div>
+          <div class="tagline">FlashMLA splits one GPU kernel across 384 threads: 128 compute exponentials, 128 dequantize, one issues the MMA.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepep.html">
+        <div class="thumb"><img src="../assets/thumbs/deepep.webp" alt="DeepEP architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepEP</span><span class="repo">deepseek-ai/DeepEP</span></div>
+          <div class="tagline">DeepEP moves tokens between GPUs: same node copies memory directly, across nodes it goes over the network.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepgemm.html">
+        <div class="thumb"><img src="../assets/thumbs/deepgemm.webp" alt="DeepGEMM architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepGEMM</span><span class="repo">deepseek-ai/DeepGEMM</span></div>
+          <div class="tagline">DeepGEMM compiles a fresh kernel at runtime, because only then does it know the matrix shape and dtype.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/eplb.html">
+        <div class="thumb"><img src="../assets/thumbs/eplb.webp" alt="EPLB architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">EPLB</span><span class="repo">deepseek-ai/EPLB</span></div>
+          <div class="tagline">EPLB replicates the busy experts and spreads the copies evenly across GPUs.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/tilekernels.html">
+        <div class="thumb"><img src="../assets/thumbs/tilekernels.webp" alt="TileKernels architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">TileKernels</span><span class="repo">deepseek-ai/TileKernels</span></div>
+          <div class="tagline">TileKernels describes work in blocks and lets the compiler turn it into threads and shared memory.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/deepjit.html">
+        <div class="thumb"><img src="../assets/thumbs/deepjit.webp" alt="DeepJIT architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepJIT</span><span class="repo">deepseek-ai/DeepJIT</span></div>
+          <div class="tagline">DeepJIT compiles a kernel the first time it is used and caches the binary for next time.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/lplb.html">
+        <div class="thumb"><img src="../assets/thumbs/lplb.webp" alt="LPLB architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">LPLB</span><span class="repo">deepseek-ai/LPLB</span></div>
+          <div class="tagline">LPLB solves a tiny linear program each batch to move tokens toward idle expert replicas.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/gemm-ascend.html">
+        <div class="thumb"><img src="../assets/thumbs/gemm-ascend.webp" alt="DeepGEMM-Ascend architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepGEMM-Ascend</span><span class="repo">deepseek-ai/DeepGEMM-Ascend</span></div>
+          <div class="tagline">DeepGEMM-Ascend moves the same matrix multiply onto the Ascend memory hierarchy.</div>
+        </div>
+      </a>
+      <a class="card" href="../projects/ep-ascend.html">
+        <div class="thumb"><img src="../assets/thumbs/ep-ascend.webp" alt="DeepEP-Ascend architecture diagram" loading="lazy" /></div>
+        <div class="body">
+          <div class="row"><span class="title">DeepEP-Ascend</span><span class="repo">deepseek-ai/DeepEP-Ascend</span></div>
+          <div class="tagline">DeepEP-Ascend swaps NVLink and RDMA for UBMEM and URMA.</div>
+        </div>
+      </a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 34 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

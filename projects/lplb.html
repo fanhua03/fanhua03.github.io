@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LPLB 架构图｜每一批都重算一次谁接活 · 开源项目可视化拆解</title>
-<meta name="description" content="每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。 交互式架构图，8 处结论可直接跳到 deepseek-ai/LPLB 的源码行。" />
+<title>LPLB: Re-solving Token Placement Every Batch · 开源项目可视化拆解</title>
+<meta name="description" content="LPLB solves a small linear program each batch to move tokens toward expert replicas that are idle." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/lplb.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="LPLB 架构图｜每一批都重算一次谁接活 · 开源项目可视化拆解" />
-<meta property="og:description" content="每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。 交互式架构图，8 处结论可直接跳到 deepseek-ai/LPLB 的源码行。" />
+<meta property="og:title" content="LPLB: Re-solving Token Placement Every Batch · 开源项目可视化拆解" />
+<meta property="og:description" content="LPLB solves a small linear program each batch to move tokens toward expert replicas that are idle." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/lplb.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"LPLB 架构图｜每一批都重算一次谁接活","description":"每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"LPLB","codeRepository":"https://github.com/deepseek-ai/LPLB"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>LPLB</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/kernel.html">内核与通信</a><span>/</span><span>LPLB</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">LPLB</span> 架构图｜每一批都重算一次谁接活</h1>
     <p class="sub">每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。</p>
+    <p class="en">LPLB solves a tiny linear program each batch to move tokens toward idle expert replicas.</p>
     <p class="plain"><b>人话版</b>模型里有几百个「专家」，每个批次里有的接活多、有的接活少。有的专家会多备一份放在别的显卡上，这份备份接多少活是可以调的。这个项目每一批都重新算一次：把活往闲的那份上挪一点，让所有显卡的活尽量一样多。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/LPLB" target="_blank" rel="noopener">deepseek-ai/LPLB</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/README.md#L62" rel="noopener" target="_blank">README.md:62</a></code><span>边容量</span></li>
       <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/README.md#L70" rel="noopener" target="_blank">README.md:70</a></code><span>求解耗时</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="deepseekmoe-routing.html">
+        <img src="../assets/thumbs/deepseekmoe-routing.webp" alt="DeepSeekMoE 路由" loading="lazy" />
+        <div><b>DeepSeekMoE 路由</b><span>这段 MoE 建模代码躺在 DeepSeek-VL2 仓库里（官方 V2 的 modeling_deepseek.py 搬过来的）——因为 V2 / DeepSeek-MoE 两个仓库只放了 README 和 PDF。</span></div>
+      </a>
+      <a class="rel" href="eplb.html">
+        <img src="../assets/thumbs/eplb.webp" alt="EPLB" loading="lazy" />
+        <div><b>EPLB</b><span>给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。</span></div>
+      </a>
+      <a class="rel" href="deepseek-v3.html">
+        <img src="../assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference" loading="lazy" />
+        <div><b>DeepSeek-V3 inference</b><span>官方推理代码：一个词进来，模型怎么一步步算出下一个词。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="dsv32.html"><span class="lbl">← 上一个</span>DeepSeek-V3.2-Exp</a>

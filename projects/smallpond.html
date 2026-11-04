@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>smallpond 架构图｜DuckDB 切片，3FS 上跑任务 · 开源项目可视化拆解</title>
-<meta name="description" content="海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。 交互式架构图，8 处结论可直接跳到 deepseek-ai/smallpond 的源码行。" />
+<title>smallpond Architecture Diagram: DuckDB Tasks on 3FS · 开源项目可视化拆解</title>
+<meta name="description" content="How smallpond turns a dataframe job into producer and consumer task groups and runs each in a throwaway DuckDB process on 3FS." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/smallpond.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="smallpond 架构图｜DuckDB 切片，3FS 上跑任务 · 开源项目可视化拆解" />
-<meta property="og:description" content="海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。 交互式架构图，8 处结论可直接跳到 deepseek-ai/smallpond 的源码行。" />
+<meta property="og:title" content="smallpond Architecture Diagram: DuckDB Tasks on 3FS · 开源项目可视化拆解" />
+<meta property="og:description" content="How smallpond turns a dataframe job into producer and consumer task groups and runs each in a throwaway DuckDB process on 3FS." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/smallpond.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"smallpond 架构图｜DuckDB 切片，3FS 上跑任务","description":"海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"smallpond","codeRepository":"https://github.com/deepseek-ai/smallpond"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>smallpond</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/infra.html">分布式与数据</a><span>/</span><span>smallpond</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">smallpond</span> 架构图｜DuckDB 切片，3FS 上跑任务</h1>
     <p class="sub">海量数据框架：把大任务切成小的，丢到 3FS 上跑，算完就退。</p>
+    <p class="en">smallpond splits a dataframe job into tasks and runs each one in a throwaway DuckDB process on 3FS.</p>
     <p class="plain"><b>人话版</b>smallpond 是处理海量数据的框架。它把一个大作业切成很多小任务，扔到 3FS 上跑；每个小任务开一个 DuckDB 算完就退出，不留状态。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/smallpond" target="_blank" rel="noopener">deepseek-ai/smallpond</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/smallpond/blob/52ecc5e45535c7448f848bcb45b0da00d9484f81/smallpond/execution/task.py#L2608" rel="noopener" target="_blank">smallpond/execution/task.py:2608–2624</a></code><span>hash 分区 SQL</span></li>
       <li><code><a href="https://github.com/deepseek-ai/smallpond/blob/52ecc5e45535c7448f848bcb45b0da00d9484f81/README.md#L58" rel="noopener" target="_blank">README.md:58</a></code><span>GraySort 110.5TiB / 30 分 14 秒</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="3fs.html">
+        <img src="../assets/thumbs/3fs.webp" alt="3FS" loading="lazy" />
+        <div><b>3FS</b><span>DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</span></div>
+      </a>
+      <a class="rel" href="deepinfer.html">
+        <img src="../assets/thumbs/deepinfer.webp" alt="DeepInfer" loading="lazy" />
+        <div><b>DeepInfer</b><span>线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</span></div>
+      </a>
+      <a class="rel" href="dualpipe.html">
+        <img src="../assets/thumbs/dualpipe.webp" alt="DualPipe" loading="lazy" />
+        <div><b>DualPipe</b><span>训练大模型时机器等数据的那段时间（气泡），用一个反方向的计算填上。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="deepgemm.html"><span class="lbl">← 上一个</span>DeepGEMM</a>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>dsh-superagent 架构图｜接活、干活、交报告 · 开源项目可视化拆解</title>
-<meta name="description" content="有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。 交互式架构图，6 处结论可直接跳到 deepseek-ai/dsh-superagent-prototype 的源码行。" />
+<title>dsh-superagent: Accept, Work, Report · 开源项目可视化拆解</title>
+<meta name="description" content="How dsh-superagent decides whether to accept a task, works in its own worktree and reports progress each turn." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/superagent.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="dsh-superagent 架构图｜接活、干活、交报告 · 开源项目可视化拆解" />
-<meta property="og:description" content="有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。 交互式架构图，6 处结论可直接跳到 deepseek-ai/dsh-superagent-prototype 的源码行。" />
+<meta property="og:title" content="dsh-superagent: Accept, Work, Report · 开源项目可视化拆解" />
+<meta property="og:description" content="How dsh-superagent decides whether to accept a task, works in its own worktree and reports progress each turn." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/superagent.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"dsh-superagent 架构图｜接活、干活、交报告","description":"有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"dsh-superagent","codeRepository":"https://github.com/deepseek-ai/dsh-superagent-prototype"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>dsh-superagent</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/agent.html">Agent 与工具</a><span>/</span><span>dsh-superagent</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">dsh-superagent</span> 架构图｜接活、干活、交报告</h1>
     <p class="sub">有人喊一句，它先判断值不值得接；接了就在自己目录里干，干一段交一份报告——报告决定下一步等人还是继续。</p>
+    <p class="en">dsh-superagent decides whether to accept a task, works in its own directory, and reports progress each turn.</p>
     <p class="plain"><b>人话版</b>有人在一个代码仓库里喊「帮我改这个」，这个程序会自动判断该不该接；接了就在自己的目录里干活。它不会一口气想完所有步骤，而是干一会儿交一份「进度报告」，报告决定是继续、还是叫人来接手。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/dsh-superagent-prototype" target="_blank" rel="noopener">deepseek-ai/dsh-superagent-prototype</a></span>
@@ -70,6 +71,22 @@
       <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/docs/003-execution.md#L19" rel="noopener" target="_blank">docs/003-execution.md:19</a></code><span>person 阶段要人</span></li>
       <li><code><a href="https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/docs/003-execution.md#L33" rel="noopener" target="_blank">docs/003-execution.md:33</a></code><span>后台未完不算结束</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="dsrecipe.html">
+        <img src="../assets/thumbs/dsrecipe.webp" alt="deepseek-recipe" loading="lazy" />
+        <div><b>deepseek-recipe</b><span>把 OpenAI、Anthropic 那几种不一样的接口，先翻成一套统一的对话，再变成模型吃的 prompt；模型吐出来的，再翻回去。</span></div>
+      </a>
+      <a class="rel" href="dsh.html">
+        <img src="../assets/thumbs/dsh.webp" alt="DeepSeek Harness" loading="lazy" />
+        <div><b>DeepSeek Harness</b><span>一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</span></div>
+      </a>
+      <a class="rel" href="jq.html">
+        <img src="../assets/thumbs/jq.webp" alt="jq" loading="lazy" />
+        <div><b>jq</b><span>一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="deepseek-ocr-2.html"><span class="lbl">← 上一个</span>DeepSeek-OCR 2</a>

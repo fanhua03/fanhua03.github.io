@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DeepGEMM 架构图｜JIT 把 FP8 GEMM 焊成专用内核 · 开源项目可视化拆解</title>
-<meta name="description" content="矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepGEMM 的源码行。" />
+<title>DeepGEMM Architecture Diagram: JIT-Compiled FP8 GEMM · 开源项目可视化拆解</title>
+<meta name="description" content="DeepGEMM compiles a fresh FP8 kernel at runtime, sizes its stages from shared memory and runs a persistent grid of exactly num_sms blocks." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/deepgemm.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="DeepGEMM 架构图｜JIT 把 FP8 GEMM 焊成专用内核 · 开源项目可视化拆解" />
-<meta property="og:description" content="矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepGEMM 的源码行。" />
+<meta property="og:title" content="DeepGEMM Architecture Diagram: JIT-Compiled FP8 GEMM · 开源项目可视化拆解" />
+<meta property="og:description" content="DeepGEMM compiles a fresh FP8 kernel at runtime, sizes its stages from shared memory and runs a persistent grid of exactly num_sms blocks." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/deepgemm.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepGEMM 架构图｜JIT 把 FP8 GEMM 焊成专用内核","description":"矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepGEMM","codeRepository":"https://github.com/deepseek-ai/DeepGEMM"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>DeepGEMM</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/kernel.html">内核与通信</a><span>/</span><span>DeepGEMM</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">DeepGEMM</span> 架构图｜JIT 把 FP8 GEMM 焊成专用内核</h1>
     <p class="sub">矩阵乘法加速库：不预先编译，用的时候现场生成一份只适合当前形状的代码。</p>
+    <p class="en">DeepGEMM compiles a fresh kernel at runtime, because only then does it know the matrix shape and dtype.</p>
     <p class="plain"><b>人话版</b>DeepGEMM 是算矩阵乘法的加速库。它不在发布时编好，而是你运行时现场编译——因为只有知道矩阵多大、什么类型，才能编出最合适的那份代码。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepGEMM" target="_blank" rel="noopener">deepseek-ai/DeepGEMM</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh#L299" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/impls/sm100_fp8_fp4_gemm_1d1d.cuh:299</a></code><span>MMA warp</span></li>
       <li><code><a href="https://github.com/deepseek-ai/DeepGEMM/blob/5081f8513af57e61696de4f4f04b0e707ffb503e/deep_gemm/include/deep_gemm/scheduler/gemm.cuh#L186" rel="noopener" target="_blank">deep_gemm/include/deep_gemm/scheduler/gemm.cuh:186</a></code><span>持久取块</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="deepjit.html">
+        <img src="../assets/thumbs/deepjit.webp" alt="DeepJIT" loading="lazy" />
+        <div><b>DeepJIT</b><span>同一段 kernel 源码，第一次用时现场编译并存起来，之后直接读出来跑——换卡、换参数都不用重装。</span></div>
+      </a>
+      <a class="rel" href="flashmla.html">
+        <img src="../assets/thumbs/flashmla.webp" alt="FlashMLA" loading="lazy" />
+        <div><b>FlashMLA</b><span>给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</span></div>
+      </a>
+      <a class="rel" href="deepep.html">
+        <img src="../assets/thumbs/deepep.webp" alt="DeepEP" loading="lazy" />
+        <div><b>DeepEP</b><span>几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="deepep.html"><span class="lbl">← 上一个</span>DeepEP</a>

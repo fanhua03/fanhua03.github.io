@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Janus 架构图｜一个脑子，两副眼睛 · 开源项目可视化拆解</title>
-<meta name="description" content="一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。 交互式架构图，7 处结论可直接跳到 deepseek-ai/Janus 的源码行。" />
+<title>Janus Architecture Diagram: One Brain, Two Eyes · 开源项目可视化拆解</title>
+<meta name="description" content="Why Janus keeps two separate image encoders, one for understanding and one for generation, on a single language model." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/janus.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="Janus 架构图｜一个脑子，两副眼睛 · 开源项目可视化拆解" />
-<meta property="og:description" content="一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。 交互式架构图，7 处结论可直接跳到 deepseek-ai/Janus 的源码行。" />
+<meta property="og:title" content="Janus Architecture Diagram: One Brain, Two Eyes · 开源项目可视化拆解" />
+<meta property="og:description" content="Why Janus keeps two separate image encoders, one for understanding and one for generation, on a single language model." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/janus.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Janus 架构图｜一个脑子，两副眼睛","description":"一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"Janus","codeRepository":"https://github.com/deepseek-ai/Janus"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>Janus</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/model.html">模型与推理</a><span>/</span><span>Janus</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">Janus</span> 架构图｜一个脑子，两副眼睛</h1>
     <p class="sub">一个脑子、两副眼睛：一副用来读懂图，一副用来把图拼出来。</p>
+    <p class="en">Janus keeps two image encoders, one for understanding and one for generation, on a single language model.</p>
     <p class="plain"><b>人话版</b>这个模型既能看懂图，也能画图。它没有硬凑一套两边共用的图像编码，而是各配一套：一套专门把图变成「看得懂的意思」，另一套专门把图变成「拼得回去的碎片」。两套都接到同一个语言模型上，所以里面只有一条流水线，外面有两个接口——这样「看懂」和「画好」不用互相将就。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/Janus" target="_blank" rel="noopener">deepseek-ai/Janus</a></span>
@@ -71,6 +72,22 @@
       <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/processing_vlm.py#L92" rel="noopener" target="_blank">janus/models/processing_vlm.py:92–92</a></code><span>576 个视觉词</span></li>
       <li><code><a href="https://github.com/deepseek-ai/Janus/blob/1daa72fa409002d40931bd7b36a9280362469ead/janus/models/projector.py#L27" rel="noopener" target="_blank">janus/models/projector.py:27–60</a></code><span>投影层</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="dsocr.html">
+        <img src="../assets/thumbs/dsocr.webp" alt="DeepSeek-OCR" loading="lazy" />
+        <div><b>DeepSeek-OCR</b><span>把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。</span></div>
+      </a>
+      <a class="rel" href="deepseek-vl2.html">
+        <img src="../assets/thumbs/deepseek-vl2.webp" alt="DeepSeek-VL2" loading="lazy" />
+        <div><b>DeepSeek-VL2</b><span>给已经很会说话的 DeepSeek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。</span></div>
+      </a>
+      <a class="rel" href="deepseek-vl.html">
+        <img src="../assets/thumbs/deepseek-vl.webp" alt="DeepSeek-VL" loading="lazy" />
+        <div><b>DeepSeek-VL</b><span>v1 让两双眼睛同时看同一张图：一双看得细，一双看得懂，再把两边的印象拼起来。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="deepseek-vl2.html"><span class="lbl">← 上一个</span>DeepSeek-VL2</a>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>jq 架构图｜把过滤器编译成一台会倒退的虚拟机 · 开源项目可视化拆解</title>
-<meta name="description" content="一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。 交互式架构图，7 处结论可直接跳到 jqlang/jq 的源码行。" />
+<title>jq Architecture Diagram: How Filters Become a Bytecode VM · 开源项目可视化拆解</title>
+<meta name="description" content="Interactive diagram of jq internals: lexer, linker, bytecode compiler and the backtracking VM that lets .[] emit several values. Every claim links to a source line." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/jq.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="jq 架构图｜把过滤器编译成一台会倒退的虚拟机 · 开源项目可视化拆解" />
-<meta property="og:description" content="一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。 交互式架构图，7 处结论可直接跳到 jqlang/jq 的源码行。" />
+<meta property="og:title" content="jq Architecture Diagram: How Filters Become a Bytecode VM · 开源项目可视化拆解" />
+<meta property="og:description" content="Interactive diagram of jq internals: lexer, linker, bytecode compiler and the backtracking VM that lets .[] emit several values. Every claim links to a source line." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/jq.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"jq 架构图｜把过滤器编译成一台会倒退的虚拟机","description":"一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"jq","codeRepository":"https://github.com/jqlang/jq"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>jq</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/runtime.html">语言与运行时</a><span>/</span><span>jq</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">jq</span> 架构图｜把过滤器编译成一台会倒退的虚拟机</h1>
     <p class="sub">一个命令行小工具：你给它一条规则，它把 JSON 变成你要的样子。</p>
+    <p class="en">jq turns a filter into 42 bytecode instructions and runs them on a VM that can rewind — that is how .[] yields several values.</p>
     <p class="plain"><b>人话版</b>jq 是命令行里处理 JSON 的小工具。奇怪的是你给它一条规则，它可能一次吐出好几个结果——因为它会「存档读档」：算出一个就先记下算到哪了，下次从记下的地方接着算。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/jqlang/jq" target="_blank" rel="noopener">jqlang/jq</a></span>
@@ -71,6 +72,22 @@
       <li><code><a href="https://github.com/jqlang/jq/blob/5c001b18d7237cce1fdba63608732163f978dd23/src/jv.c#L55" rel="noopener" target="_blank">src/jv.c:55–76</a></code><span>手写引用计数</span></li>
       <li><code><a href="https://github.com/jqlang/jq/blob/5c001b18d7237cce1fdba63608732163f978dd23/src/builtin.c#L2039" rel="noopener" target="_blank">src/builtin.c:2039</a></code><span>C 原语表</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="redis.html">
+        <img src="../assets/thumbs/redis.webp" alt="Redis" loading="lazy" />
+        <div><b>Redis</b><span>放在内存里的数据库：一个人干活、不用加锁，一条命令眨眼就回来。</span></div>
+      </a>
+      <a class="rel" href="3fs.html">
+        <img src="../assets/thumbs/3fs.webp" alt="3FS" loading="lazy" />
+        <div><b>3FS</b><span>DeepSeek 自己造的网盘，训练数据就存在这上面：写得慢一点，读得特别快。</span></div>
+      </a>
+      <a class="rel" href="flashmla.html">
+        <img src="../assets/thumbs/flashmla.webp" alt="FlashMLA" loading="lazy" />
+        <div><b>FlashMLA</b><span>给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="../index.html"><span class="lbl">← 返回</span>全部项目</a>

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k · 开源项目可视化拆解</title>
-<meta name="description" content="给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
+<title>FlashMLA Architecture Diagram: One CTA Eats 2048 Top-K Tokens · 开源项目可视化拆解</title>
+<meta name="description" content="How DeepSeek MLA decode kernel splits one GPU CTA into 384 threads and streams paged, quantized KV cache through TMA." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/flashmla.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k · 开源项目可视化拆解" />
-<meta property="og:description" content="给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。 交互式架构图，8 处结论可直接跳到 deepseek-ai/FlashMLA 的源码行。" />
+<meta property="og:title" content="FlashMLA Architecture Diagram: One CTA Eats 2048 Top-K Tokens · 开源项目可视化拆解" />
+<meta property="og:description" content="How DeepSeek MLA decode kernel splits one GPU CTA into 384 threads and streams paged, quantized KV cache through TMA." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/flashmla.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"FlashMLA 架构图｜一个 CTA 吃完 2048 个 top-k","description":"给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"FlashMLA","codeRepository":"https://github.com/deepseek-ai/FlashMLA"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>FlashMLA</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/kernel.html">内核与通信</a><span>/</span><span>FlashMLA</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">FlashMLA</span> 架构图｜一个 CTA 吃完 2048 个 top-k</h1>
     <p class="sub">给显卡写的专用程序：算「注意力」这一步，一次吃完 2048 个候选。</p>
+    <p class="en">FlashMLA splits one GPU kernel across 384 threads: 128 compute exponentials, 128 dequantize, one issues the MMA.</p>
     <p class="plain"><b>人话版</b>FlashMLA 是一段专门给显卡写的计算程序，只干一件事：算注意力。它把一个 GPU 核心的活拆给 384 个线程，各管一段，最后拼起来。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/FlashMLA" target="_blank" rel="noopener">deepseek-ai/FlashMLA</a></span>
@@ -72,6 +73,22 @@
       <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh#L517" rel="noopener" target="_blank">csrc/cuda_kernels/sm100/decode/sparse/head64/kernel.cuh:517–529</a></code><span>MMA</span></li>
       <li><code><a href="https://github.com/deepseek-ai/FlashMLA/blob/395cb3afbb331fef7b1b21e9340861b9436b42d8/csrc/cuda_kernels/smxx/decode/combine/combine.cu#L43" rel="noopener" target="_blank">csrc/cuda_kernels/smxx/decode/combine/combine.cu:43–53</a></code><span>split-KV 汇总</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="deepseek-v3.html">
+        <img src="../assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference" loading="lazy" />
+        <div><b>DeepSeek-V3 inference</b><span>官方推理代码：一个词进来，模型怎么一步步算出下一个词。</span></div>
+      </a>
+      <a class="rel" href="deepinfer.html">
+        <img src="../assets/thumbs/deepinfer.webp" alt="DeepInfer" loading="lazy" />
+        <div><b>DeepInfer</b><span>线上服务用的推理引擎：问题进来先排队凑批，杂活交给更快的代码去做，显卡尽量不空等。</span></div>
+      </a>
+      <a class="rel" href="deepep.html">
+        <img src="../assets/thumbs/deepep.webp" alt="DeepEP" loading="lazy" />
+        <div><b>DeepEP</b><span>几百张显卡之间搬数据：同一个机箱直接抄内存，跨机箱才走网线。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="redis.html"><span class="lbl">← 上一个</span>Redis</a>

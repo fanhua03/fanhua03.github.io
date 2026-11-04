@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DeepSeek-Math 架构图｜数学模型的考卷：答案怎么判对错 · 开源项目可视化拆解</title>
-<meta name="description" content="一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-Math 的源码行。" />
+<title>DeepSeek-Math: How a Math Answer Is Judged · 开源项目可视化拆解</title>
+<meta name="description" content="How DeepSeek-Math extracts an answer from a long chain of reasoning and compares it numerically and symbolically." />
 <link rel="canonical" href="https://fanhua03.github.io/projects/dsmath.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
-<meta property="og:title" content="DeepSeek-Math 架构图｜数学模型的考卷：答案怎么判对错 · 开源项目可视化拆解" />
-<meta property="og:description" content="一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。 交互式架构图，6 处结论可直接跳到 deepseek-ai/DeepSeek-Math 的源码行。" />
+<meta property="og:title" content="DeepSeek-Math: How a Math Answer Is Judged · 开源项目可视化拆解" />
+<meta property="og:description" content="How DeepSeek-Math extracts an answer from a long chain of reasoning and compares it numerically and symbolically." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="../assets/site.css?v=e2710f5e" />
+<link rel="stylesheet" href="../assets/site.css?v=e123b714" />
 <meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsmath.webp" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-Math 架构图｜数学模型的考卷：答案怎么判对错","description":"一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-Math","codeRepository":"https://github.com/deepseek-ai/DeepSeek-Math"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
 </head>
@@ -31,12 +31,13 @@
 </div>
 <main class="wrap narrow">
   <div class="crumb">
-    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek-Math</span>
+    <a href="../index.html">全部项目</a><span>/</span><a href="../groups/model.html">模型与推理</a><span>/</span><span>DeepSeek-Math</span>
   </div>
 
   <header class="proj-head">
     <h1><span class="pn">DeepSeek-Math</span> 架构图｜数学模型的考卷：答案怎么判对错</h1>
     <p class="sub">一套只负责打分的数学评测：按模板出题、让模型写解答、从一大段推理里抠出答案，再按数字和公式判对错。</p>
+    <p class="en">DeepSeek-Math extracts the answer from a long chain of reasoning, then compares numerically and symbolically.</p>
     <p class="plain"><b>人话版</b>这套代码不训练模型，专门给数学能力打分。它把题目按固定格式交给模型，让模型写出解题过程，再从这一大段话里找出最终答案。答案对不对，会先按数字比、再按公式比，最后算出一个正确率。</p>
     <div class="pmeta">
       <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-Math" target="_blank" rel="noopener">deepseek-ai/DeepSeek-Math</a></span>
@@ -70,6 +71,22 @@
       <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Math/blob/b8b0f8ce093d80bf8e9a641e44142f06d092c305/evaluation/eval/eval_utils.py#L181" rel="noopener" target="_blank">evaluation/eval/eval_utils.py:181–192</a></code><span>math_equal（sympy）</span></li>
       <li><code><a href="https://github.com/deepseek-ai/DeepSeek-Math/blob/b8b0f8ce093d80bf8e9a641e44142f06d092c305/evaluation/eval/python_executor.py#L26" rel="noopener" target="_blank">evaluation/eval/python_executor.py:26–29</a></code><span>挡 input / os.system</span></li>
   </ol>
+
+  <h2 class="blk">顺着往下看</h2>
+  <div class="related">
+      <a class="rel" href="deepseek-v3.html">
+        <img src="../assets/thumbs/deepseek-v3.webp" alt="DeepSeek-V3 inference" loading="lazy" />
+        <div><b>DeepSeek-V3 inference</b><span>官方推理代码：一个词进来，模型怎么一步步算出下一个词。</span></div>
+      </a>
+      <a class="rel" href="dsocr.html">
+        <img src="../assets/thumbs/dsocr.webp" alt="DeepSeek-OCR" loading="lazy" />
+        <div><b>DeepSeek-OCR</b><span>把一整页文档「看」成几百个小方块，再翻成文字，还告诉你每行字在哪。</span></div>
+      </a>
+      <a class="rel" href="deepseek-vl2.html">
+        <img src="../assets/thumbs/deepseek-vl2.webp" alt="DeepSeek-VL2" loading="lazy" />
+        <div><b>DeepSeek-VL2</b><span>给已经很会说话的 DeepSeek 配一双眼睛：把照片折成一小串词，塞进同一句话里一起读。</span></div>
+      </a>
+  </div>
 
   <div class="pager">
     <a href="profiledata.html"><span class="lbl">← 上一个</span>profile-data</a>
