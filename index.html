@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>9</b><span>已拆</span></div>
+      <div class="stat"><b>11</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -74,6 +74,10 @@
     <button class="chip" data-f="多模态">多模态</button>
     <button class="chip" data-f="OCR">OCR</button>
     <button class="chip" data-f="视觉编码器">视觉编码器</button>
+    <button class="chip" data-f="专家并行">专家并行</button>
+    <button class="chip" data-f="负载均衡">负载均衡</button>
+    <button class="chip" data-f="TileLang">TileLang</button>
+    <button class="chip" data-f="算子库">算子库</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -253,6 +257,46 @@
           <div class="foot">
             <span><b>3,198</b> 行</span>
             <span><b>7</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/eplb.html" data-search="eplb deepseek-ai/eplb 专家并行 负载均衡 给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。">
+        <div class="thumb">
+          <img src="assets/thumbs/eplb.png" alt="EPLB 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">EPLB</span>
+            <span class="repo">deepseek-ai/EPLB</span>
+            <span class="tags"><span class="tag">专家并行</span><span class="tag">负载均衡</span></span>
+          </div>
+          <div class="tagline">给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。</div>
+          <ul class="ins"><li>热门的专家会被复制几份，每次挑当前最热的那个加副本（replicate_experts 里比较 weight/logcnt）。</li><li>装箱先放大件再补小件：最重的组先放，放进当前最轻的箱子，且每箱数量必须一样（balanced_packing）。</li><li>两层装箱：先把专家组按机器装一遍，再把副本按卡装一遍；全局模式跳过第一层。</li></ul>
+          <div class="foot">
+            <span><b>164</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/tilekernels.html" data-search="tilekernels deepseek-ai/tilekernels tilelang 算子库 把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 nvidia 和昇腾。">
+        <div class="thumb">
+          <img src="assets/thumbs/tilekernels.png" alt="TileKernels 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">TileKernels</span>
+            <span class="repo">deepseek-ai/TileKernels</span>
+            <span class="tags"><span class="tag">TileLang</span><span class="tag">算子库</span></span>
+          </div>
+          <div class="tagline">把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。</div>
+          <ul class="ins"><li>你只写开多少 block、每个 block 多少线程，搬运和计算都按块写（T.Kernel / T.copy / T.Parallel）。</li><li>块多大、用几个线程是算出来的：小 batch 用 64 线程 × 32 元素，block_k 取与 hidden 的最大公约数。</li><li>同一份写法换后端就能跑：探测到昇腾就换另一份 launcher，形状用 T.dynamic 留给运行时决定。</li></ul>
+          <div class="foot">
+            <span><b>26,181</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
             <span class="go">打开 →</span>
           </div>
         </div>
@@ -448,7 +492,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 9 张 · 纯静态，无后端</div>
+    <div>已拆 11 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

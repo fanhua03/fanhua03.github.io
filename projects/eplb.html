@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EPLB 架构图｜专家放哪张卡，它说了算 · 开源项目可视化拆解</title>
+<meta name="description" content="给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。 交互式架构图，8 处结论可直接跳到 deepseek-ai/EPLB 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/eplb.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="EPLB 架构图｜专家放哪张卡，它说了算 · 开源项目可视化拆解" />
+<meta property="og:description" content="给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。 交互式架构图，8 处结论可直接跳到 deepseek-ai/EPLB 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/eplb.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"EPLB 架构图｜专家放哪张卡，它说了算","description":"给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"EPLB","codeRepository":"https://github.com/deepseek-ai/EPLB"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>EPLB</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">EPLB</span> 架构图｜专家放哪张卡，它说了算</h1>
+    <p class="sub">给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。</p>
+    <p class="plain"><b>人话版</b>训练大模型时，不同的「专家」被分到不同的显卡上，有的专家忙死、有的闲死。这个项目就是那个排座位的程序：把忙的专家复制几份，再把所有副本尽量平均地分到每张卡上。它只负责排座位，什么时候重排由外面的训练程序决定。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/EPLB" target="_blank" rel="noopener">deepseek-ai/EPLB</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 164 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/eplb.html" title="EPLB 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/eplb.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>热门的专家会被复制几份，每次挑当前最热的那个加副本（replicate_experts 里比较 weight/logcnt）。</li><li>装箱先放大件再补小件：最重的组先放，放进当前最轻的箱子，且每箱数量必须一样（balanced_packing）。</li><li>两层装箱：先把专家组按机器装一遍，再把副本按卡装一遍；全局模式跳过第一层。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L131" rel="noopener" target="_blank">eplb.py:131</a></code><span>重排入口</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L150" rel="noopener" target="_blank">eplb.py:150</a></code><span>选策略</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L5" rel="noopener" target="_blank">eplb.py:5</a></code><span>balanced_packing</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L67" rel="noopener" target="_blank">eplb.py:67</a></code><span>挑最热的专家加副本</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L74" rel="noopener" target="_blank">eplb.py:74</a></code><span>分层重排三步</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L118" rel="noopener" target="_blank">eplb.py:118</a></code><span>副本装到卡</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/eplb.py#L157" rel="noopener" target="_blank">eplb.py:157</a></code><span>反查表 log2phy</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/EPLB/blob/d52c72d5b2f2fb4c41afbf8eb21366820239913d/README.md#L11" rel="noopener" target="_blank">README.md:11</a></code><span>负载预测不在仓库内</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="dsocr.html"><span class="lbl">← 上一个</span>DeepSeek-OCR</a>
+    <a href="tilekernels.html"><span class="lbl">下一个 →</span>TileKernels</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 11 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

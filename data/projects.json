@@ -656,6 +656,141 @@
       "thumb": "assets/thumbs/dsocr.png",
       "diagram": "assets/diagrams/dsocr.html",
       "plain": "DeepSeek-OCR 干两件事：先把一整页图压成几百个「视觉小块」，再把这些小块翻成文字，顺便告诉你每行字在页面上的位置。"
+    },
+    {
+      "id": "eplb",
+      "title": "EPLB",
+      "headline": "专家放哪张卡，它说了算",
+      "tagline": "给忙的专家复制几份，再把副本平均摊到每张显卡上——它就是那个排座位的程序。",
+      "plain": "训练大模型时，不同的「专家」被分到不同的显卡上，有的专家忙死、有的闲死。这个项目就是那个排座位的程序：把忙的专家复制几份，再把所有副本尽量平均地分到每张卡上。它只负责排座位，什么时候重排由外面的训练程序决定。",
+      "repo": "deepseek-ai/EPLB",
+      "revision": "d52c72d5b2f2fb4c41afbf8eb21366820239913d",
+      "langs": [
+        "Python"
+      ],
+      "loc": 164,
+      "date": "2026-11-04",
+      "tags": [
+        "专家并行",
+        "负载均衡"
+      ],
+      "insights": [
+        "热门的专家会被复制几份，每次挑当前最热的那个加副本（replicate_experts 里比较 weight/logcnt）。",
+        "装箱先放大件再补小件：最重的组先放，放进当前最轻的箱子，且每箱数量必须一样（balanced_packing）。",
+        "两层装箱：先把专家组按机器装一遍，再把副本按卡装一遍；全局模式跳过第一层。"
+      ],
+      "sources": [
+        {
+          "path": "eplb.py",
+          "line": 131,
+          "label": "重排入口"
+        },
+        {
+          "path": "eplb.py",
+          "line": 150,
+          "label": "选策略"
+        },
+        {
+          "path": "eplb.py",
+          "line": 5,
+          "label": "balanced_packing"
+        },
+        {
+          "path": "eplb.py",
+          "line": 67,
+          "label": "挑最热的专家加副本"
+        },
+        {
+          "path": "eplb.py",
+          "line": 74,
+          "label": "分层重排三步"
+        },
+        {
+          "path": "eplb.py",
+          "line": 118,
+          "label": "副本装到卡"
+        },
+        {
+          "path": "eplb.py",
+          "line": 157,
+          "label": "反查表 log2phy"
+        },
+        {
+          "path": "README.md",
+          "line": 11,
+          "label": "负载预测不在仓库内"
+        }
+      ],
+      "thumb": "assets/thumbs/eplb.png",
+      "diagram": "assets/diagrams/eplb.html"
+    },
+    {
+      "id": "tilekernels",
+      "title": "TileKernels",
+      "headline": "按块写代码，编译器翻译成线程",
+      "tagline": "把「按块搬数据、按块算」写成一种方言，再由编译器翻译成显卡指令——同一份写法能跑 NVIDIA 和昇腾。",
+      "plain": "显卡干活前，得有人把活儿切成一块一块、分给几千个线程，还得管好每块数据放在哪个片上内存。这个项目用一种「按块描述」的写法来做这件事：你只说这块数据怎么搬、怎么算，翻译成显卡指令的活交给编译器。好处是同一份写法能换后端跑，代价是得按它的规矩写。",
+      "repo": "deepseek-ai/TileKernels",
+      "revision": "c1cf914a82e6901c679445f872051ce44ac2cc63",
+      "langs": [
+        "Python",
+        "TileLang"
+      ],
+      "loc": 26181,
+      "date": "2026-11-04",
+      "tags": [
+        "TileLang",
+        "算子库"
+      ],
+      "insights": [
+        "你只写开多少 block、每个 block 多少线程，搬运和计算都按块写（T.Kernel / T.copy / T.Parallel）。",
+        "块多大、用几个线程是算出来的：小 batch 用 64 线程 × 32 元素，block_k 取与 hidden 的最大公约数。",
+        "同一份写法换后端就能跑：探测到昇腾就换另一份 launcher，形状用 T.dynamic 留给运行时决定。"
+      ],
+      "sources": [
+        {
+          "path": "tile_kernels/quant/per_token_cast_kernel.py",
+          "line": 38,
+          "label": "按设备选后端"
+        },
+        {
+          "path": "tile_kernels/quant/per_token_cast_cuda.py",
+          "line": 28,
+          "label": "@tilelang.jit"
+        },
+        {
+          "path": "tile_kernels/quant/per_token_cast_cuda.py",
+          "line": 46,
+          "label": "按 batch 定线程数"
+        },
+        {
+          "path": "tile_kernels/quant/per_token_cast_cuda.py",
+          "line": 54,
+          "label": "block_k 用 gcd 定"
+        },
+        {
+          "path": "tile_kernels/quant/per_token_cast_cuda.py",
+          "line": 104,
+          "label": "T.Kernel 声明网格"
+        },
+        {
+          "path": "tile_kernels/quant/per_token_cast_cuda.py",
+          "line": 111,
+          "label": "alloc_shared 分支"
+        },
+        {
+          "path": "tile_kernels/quant/per_token_cast_cuda.py",
+          "line": 84,
+          "label": "T.dynamic"
+        },
+        {
+          "path": "tests/quant/test_per_token_cast.py",
+          "line": 243,
+          "label": "benchmark 只给自己计时"
+        }
+      ],
+      "thumb": "assets/thumbs/tilekernels.png",
+      "diagram": "assets/diagrams/tilekernels.html"
     }
   ],
   "roadmap": [
