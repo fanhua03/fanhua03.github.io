@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek Harness 架构图｜没有内核，只有插件 · 开源项目可视化拆解</title>
+<meta name="description" content="一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。 交互式架构图，8 处结论可直接跳到 deepseek-ai/deepseek-harness 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/dsh.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeek Harness 架构图｜没有内核，只有插件 · 开源项目可视化拆解" />
+<meta property="og:description" content="一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。 交互式架构图，8 处结论可直接跳到 deepseek-ai/deepseek-harness 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsh.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek Harness 架构图｜没有内核，只有插件","description":"一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek Harness","codeRepository":"https://github.com/deepseek-ai/deepseek-harness"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek Harness</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeek Harness</span> 架构图｜没有内核，只有插件</h1>
+    <p class="sub">一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</p>
+    <p class="plain"><b>人话版</b>这是 DeepSeek 官方那个 AI 编程工具（就是你现在用的这个）。它最特别的地方是：连「怎么跟模型对话」这条主线本身都是一个插件，跟工具、提示词、会话存储一样，全是可替换的零件。所以换一个零件，整个工具的行为就变了，别的零件一行都不用改。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noopener">deepseek-ai/deepseek-harness</a></span>
+      <span><b>语言</b> TypeScript</span>
+      <span><b>规模</b> 0 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/dsh.html" title="DeepSeek Harness 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/dsh.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>连对话主循环、系统提示、工具表、会话存储都是独立 npm 包，按 cordis.yml 装进同一个容器；「主线」不在代码里，在配置里。</li><li>系统提示不是写死的常量，是每一步重算出来的：先看现在有哪些工具，再把工具说明拼进提示里——工具变了提示就跟着变。</li><li>模型一轮可以吐多个工具调用，一次性交出去并行跑，每个结果都写回会话，下一轮模型看到的是完整历史。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/boot/app-boot/src/index.ts#L68" rel="noopener" target="_blank">packages/boot/app-boot/src/index.ts:68</a></code><span>loadProfile 读插件清单</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/vendor/cordis/src/context.ts#L42" rel="noopener" target="_blank">vendor/cordis/src/context.ts:42</a></code><span>插件运行时 Context</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/core/tools/src/index.ts#L128" rel="noopener" target="_blank">packages/core/tools/src/index.ts:128</a></code><span>register 注册工具</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/core/tools/src/index.ts#L375" rel="noopener" target="_blank">packages/core/tools/src/index.ts:375</a></code><span>execute 批量执行</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/core/system-prompt/src/index.ts#L620" rel="noopener" target="_blank">packages/core/system-prompt/src/index.ts:620</a></code><span>assemble 每步重拼</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/core/agent-loop/src/agent.ts#L112" rel="noopener" target="_blank">packages/core/agent-loop/src/agent.ts:112</a></code><span>ReactLoopAgent</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/core/agent-loop/src/agent.ts#L283" rel="noopener" target="_blank">packages/core/agent-loop/src/agent.ts:283</a></code><span>preStep 解析工具+拼提示</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/deepseek-harness/blob/8bd073392eef6f54e921a093b95076248eb08cbb/packages/session/session-persistence-jsonl/src/storage.ts#L187" rel="noopener" target="_blank">packages/session/session-persistence-jsonl/src/storage.ts:187</a></code><span>append 事件落盘</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="dreamcraft.html"><span class="lbl">← 上一个</span>DreamCraft3D</a>
+    <a href="dsv32.html"><span class="lbl">下一个 →</span>DeepSeek-V3.2-Exp</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 24 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LPLB 架构图｜每一批都重算一次谁接活 · 开源项目可视化拆解</title>
+<meta name="description" content="每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。 交互式架构图，8 处结论可直接跳到 deepseek-ai/LPLB 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/lplb.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="LPLB 架构图｜每一批都重算一次谁接活 · 开源项目可视化拆解" />
+<meta property="og:description" content="每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。 交互式架构图，8 处结论可直接跳到 deepseek-ai/LPLB 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/lplb.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"LPLB 架构图｜每一批都重算一次谁接活","description":"每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"LPLB","codeRepository":"https://github.com/deepseek-ai/LPLB"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>LPLB</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">LPLB</span> 架构图｜每一批都重算一次谁接活</h1>
+    <p class="sub">每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。</p>
+    <p class="plain"><b>人话版</b>模型里有几百个「专家」，每个批次里有的接活多、有的接活少。有的专家会多备一份放在别的显卡上，这份备份接多少活是可以调的。这个项目每一批都重新算一次：把活往闲的那份上挪一点，让所有显卡的活尽量一样多。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/LPLB" target="_blank" rel="noopener">deepseek-ai/LPLB</a></span>
+      <span><b>语言</b> Python / CUDA</span>
+      <span><b>规模</b> 2,163 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/lplb.html" title="LPLB 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/lplb.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>EPLB 治长期过热、决定复制谁；LPLB 治每批抖动、只决定这一批的活往哪倒。</li><li>把「冗余副本能接多少活」当变量解线性规划，让最忙的那张卡尽量轻。</li><li>每批多花约 100µs 求解；极端不平衡时可能还不如 EPLB 简单粗暴。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/lplb/planner.py#L245" rel="noopener" target="_blank">lplb/planner.py:245</a></code><span>Planner.run</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/lplb/planner.py#L194" rel="noopener" target="_blank">lplb/planner.py:194</a></code><span>count_idx</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/lplb/planner.py#L217" rel="noopener" target="_blank">lplb/planner.py:217</a></code><span>solver.solve</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/lplb/planner.py#L235" rel="noopener" target="_blank">lplb/planner.py:235</a></code><span>map_idx</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/lplb/planner.py#L115" rel="noopener" target="_blank">lplb/planner.py:115</a></code><span>冗余拓扑 r2o</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/lplb/resources/csrc-tmpl/minilp.cu#L83" rel="noopener" target="_blank">lplb/resources/csrc-tmpl/minilp.cu:83</a></code><span>LP kernel</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/README.md#L62" rel="noopener" target="_blank">README.md:62</a></code><span>边容量</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/LPLB/blob/0490f79452f7ef277e814449600b1b1dd4c663b3/README.md#L70" rel="noopener" target="_blank">README.md:70</a></code><span>求解耗时</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="dsv32.html"><span class="lbl">← 上一个</span>DeepSeek-V3.2-Exp</a>
+    <a href="../index.html#ask"><span class="lbl">还想要别的？</span>点单 →</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 24 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

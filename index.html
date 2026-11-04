@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>开源项目可视化拆解｜热门开源项目拆成能点的图</title>
-<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta name="description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <link rel="canonical" href="https://fanhua03.github.io/index.html" />
 <meta property="og:site_name" content="开源项目可视化拆解" />
 <meta property="og:title" content="开源项目可视化拆解｜热门开源项目拆成能点的图" />
-<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
+<meta property="og:description" content="热门开源项目拆成能点的架构图：jq、3FS、Redis、FlashMLA、DeepSeek-V3 inference、DeepEP、DeepGEMM、smallpond、DeepSeek-OCR、EPLB、TileKernels、DeepSeek-VL2、Janus、DeepInfer、DualPipe、Engram、DeepSeekMoE 路由、DeepJIT、deepseek-recipe、DeepSpec、DreamCraft3D、DeepSeek Harness、DeepSeek-V3.2-Exp、LPLB 已拆，21 个项目在排队。搜不到就点单，24 小时上架。" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="stylesheet" href="assets/site.css?v=f0df458e" />
@@ -39,7 +39,7 @@
       <span class="search-hint">搜不到就点单 ↓</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>21</b><span>已拆</span></div>
+      <div class="stat"><b>24</b><span>已拆</span></div>
       <div class="stat"><b id="s-queue">21</b><span>排队中</span></div>
       <div class="stat"><b>24h</b><span>点单到上架</span></div>
       <div class="stat"><b>0 元</b><span>点单免费</span></div>
@@ -98,6 +98,11 @@
     <button class="chip" data-f="文生 3D">文生 3D</button>
     <button class="chip" data-f="SDS">SDS</button>
     <button class="chip" data-f="扩散先验">扩散先验</button>
+    <button class="chip" data-f="插件架构">插件架构</button>
+    <button class="chip" data-f="Agent">Agent</button>
+    <button class="chip" data-f="TypeScript">TypeScript</button>
+    <button class="chip" data-f="稀疏注意力">稀疏注意力</button>
+    <button class="chip" data-f="线性规划">线性规划</button>
   </div>
 
   <section class="grid" id="gallery">
@@ -521,6 +526,66 @@
           </div>
         </div>
       </a>
+      <a class="card" href="projects/dsh.html" data-search="deepseek harness deepseek-ai/deepseek-harness 插件架构 agent typescript 一个 ai 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsh.png" alt="DeepSeek Harness 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek Harness</span>
+            <span class="repo">deepseek-ai/deepseek-harness</span>
+            <span class="tags"><span class="tag">插件架构</span><span class="tag">Agent</span><span class="tag">TypeScript</span></span>
+          </div>
+          <div class="tagline">一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。</div>
+          <ul class="ins"><li>连对话主循环、系统提示、工具表、会话存储都是独立 npm 包，按 cordis.yml 装进同一个容器；「主线」不在代码里，在配置里。</li><li>系统提示不是写死的常量，是每一步重算出来的：先看现在有哪些工具，再把工具说明拼进提示里——工具变了提示就跟着变。</li><li>模型一轮可以吐多个工具调用，一次性交出去并行跑，每个结果都写回会话，下一轮模型看到的是完整历史。</li></ul>
+          <div class="foot">
+            <span><b>0</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/dsv32.html" data-search="deepseek-v3.2-exp deepseek-ai/deepseek-v3.2-exp 稀疏注意力 推理 先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。">
+        <div class="thumb">
+          <img src="assets/thumbs/dsv32.png" alt="DeepSeek-V3.2-Exp 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">DeepSeek-V3.2-Exp</span>
+            <span class="repo">deepseek-ai/DeepSeek-V3.2-Exp</span>
+            <span class="tags"><span class="tag">稀疏注意力</span><span class="tag">推理</span></span>
+          </div>
+          <div class="tagline">先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。</div>
+          <ul class="ins"><li>选择器是另一套小注意力：64 个 index 头、每头 128 维，q/k 都压成 fp8。</li><li>64 个分数先 ReLU 再按头权重求和，一个 key 最后只剩一个分数，然后取前 2048。</li><li>这段参考实现没省算力：q·k 全表照算再盖 -inf 遮罩，真省要靠部署时只算选中的 2048 个。</li></ul>
+          <div class="foot">
+            <span><b>1,482</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
+      <a class="card" href="projects/lplb.html" data-search="lplb deepseek-ai/lplb 负载均衡 线性规划 moe 每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。">
+        <div class="thumb">
+          <img src="assets/thumbs/lplb.png" alt="LPLB 架构图" loading="lazy" />
+          <span class="open-pill">打开交互图 ↗</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <span class="title">LPLB</span>
+            <span class="repo">deepseek-ai/LPLB</span>
+            <span class="tags"><span class="tag">负载均衡</span><span class="tag">线性规划</span><span class="tag">MoE</span></span>
+          </div>
+          <div class="tagline">每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。</div>
+          <ul class="ins"><li>EPLB 治长期过热、决定复制谁；LPLB 治每批抖动、只决定这一批的活往哪倒。</li><li>把「冗余副本能接多少活」当变量解线性规划，让最忙的那张卡尽量轻。</li><li>每批多花约 100µs 求解；极端不平衡时可能还不如 EPLB 简单粗暴。</li></ul>
+          <div class="foot">
+            <span><b>2,163</b> 行</span>
+            <span><b>8</b> 处对得上源码</span>
+            <span class="go">打开 →</span>
+          </div>
+        </div>
+      </a>
   </section>
 
   <section class="roadmap" id="roadmap">
@@ -712,7 +777,7 @@
 
   <footer>
     <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
-    <div>已拆 21 张 · 纯静态，无后端</div>
+    <div>已拆 24 张 · 纯静态，无后端</div>
   </footer>
 </main>
 <script>

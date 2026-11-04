@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek-V3.2-Exp 架构图｜只让 2048 个词参与注意力 · 开源项目可视化拆解</title>
+<meta name="description" content="先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSeek-V3.2-Exp 的源码行。" />
+<link rel="canonical" href="https://fanhua03.github.io/projects/dsv32.html" />
+<meta property="og:site_name" content="开源项目可视化拆解" />
+<meta property="og:title" content="DeepSeek-V3.2-Exp 架构图｜只让 2048 个词参与注意力 · 开源项目可视化拆解" />
+<meta property="og:description" content="先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。 交互式架构图，8 处结论可直接跳到 deepseek-ai/DeepSeek-V3.2-Exp 的源码行。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="../assets/site.css?v=f0df458e" />
+<meta property="og:image" content="https://fanhua03.github.io/assets/thumbs/dsv32.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DeepSeek-V3.2-Exp 架构图｜只让 2048 个词参与注意力","description":"先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。","datePublished":"2026-11-04","inLanguage":"zh-CN","about":{"@type":"SoftwareSourceCode","name":"DeepSeek-V3.2-Exp","codeRepository":"https://github.com/deepseek-ai/DeepSeek-V3.2-Exp"},"isPartOf":{"@type":"WebSite","name":"开源项目可视化拆解","url":"https://fanhua03.github.io"}}</script>
+</head>
+<body><div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="../index.html">
+      <div class="logo">拆</div>
+      <div>开源项目可视化拆解 <small>OPEN SOURCE · VISUALIZED</small></div>
+    </a>
+    <nav class="topnav">
+      <a href="../index.html#gallery">已拆</a>
+      <a href="../index.html#roadmap">待拆清单</a>
+      <a href="../index.html#ask">点单</a>
+      <span class="live"><i class="dot"></i> 持续拆解中</span>
+    </nav>
+  </div>
+</div>
+<main class="wrap narrow">
+  <div class="crumb">
+    <a href="../index.html">全部项目</a><span>/</span><span>DeepSeek-V3.2-Exp</span>
+  </div>
+
+  <header class="proj-head">
+    <h1><span class="pn">DeepSeek-V3.2-Exp</span> 架构图｜只让 2048 个词参与注意力</h1>
+    <p class="sub">先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。</p>
+    <p class="plain"><b>人话版</b>长文本里，每生成一个词，原本要回头看前面所有的词。稀疏注意力先花很小的代价，挑出最相关的 2048 个词，只让它们参与后面的加权；挑剩下的不是被删掉，只是在这一层里不参与计算。</p>
+    <div class="pmeta">
+      <span><b>仓库</b> <a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp" target="_blank" rel="noopener">deepseek-ai/DeepSeek-V3.2-Exp</a></span>
+      <span><b>语言</b> Python</span>
+      <span><b>规模</b> 1,482 行</span>
+      <span><b>出处</b> 8 处能对到源码</span>
+      <span><b>更新</b> 2026-11-04</span>
+    </div>
+  </header>
+
+  <figure class="embed">
+    <iframe src="../assets/diagrams/dsv32.html" title="DeepSeek-V3.2-Exp 交互式架构图" loading="lazy"></iframe>
+    <figcaption>
+      <span>拖动平移 · 滚轮缩放 · 点节点右上角「来源」跳到 GitHub 对应行</span>
+      <a href="../assets/diagrams/dsv32.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+    </figcaption>
+  </figure>
+
+  <h2 class="blk">三个反直觉的地方</h2>
+  <ul class="ins"><li>选择器是另一套小注意力：64 个 index 头、每头 128 维，q/k 都压成 fp8。</li><li>64 个分数先 ReLU 再按头权重求和，一个 key 最后只剩一个分数，然后取前 2048。</li><li>这段参考实现没省算力：q·k 全表照算再盖 -inf 遮罩，真省要靠部署时只算选中的 2048 个。</li></ul>
+
+  <h2 class="blk">证据 · 每条都能点过去</h2>
+  <ol class="ev">
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/model.py#L435" rel="noopener" target="_blank">inference/model.py:435</a></code><span>Indexer</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/model.py#L439" rel="noopener" target="_blank">inference/model.py:439</a></code><span>64 头 / 128 维</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/model.py#L474" rel="noopener" target="_blank">inference/model.py:474</a></code><span>量化成 fp8</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/kernel.py#L231" rel="noopener" target="_blank">inference/kernel.py:231</a></code><span>fp8 GEMM 出 64 个分</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/kernel.py#L240" rel="noopener" target="_blank">inference/kernel.py:240</a></code><span>ReLU + 按头加权</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/model.py#L483" rel="noopener" target="_blank">inference/model.py:483</a></code><span>取前 2048</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/model.py#L580" rel="noopener" target="_blank">inference/model.py:580</a></code><span>全量 q·k（参考实现）</span></li>
+      <li><code><a href="https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/87e509a2e5a100d221c97df52c6e8be7835f0057/inference/model.py#L584" rel="noopener" target="_blank">inference/model.py:584</a></code><span>index_mask</span></li>
+  </ol>
+
+  <div class="pager">
+    <a href="dsh.html"><span class="lbl">← 上一个</span>DeepSeek Harness</a>
+    <a href="lplb.html"><span class="lbl">下一个 →</span>LPLB</a>
+  </div>
+  <footer>
+    <div>开源项目可视化拆解 · 你要的项目，我们拆 · 每张图都有一句人话解释</div>
+    <div>已拆 24 张 · 纯静态，无后端</div>
+  </footer>
+</main>
+</body>
+</html>

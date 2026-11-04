@@ -1506,6 +1506,210 @@
       ],
       "thumb": "assets/thumbs/dreamcraft.png",
       "diagram": "assets/diagrams/dreamcraft.html"
+    },
+    {
+      "id": "dsh",
+      "title": "DeepSeek Harness",
+      "headline": "没有内核，只有插件",
+      "tagline": "一个 AI 编程工具，连「主循环」「系统提示」「工具表」都是可替换的插件——全部按配置文件装进同一个容器。",
+      "plain": "这是 DeepSeek 官方那个 AI 编程工具（就是你现在用的这个）。它最特别的地方是：连「怎么跟模型对话」这条主线本身都是一个插件，跟工具、提示词、会话存储一样，全是可替换的零件。所以换一个零件，整个工具的行为就变了，别的零件一行都不用改。",
+      "repo": "deepseek-ai/deepseek-harness",
+      "revision": "8bd073392eef6f54e921a093b95076248eb08cbb",
+      "langs": [
+        "TypeScript"
+      ],
+      "loc": 0,
+      "date": "2026-11-04",
+      "tags": [
+        "插件架构",
+        "Agent",
+        "TypeScript"
+      ],
+      "insights": [
+        "连对话主循环、系统提示、工具表、会话存储都是独立 npm 包，按 cordis.yml 装进同一个容器；「主线」不在代码里，在配置里。",
+        "系统提示不是写死的常量，是每一步重算出来的：先看现在有哪些工具，再把工具说明拼进提示里——工具变了提示就跟着变。",
+        "模型一轮可以吐多个工具调用，一次性交出去并行跑，每个结果都写回会话，下一轮模型看到的是完整历史。"
+      ],
+      "sources": [
+        {
+          "path": "packages/boot/app-boot/src/index.ts",
+          "line": 68,
+          "label": "loadProfile 读插件清单"
+        },
+        {
+          "path": "vendor/cordis/src/context.ts",
+          "line": 42,
+          "label": "插件运行时 Context"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "line": 128,
+          "label": "register 注册工具"
+        },
+        {
+          "path": "packages/core/tools/src/index.ts",
+          "line": 375,
+          "label": "execute 批量执行"
+        },
+        {
+          "path": "packages/core/system-prompt/src/index.ts",
+          "line": 620,
+          "label": "assemble 每步重拼"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "line": 112,
+          "label": "ReactLoopAgent"
+        },
+        {
+          "path": "packages/core/agent-loop/src/agent.ts",
+          "line": 283,
+          "label": "preStep 解析工具+拼提示"
+        },
+        {
+          "path": "packages/session/session-persistence-jsonl/src/storage.ts",
+          "line": 187,
+          "label": "append 事件落盘"
+        }
+      ],
+      "thumb": "assets/thumbs/dsh.png",
+      "diagram": "assets/diagrams/dsh.html"
+    },
+    {
+      "id": "dsv32",
+      "title": "DeepSeek-V3.2-Exp",
+      "headline": "只让 2048 个词参与注意力",
+      "tagline": "先花小钱挑出最相关的 2048 个词，再让注意力只在这几个词上算——省的是「参与计算的位置数」。",
+      "plain": "长文本里，每生成一个词，原本要回头看前面所有的词。稀疏注意力先花很小的代价，挑出最相关的 2048 个词，只让它们参与后面的加权；挑剩下的不是被删掉，只是在这一层里不参与计算。",
+      "repo": "deepseek-ai/DeepSeek-V3.2-Exp",
+      "revision": "87e509a2e5a100d221c97df52c6e8be7835f0057",
+      "langs": [
+        "Python"
+      ],
+      "loc": 1482,
+      "date": "2026-11-04",
+      "tags": [
+        "稀疏注意力",
+        "推理"
+      ],
+      "insights": [
+        "选择器是另一套小注意力：64 个 index 头、每头 128 维，q/k 都压成 fp8。",
+        "64 个分数先 ReLU 再按头权重求和，一个 key 最后只剩一个分数，然后取前 2048。",
+        "这段参考实现没省算力：q·k 全表照算再盖 -inf 遮罩，真省要靠部署时只算选中的 2048 个。"
+      ],
+      "sources": [
+        {
+          "path": "inference/model.py",
+          "line": 435,
+          "label": "Indexer"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 439,
+          "label": "64 头 / 128 维"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 474,
+          "label": "量化成 fp8"
+        },
+        {
+          "path": "inference/kernel.py",
+          "line": 231,
+          "label": "fp8 GEMM 出 64 个分"
+        },
+        {
+          "path": "inference/kernel.py",
+          "line": 240,
+          "label": "ReLU + 按头加权"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 483,
+          "label": "取前 2048"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 580,
+          "label": "全量 q·k（参考实现）"
+        },
+        {
+          "path": "inference/model.py",
+          "line": 584,
+          "label": "index_mask"
+        }
+      ],
+      "thumb": "assets/thumbs/dsv32.png",
+      "diagram": "assets/diagrams/dsv32.html"
+    },
+    {
+      "id": "lplb",
+      "title": "LPLB",
+      "headline": "每一批都重算一次谁接活",
+      "tagline": "每批解一次线性规划，把活从忙的显卡挪到闲的那份专家副本上。",
+      "plain": "模型里有几百个「专家」，每个批次里有的接活多、有的接活少。有的专家会多备一份放在别的显卡上，这份备份接多少活是可以调的。这个项目每一批都重新算一次：把活往闲的那份上挪一点，让所有显卡的活尽量一样多。",
+      "repo": "deepseek-ai/LPLB",
+      "revision": "0490f79452f7ef277e814449600b1b1dd4c663b3",
+      "langs": [
+        "Python",
+        "CUDA"
+      ],
+      "loc": 2163,
+      "date": "2026-11-04",
+      "tags": [
+        "负载均衡",
+        "线性规划",
+        "MoE"
+      ],
+      "insights": [
+        "EPLB 治长期过热、决定复制谁；LPLB 治每批抖动、只决定这一批的活往哪倒。",
+        "把「冗余副本能接多少活」当变量解线性规划，让最忙的那张卡尽量轻。",
+        "每批多花约 100µs 求解；极端不平衡时可能还不如 EPLB 简单粗暴。"
+      ],
+      "sources": [
+        {
+          "path": "lplb/planner.py",
+          "line": 245,
+          "label": "Planner.run"
+        },
+        {
+          "path": "lplb/planner.py",
+          "line": 194,
+          "label": "count_idx"
+        },
+        {
+          "path": "lplb/planner.py",
+          "line": 217,
+          "label": "solver.solve"
+        },
+        {
+          "path": "lplb/planner.py",
+          "line": 235,
+          "label": "map_idx"
+        },
+        {
+          "path": "lplb/planner.py",
+          "line": 115,
+          "label": "冗余拓扑 r2o"
+        },
+        {
+          "path": "lplb/resources/csrc-tmpl/minilp.cu",
+          "line": 83,
+          "label": "LP kernel"
+        },
+        {
+          "path": "README.md",
+          "line": 62,
+          "label": "边容量"
+        },
+        {
+          "path": "README.md",
+          "line": 70,
+          "label": "求解耗时"
+        }
+      ],
+      "thumb": "assets/thumbs/lplb.png",
+      "diagram": "assets/diagrams/lplb.html"
     }
   ],
   "roadmap": [
